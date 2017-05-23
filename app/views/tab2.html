@@ -1,0 +1,62 @@
+<div>
+        <h4 class="page-header">Basic information</h4>
+        <div class="col-sm-6">
+            <p>
+                <span>Name</span>:
+                <a href="" editable-text="CandData.CandDetails.UserName">{{CandData.CandDetails.UserName
+                    || &apos;empty&apos; }}</a>
+            </p>
+            <p>
+                <span>Date Of Birth</span>:
+                <a href="" editable-date="CandData.CandDetails.dob">{{
+                    CandData.CandDetails.dob | date:"dd-MM-yyyy"|| &apos;empty&apos; }}</a>
+            </p>
+
+            <p>
+                <span>Passport No</span>:
+                <a href="" editable-text="CandData.CandDetails.pass_no">{{CandData.CandDetails.pass_no||
+                    &apos;empty&apos; }}</a>
+            </p>
+            <p>
+                <span>Rank</span>:
+                <a href="" editable-text="CandData.CandDetails.Rank"
+                   e-typeahead="rank.rank for rank in rankList | limitTo:8">{{CandData.CandDetails.Rank||
+                    &apos;empty&apos; }}</a>
+            </p>
+        </div>
+
+        <div id="details1">
+            <p>
+                <span>Email</span>:
+                <a href="" editable-email="CandData.CandDetails.CandEmail">{{
+                    CandData.CandDetails.CandEmail || &apos;empty&apos; }}</a>
+            </p>
+
+            <p>
+                <span>Mobile Phone</span>:
+                <a href="" editable-number="CandData.CandDetails.tel_no">{{
+                    CandData.CandDetails.tel_no || &apos;empty&apos; }}</a>
+            </p>
+
+            <p>
+                <span>Indos No</span>:
+                <a href="" editable-text="CandData.CandDetails.IndosNo">{{CandData.CandDetails.IndosNo
+                    || &apos;empty&apos; }}</a>
+            </p>
+
+            <p>
+                <span>Location</span>:
+                <a href="" editable-textarea="CandData.CandDetails.h_add" e-rows="3"
+                   e-cols="30">{{ CandData.CandDetails.h_add || &apos;empty&apos; }}</a>
+            </p>
+        </div>
+    </div>
+    <div class="col-xs-6" ng-if="showbutton">
+        <button type="button" class="mr btn btn-oval btn-primary" ng-click="seafarerData()">
+            Save
+        </button>
+        <button type="button" class="mr btn btn-oval btn-default" ng-click="hidebutton()">
+            Cancel
+        </button>
+
+</div>

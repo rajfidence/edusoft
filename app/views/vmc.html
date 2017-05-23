@@ -1,0 +1,102 @@
+<div class="panel panel-body">
+        <div  ng-app="MyApp" ng-controller="VMCController as form">
+            <div class="app-view-header headerstyle">Vessel Medical Calls</div><hr>
+            <br/>
+            <h4 class="text-left">
+                <i class="fa fa-circle" style="color: red;font-size:10px;"></i> <span style="font-size:12px;"> Emergency</span>
+                <i class="fa fa-circle" style="color: orange;font-size:10px;"></i><span style="font-size:12px;"> Moderate</span>
+                <i class="fa fa-circle" style="color: green;font-size:10px;"></i><span style="font-size:12px;"> Routine</span>
+                <i class="fa fa-circle" style="color: #4d94ff;font-size:10px;"></i><span style="font-size:12px;"> Repatriation</span>
+                <i class="fa fa-circle" style="color: #996600;font-size:10px;"></i><span style="font-size:12px;"> Sign Off</span>
+                <i class="fa fa-circle" style="color: #cccc00;font-size:10px;"></i><span style="font-size:12px;"> Port Visit</span>
+                <i class="fa fa-circle" style="color: #922792;font-size:10px;"></i><span style="font-size:12px;"> Not Defined</span>
+            </h4>
+            <div class="panel-body table-responsive">
+                <table  class="table table-striped table-bordered table-hover">
+                    <tbody>
+                    <tr>
+                        <th class="text-center"><strong>Case-ID</strong></th>
+                        <th class="text-center"><strong>Vessel</strong></th>
+                        <th class="text-center"><strong>Name</strong></th>
+                        <th class="text-center"><strong>Rank</strong></th>
+                        <th class="text-center"><strong>Call Date & Time</strong></th>
+                        <th class="text-center"><strong>Reason</strong></th>
+                        <th class="text-center"><strong>Medical Log</strong></th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="name" class="input-filter form-control "></td>
+                        <td><ui-select ng-model="" theme="bootstrap" ng-disabled="uiselect.disabled">
+                            <ui-select-match placeholder="Select Vessel"></ui-select-match>
+                            <ui-select-choices repeat="">
+                                <div ng-bind-html=""></div>
+
+                            </ui-select-choices>
+                        </ui-select>
+                        </td>
+                        <td><input type="text" name="name" class="input-filter form-control "></td>
+                        <td><input type="text" name="name" class="input-filter form-control "></td>
+                        <td><input type="text" name="name" class="input-filter form-control "></td>
+                        <td><input type="text" name="name" class="input-filter form-control "></td>
+                        <td><ui-select ng-model="" theme="bootstrap" ng-disabled="uiselect.disabled">
+                            <ui-select-match placeholder="Select Status"></ui-select-match>
+                            <ui-select-choices repeat="">
+                                <div ng-bind-html=""></div>
+
+                            </ui-select-choices>
+                        </ui-select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">1601151</td>
+                        <td class="text-center">Demo 1</td>
+                        <td class="text-center">ANN FLORES</td>
+                        <td class="text-center">Deck Officer</td>
+                        <td class="text-center">15/01/2016 14:35:28 pm</td>
+                        <td class="text-center">Fever</td>
+                        <td><button type="button" class="btn" style="width:150px;background-color:#FF9900; color:white;">
+                            <i class="fa fa-clock-o"></i><span>  Moderate </span></button></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">1601151</td>
+                        <td class="text-center">Demo 1</td>
+                        <td class="text-center">ANN FLORES</td>
+                        <td class="text-center">Deck Officer</td>
+                        <td class="text-center">15/01/2016 14:35:28 pm</td>
+                        <td class="text-center">Fever</td>
+                        <td><button type="button" class="btn" style="width:150px;background-color:#FF9900; color:white;">
+                            <i class="fa fa-clock-o"></i><span>  Moderate </span></button></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">1601151</td>
+                        <td class="text-center">Demo 1</td>
+                        <td class="text-center">ANN FLORES</td>
+                        <td class="text-center">Deck Officer</td>
+                        <td class="text-center">15/01/2016 14:35:28 pm</td>
+                        <td class="text-center">Fever</td>
+                        <td><button type="button" class="btn" style="width:150px;background-color:#FF9900; color:white;">
+                            <i class="fa fa-clock-o"></i><span>  Moderate </span></button></td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">1601151</td>
+                        <td class="text-center">Demo 1</td>
+                        <td class="text-center">ANN FLORES</td>
+                        <td class="text-center">Deck Officer</td>
+                        <td class="text-center">15/01/2016 14:35:28 pm</td>
+                        <td class="text-center">Fever</td>
+                        <td><button type="button" class="btn" style="width:150px;background-color:#FF9900; color:white;">
+                            <i class="fa fa-clock-o"></i><span>  Moderate </span></button></td>
+                    </tr>
+                    </tbody>
+                    </table>
+                <pagination class="pull-right"
+                            ng-model="currentPage"
+                            total-items="todos.length"
+                            max-size="maxSize"
+                            boundary-links="true">
+                </pagination>
+            </div>
+
+
+        </div>
+
+        </div>

@@ -1,0 +1,95 @@
+
+<div class="panel panel-body"  ng-controller="NewVesselController as form" >
+    <div class="app-view-header">Enter Vessel Details
+    </div><hr>
+    <div class="panel-default">
+        <div style="padding-left: 20px;">
+            <form class="form-horizontal" role="form" ng-submit="saveData()" name="form.myForm" novalidate>
+                <toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+            <div class="row"><br />
+                <div class="form-group">
+                    <div class=" col-lg-3 col-sm-6">
+                        <label  class="control-label"><span class="red">*</span> Vessel Name</label>
+                        <input name="vessel_name" ng-keyup="vessel_name_validate($event)" placeholder=" Vessel Name" type="text" ng-model="formInfo.vessel_name"  class="input-filter form-control " required>
+                        <span class="red" ng-show="vessel_exist">Vessel with this name exist</span>
+                        <span ng-show="(form.myForm.vessel_name.$dirty || submitted) &&  form.myForm.vessel_name.$error.required" class="red">Vessel name is required</span>
+                    </div> {{msg}}
+                    <div class=" col-lg-3 col-sm-6">
+                        <label  class="control-label"><span class="red">*</span> IMO No.</label>
+                        <input  placeholder="IMO No" type="text" ng-model="formInfo.ImoNo" class="input-filter form-control ">
+                    </div>
+
+                    <div class=" col-lg-3 col-sm-6">
+                        <label  class="control-label"><span class="red">*</span> Flag</label>
+                        <ui-select  ng-model="formInfo.Flagship" theme="bootstrap">
+                            <ui-select-match placeholder="Select FlagShip">{{$select.selected.Flagship}}</ui-select-match>
+                            <ui-select-choices repeat="items.Id as items in Flag | filter: $select.search">
+                                <span ng-bind-html="items.Flagship | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+            <div class="row"><br />
+                <div class="form-group">
+                    <div class=" col-lg-3 col-sm-6">
+                        <label  class="control-label">Type</label>
+                        <input placeholder="Type" type="text" ng-model="formInfo.TypeOfVessel" class="input-filter form-control ">
+                    </div>
+                    <div class=" col-lg-3 col-sm-6">
+                        <label  class="control-label"><span class="red">*</span> Skype ID</label>
+                        <input placeholder="Skype ID" type="text" ng-model="formInfo.CallSign" class="input-filter form-control ">
+                    </div>
+                    <div class=" col-lg-3 col-sm-6">
+                        <label  class="control-label">Route</label>
+                        <input placeholder="Route" type="text" ng-model="formInfo.Route" class="input-filter form-control ">
+                    </div>
+                </div>
+            </div>
+
+<hr>
+            <h4>Medical Chest Certification</h4>
+            <div class="row"><br />
+                <div class="form-group">
+                    <div class=" col-lg-3 col-sm-6">
+                        <label  class="control-label"><span class="red">*</span> Certificate Date</label>
+                        <p class="input-group">
+                            <input required type="text" placeholder="Certificate Date" name="CertficateDate" datepicker-popup="{{format}}" ng-model="formInfo.CertficateDate" is-open="form.opened" min-date="false" max-date="false"
+                                   datepicker-options="form.dateOptions" date-disabled="form.disabled(form.date, form.mode)" close-text="Close"
+                                   class="form-control" />
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="form.open($event)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span>
+                        </p>
+                        <span ng-show="(form.myForm.CertficateDate.$dirty || submitted) &&  form.myForm.CertficateDate.$error.required" class="red">Certificate Date is required</span>
+                    </div>
+                    <div class=" col-lg-3 col-sm-6">
+                        <label  class="control-label"><span class="red">*</span> Expiry Date</label>
+                        <p class="input-group">
+                            <input required type="text" placeholder="Expiry Date" name="ExpiryDate" datepicker-popup="{{format}}" ng-model="formInfo.ExpiryDate" is-open="form.opened1" min-date="false" max-date="false"
+                                   datepicker-options="form.dateOptions1" date-disabled="form.disabled(form.date, form.mode)" close-text="Close"
+                                   class="form-control" />
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="form.open1($event)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span>
+                        </p>
+                        <span ng-show="(form.myForm.ExpiryDate.$dirty || submitted) &&  form.myForm.ExpiryDate.$error.required" class="red">Expiry Date is required</span>
+                    </div>
+
+                </div>
+                <div class="col-lg-12 col-sm-12" style="margin-top: 25px;">
+                    <button  type="submit" ng-disabled="vessel_exist" class="mr mb-sm btn btn-info ">Save</button>
+                    <button  type="button" class="mr mb-sm btn btn-primary">Reset</button>
+                </div>
+
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+

@@ -1,0 +1,21 @@
+<div class="panel panel-default" id="step1">
+    <div class="panel-body">
+        <div ng-show="noAccess" style="color:red">{{noAccessMessage}}</div>
+        <div class="app-view-header headerstyle">Setup: Vessel List
+            <a href="#/app/NewVessel">
+                <button type="button" ng-disabled="noAccess" class="mr btn  btn-primary pull-right" id="step6">Add</button>
+            </a>
+            <button type="button" ng-disabled="noAccess"  class="mr btn  btn-success pull-right" ui-sref="app.vesselexcel" id="step5">
+                Excel Upload
+            </button>
+        </div>
+        <hr>
+        <!-- START table-responsive-->
+        <div class="table-responsive" >
+            <toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+            <div ng-controller="VesselController as vessel">
+                <table datatable="" dt-options="vessel.dtOptions" dt-columns="vessel.dtColumns" class="row-border hover" width="100%"></table>
+            </div>
+        </div>
+    </div>
+</div>

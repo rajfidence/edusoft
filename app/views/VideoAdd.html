@@ -1,0 +1,64 @@
+<div ng-app="MyApp" ng-controller="Package as form">
+    <form name="myForm" ng-submit="submit(myForm)" novalidate>
+        <div class="panel panel-body">
+            <div class="app-view-header headerstyle">Setup: {{packageStatus}}
+            </div>
+            <hr>
+            <div class="panel-body">
+                <treasure-overlay-spinner active='loading'>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> Package Name</label>
+                            <input placeholder="Package Name" name="packageName" ng-model="package.PackageName"
+                                   type="text"
+                                   class="input-filter form-control shadow-z1 " ng-required="true"
+                                   ng-blur="packageChange()"
+                                   required focus="true">
+                            <div ng-messages="myForm.packageName.$error" style="color:maroon" role="alert"
+                                 ng-show="myForm.packageName.$touched || myForm.$submitted">
+                                <div ng-messages-include="app/views/validation.message.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label">Description</label>
+                            <input placeholder="Description" name="packageDescription" ng-model="package.Description"
+                                   type="text"
+                                   class="input-filter form-control shadow-z1 "
+                                   focus="true">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> Select Courses</label>
+                            <ui-select multiple="" ng-model="selectedCourse.courses" theme="bootstrap" ng-required="true">
+                                <ui-select-match placeholder="Select Courses">{{$item.Course}}</ui-select-match>
+                                <ui-select-choices repeat="course.Id as course in courseList | filter: $select.search">
+                                    <span ng-bind-html="course.Course | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label">Amount</label>
+                            <input placeholder="Amount" name="packageAmount" ng-model="package.Amount"
+                                   type="number"
+                                   class="input-filter form-control shadow-z1 "
+                                   focus="true">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-lg-3  col-md-offset-1">
+                            <button type="submit" ripple="" class="mr mb-sm btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </treasure-overlay-spinner>
+            </div>
+        </div>
+    </form>
+</div>
+

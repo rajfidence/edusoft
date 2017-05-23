@@ -1,0 +1,19 @@
+
+<div class="panel-body panel" id="step1">
+    <div class="app-view-header headerstyle">Medical Event Logs
+        <a href="#/app/generate_event">
+            <button type="button" class="mr btn btn-primary pull-right" id="step5">Add Event</button>
+        </a>
+
+    </div><hr>
+    <!-- START table-responsive-->
+
+    <div class="table-responsive">
+        <toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+        <div ng-app="MyApp" ng-controller="EventListController as Event_list">
+            <table datatable="" dt-options="Event_list.dtOptions" dt-instance="Event_list.dtInstance" dt-columns="Event_list.dtColumns"></table>
+        </div>
+    </div>
+</div>
+
+

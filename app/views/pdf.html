@@ -1,0 +1,156 @@
+<!--<div class="app-view-header">Dashboard
+   <small ng-bind="app.name + ' - ' + app.description" ng-if="currentUser">Welcome, {{ currentUser.user }}</small>
+   <div ng-if="currentUser">Welcome, {{ currentUser.user }}</div>
+</div>-->
+
+<div ng-controller="pdfcontroller as CandProfile" class="row" id="step1">
+    <!--<h1> {{ myData.id }}</h1>-->
+    <!-- Modal-->
+    <toaster-container
+            toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+    <script type="text/ng-template" id="warning-dialog.html">
+        <div class="modal-header">
+            <h3>Session Expire!</h3>
+        </div>
+        <div idle-countdown="countdown" class="modal-body">
+
+            <progressbar max="5" value="5" animate="true" class="progress-striped active">Your Session Going to Expire
+                in {{countdown}} second(s).
+            </progressbar>
+        </div>
+    </script>
+    <!--<div style="background:url(app/img/profile.jpg) center center; background-size:cover;" class="unwrap"  ui-sref="app.profile">-->
+    <!--<div class="container container-lg p-lg">-->
+    <!--&lt;!&ndash;<div class="pull-right">&ndash;&gt;-->
+    <!--&lt;!&ndash;<button type="button" class="btn btn-amber">Follow</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--<div class="media mt-lg">-->
+    <!--<div class="media-left media-middle">-->
+    <!--<a  ui-sref="app.profile">-->
+    <!--<img src="app/img/user/02.jpg" class="media-object thumb96 img-circle" />-->
+    <!--</a>-->
+    <!--</div>-->
+    <!--<div class="media-body text-white">-->
+    <!--<h2 class="mv-lg media-heading">{{currentUser.user }}</h2>-->
+    <!--&lt;!&ndash;<button type="button" class="btn btn-info btn-xs mr-sm">&ndash;&gt;-->
+    <!--&lt;!&ndash;<em class="fa fa-twitter fa-fw"></em>&ndash;&gt;-->
+    <!--&lt;!&ndash;</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;<button type="button" class="btn btn-primary btn-xs mr-sm">&ndash;&gt;-->
+    <!--&lt;!&ndash;<em class="fa fa-facebook fa-fw"></em>&ndash;&gt;-->
+    <!--&lt;!&ndash;</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;<button type="button" class="btn btn-danger btn-xs">&ndash;&gt;-->
+    <!--&lt;!&ndash;<em class="fa fa-google-plus fa-fw"></em>&ndash;&gt;-->
+    <!--&lt;!&ndash;</button>&ndash;&gt;-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="text-right text-white pb-lg">-->
+    <!--<p class="m0">-->
+    <!--<strong>Reg No: 32840</strong>-->
+    <!--</p>-->
+    <!--<p class="m0">-->
+    <!--<strong>Joined On: 31/08/2015</strong>-->
+    <!--</p>-->
+    <!--&lt;!&ndash;<div class="row pull-right">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-sm-3">&ndash;&gt;-->
+    <!--&lt;!&ndash;<strong>Reg No:</strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-sm-3">&ndash;&gt;-->
+    <!--&lt;!&ndash;<strong>32840</strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="row pull-right">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-sm-3">&ndash;&gt;-->
+    <!--&lt;!&ndash;<strong>Joined On:</strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-sm-3">&ndash;&gt;-->
+    <!--&lt;!&ndash;<strong>31/08/2015</strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="col-lg-9 fw-boxed">
+        <!-- START Panel-->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- START Panel-->
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <!--<h3></h3>-->
+                        <h3>{{file.name}}
+                            <div class="pull-right">
+                                <a class="btn btn-primary" ui-sref="app.subscription"><em
+                                        class="fa fa-chevron-left "></em> Back to course
+                                </a>
+                            </div>
+                        </h3>
+                        <!--<div class="panel printfile" id="printable"  ng-keydown="key($event)">-->
+                        <div class="panel printfile" id="printable">
+                            <treasure-overlay-spinner active='loading'>
+                                <ng-pdf template-url="vendor/angularjs-pdf/example/partials/viewer.html" canvasid="pdf"
+                                        scale="page-fit" page=1></ng-pdf>
+                            </treasure-overlay-spinner>
+                        </div>
+                        <!--<object data="http://edusmart.edudoc.in/server/themes/cleanzone1_3/images/Profile/a64ed91c95d716025222a64b98ad42ed.docx" type="application/msword"></object>-->
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- END dashboard content-->
+    <!-- START dashboard sidebar-->
+    <aside class="col-lg-3 fw-boxed">
+
+        <div class="row">
+
+            <div class="col-lg-12 col-md-6">
+                <div ng-class="'panel-' + app.theme.name" class="panel">
+                    <div class="panel-heading">
+                        <div ng-class="'bg-' + app.theme.name" class="panel-title">
+                            <em class="icon-speech-bubble fa-lg pull-right text-muted"></em>Ask An Expert
+                        </div>
+                    </div>
+                    <div class="panel-body pt0">
+
+                    </div>
+                    <div class="panel-footer">
+                        <div class="input-group input-group-sm">
+                            <textarea placeholder="Type a message ..." rows="5" class="form-control"
+                                      ng-model="request"></textarea>
+                            <span class="input-group-btn">
+                        <button type="button" class="btn btn-info" ng-click="askAnExpert()">
+                           <small>Post</small>
+                        </button>
+                     </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-lg-12 col-md-6">-->
+            <!--<div ng-class="'panel-' + app.theme.name" class="panel">-->
+            <!--<div class="panel-heading">-->
+            <!--<div ng-class="'bg-' + app.theme.name" class="panel-title">-->
+            <!--<em class="icon-speech-bubble fa-lg pull-right text-muted"></em>Course completion-->
+            <!--certificate-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="panel-body pt0">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+    </aside>
+</div>
+<!-- END dashboard sidebar-->
+
+
+
+
+
+
+
+

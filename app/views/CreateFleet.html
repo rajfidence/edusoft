@@ -1,0 +1,50 @@
+<div ng-controller="CreateFleetController as form">
+    <form name="form.myForm" ng-submit="saveData(form.myForm)" class="form-validate">
+        <div class="panel-body panel">
+            <div class="app-view-header headerstyle">Enter Fleet Details
+            </div>
+            <hr>
+
+            <div>
+                <div class="row form-group">
+                    <label class="col-sm-2 control-label"><span class="red">*</span>Select Group</label>
+
+                    <div class="col-md-4 col-lg-3">
+                        <ui-select required="" ng-model="formInfo.Group_id" theme="bootstrap">
+                            <ui-select-match placeholder="Select Group">{{$select.selected.GroupName}}</ui-select-match>
+                            <ui-select-choices
+                                    repeat="items.id as items in items.GroupListInfo | filter: $select.search">
+                                <span ng-bind-html="items.GroupName | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <label class="col-sm-2 control-label"><span class="red">*</span>Fleet Name</label>
+                    <div class="col-md-4 col-lg-3">
+                        <input placeholder="Fleet Name" required="" ng-disabled="(fleetAccess && form.myForm.$pristine)?true:false"
+                               ng-model="formInfo.FleetName" ng-keyup="(!form.myForm.FleetName.$dirty)?fleetname_validate($event):''" type="text" class="form-control">
+                        <span ng-show="fleetExist" class="red">Fleet name already exists.</span>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <label class="col-sm-2 control-label">Fleet Description</label>
+                    <div class="col-md-4 col-lg-3">
+                        <input placeholder="Fleet Description"
+                               ng-disabled="(fleetAccess && form.myForm.$pristine)?true:false"
+                               ng-model="formInfo.FleetDesc" type="text" class="form-control">
+                    </div>
+                </div>
+
+                <div class="pull-left row col-sm-offset-2 col-sm-3 col-md-offset-2 col-md-4 col-lg-3 ">
+                    <button type="submit" ripple="" ng-disabled="fleetExist" class="mr mb-sm btn btn-primary">Save<span class="ripple"></span>
+                    </button>
+                    <button type="reset" ripple="" class="mr mb-sm btn btn-info">Reset<span
+                            class="ripple"></span></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,210 @@
+<div>
+        <form name="CandProfile.apptform" class="form-validate form-horizontal" ng-submit="saveAppt()">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4>Appointment Information</h4></div>
+                <hr>
+                <div class="panel-body">
+                    <div class="row form-group">
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label"><span
+                                    class="red">*</span>Purpose</label>
+                            <ui-select ng-model="apptDetails.PurposeModel" theme="bootstrap"
+                                       required>
+                                <ui-select-match placeholder="Select Purpose">
+                                    {{$select.selected.Purpose}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="Purpose.Id as Purpose in purposeList | filter: $select.search">
+                                    <span ng-bind-html="Purpose.Purpose | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span ng-if="selpupose" style="color:red" ng-hide="apptDetails.PurposeModel">
+                                Please Select Pupose
+                            </span>
+                        </div>
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label"><span class="red">*</span>
+                                Profile</label>
+                            <ui-select ng-model="apptDetails.profileModel" name="profile"
+                                       theme="bootstrap" required>
+                                <ui-select-match placeholder="Select Profile">
+                                    {{$select.selected.Profile_name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="profile.Profile_id as profile in profileList | filter: $select.search">
+                                    <span ng-bind-html="profile.Profile_name | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span ng-if="selprofile" style="color:red" ng-hide="apptDetails.profileModel">
+                                Please Select Profile
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label"><span class="red">*</span>
+                                Doctor</label>
+                            <ui-select ng-model="apptDetails.doctorModel" theme="bootstrap"
+                                       on-select="getClinicList($item, $model)" required>
+                                <ui-select-match placeholder="Select Doctor">
+                                    {{$select.selected.drName}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="doctor.Id as doctor in doctorList | filter: $select.search  track by doctor.Id">
+                                    <span ng-bind-html="doctor.drName | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span ng-if="seldoctor" style="color:red" ng-hide="apptDetails.doctorModel">
+                                Please Select Doctor
+                            </span>
+                        </div>
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label"><span class="red">*</span>
+                                Center</label>
+                            <ui-select ng-model="apptDetails.ClinicModel" theme="bootstrap" required>
+                                <ui-select-match placeholder="Select Center">
+                                    {{$select.selected.Clinic_name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="clinic.Id as clinic in clinicList | filter: $select.search">
+                                    <span ng-bind-html="clinic.Clinic_name | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span ng-if="selclinic" style="color:red" ng-hide="apptDetails.ClinicModel">
+                                Please Select Clinic
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label"><span class="red">*</span> Appointment
+                                Date</label>
+                            <p class="input-group">
+                                <input type="text" id="" placeholder=""
+                                       ng-model="apptDetails.ApptDate"
+                                       datepicker-popup="{{CandProfile.format}}"
+                                       is-open="CandProfile.opened" min-date="CandProfile.minApptDate"
+                                       max-date="false"
+                                       datepicker-options="CandProfile.dateOptions"
+                                       date-disabled="CandProfile.disabled(date, mode)"
+                                       close-text="Close"
+                                       class="form-control" ng-click="dateset()" required/>
+
+                                <span class="input-group-btn">
+                                    <button type="button" ng-click="CandProfile.open($event)" class="btn btn-default">
+                                        <em class="fa fa-calendar"></em>
+                                    </button>
+                                </span></p>
+                            <span ng-if="seldate" style="color:red" ng-hide="apptDetails.ApptDate">
+                                Please Select Date
+                            </span>
+                        </div>
+                        <div class=" col-lg-6 col-sm-6" required>
+                            <label class="control-label"><span class="red">*</span>Appointment
+                                Time</label>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <timepicker ng-model="apptDetails.ApptTime"
+                                                ng-change="CandProfile.changed()"
+                                                show-meridian="CandProfile.ismeridian"></timepicker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label">Mark as Urgent</label>
+                            <div class="checkbox-inline c-checkbox"
+                                 style="padding-left:20px;margin-top: 5px;">
+                                <label>
+                                    <input ng-model="apptDetails.urgent" id="inlineCheckbox20"
+                                           type="checkbox"
+                                           value="option2">
+                                    <span class="fa fa-check"></span></label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4>Joining Information</h4></div>
+                <hr>
+                <div class="panel-body">
+                    <div class="row form-group">
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label">
+                                Department</label>
+                            <ui-select ng-model="apptDetails.department" theme="bootstrap">
+                                <ui-select-match placeholder="Select Department">
+                                    {{$select.selected.dept}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="department.dept_id as department in departmentList | filter: $select.search">
+                                    <span ng-bind-html="department.dept | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                                     <span ng-if="seldepartment" style="color:red" ng-hide="apptDetails.department">
+                                     Please Select Status
+                                    </span>
+                        </div>
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label">Sub-Department</label>
+                            <ui-select ng-model="apptDetails.subdept" theme="bootstrap">
+                                <ui-select-match placeholder="Select Sub-Department">
+                                    {{$select.selected.subdept}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="subdept.subdept_id as subdept in subdepartmentList | filter: $select.search">
+                                    <span ng-bind-html="subdept.subdept | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label">Rank</label>
+                            <input ng-model="apptDetails.rank" ng-value="apptDetails.rank.rank"
+                                   placeholder="Rank"
+                                   typeahead="rank as rank.rank for rank in rankList | filter:$viewValue | limitTo:8"
+                                   type="text" name="name" class="input-filter form-control ">
+                        </div>
+
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label">Vessel</label>
+                            <ui-select ng-model="apptDetails.vessel" theme="bootstrap">
+                                <ui-select-match placeholder="Select Vessel">
+                                    {{$select.selected.vessel_name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="vessel.id as vessel in vesselList | filter: $select.search">
+                                    <span ng-bind-html="vessel.vessel_name | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row form-group">
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="switch">Sign-off Status
+                                <input type="checkbox"
+                                       ng-model="apptDetails.SignOff"
+                                       ng-checked="SignOff" ng-disabled=""/>
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pull-right">
+                <button type="submit" ripple="" class="mr mb-sm btn btn-primary">Submit</button>
+                <button type="reset" ng-click = "appointmentpage($event)" ripple="" class="mr mb-sm btn btn-info pull-right">Reset</button>
+            </div>
+        </form>
+
+</div>

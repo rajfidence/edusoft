@@ -1,0 +1,269 @@
+<div class="panel-body panel ng-scope" ng-controller="UserAController as form">
+    <div class="app-view-header headerstyle">Enter User Details</div><hr>
+    <form name="form.myForm" ng-submit="saveData(form.myForm)" class="form-validate">
+    <div class="panel">
+        <div class="panel panel-info"><div class="panel-heading">User Details</div></div>
+
+        <div class=" panel-body row form-group">
+            <div class=" col-lg-4 col-sm-4">
+                <label  class="control-label"><span class="red">*</span> First Name</label>
+                <input required="" name="f_name" placeholder="First Name" ng-model="formInfo.f_name" required="" type="text"  class="input-filter form-control shadow-z1 ">
+
+            </div>
+            <div class=" col-lg-4 col-sm-4">
+                <label  class="control-label"><span class="red">*</span>Last Name</label>
+                <input required="" name="l_name" placeholder="Last Name"  ng-model="formInfo.l_name" required="" type="text"  class="input-filter form-control shadow-z1">
+            </div>
+           <!-- <div class=" col-lg-4 col-sm-4" data-ng-hide="true">
+                <label  class="control-label">Designation</label>
+                <input placeholder="Designation"  type="text"  class="input-filter form-control shadow-z1">
+            </div>-->
+            <div class=" col-lg-4 col-sm-4">
+                <label  class="control-label"><span class="red">*</span>Email Id</label>
+                <input placeholder="mail@example.com" ng-keyup="email_validate()" name = "email" type="email" ng-model="formInfo.email_id" class="input-filter form-control shadow-z1" required>
+            </div>
+        </div>
+
+        <div class="row panel-body form-group">
+            <div class=" col-lg-4  col-sm-4">
+                <div class="col-lg-12"><label  class="control-label">Mobile No. </label></div>
+                <div class="col-md-4 col-sm-5">
+                    <input type='number' placeholder="+91" ng-model="formInfo.cc_no" class="form-control shadow-z1">
+                </div>
+                <div class="col-md-8 col-sm-7">
+                    <input ng-model="formInfo.mobile_no" ng-maxlength="10" placeholder="9999999999" class="form-control shadow-z1">
+                </div>
+
+            </div>
+
+
+            <div class=" col-lg-4 col-sm-4">
+                <label  class="control-label">Access</label>
+                <ui-select required="" ng-model="formInfo.access_rights" theme="bootstrap">
+                    <ui-select-match placeholder="Select Access">{{$select.selected.AccessName}}</ui-select-match>
+                    <ui-select-choices repeat="Access.AccessId as Access in AccessTypes | filter: $select.search">
+                        <span ng-bind-html="Access.AccessName | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+
+            <div class=" col-lg-4 col-sm-">
+                <label  class="control-label"> Alt. Email Id</label>
+                <input placeholder="mail@example.com"  ng-model="formInfo.Alt_email_id" type="email"  class="input-filter form-control shadow-z1 ">
+            </div>
+
+        </div><hr>
+        <div class="row panel-body form-group">
+
+            <div class=" col-lg-4 col-sm-4" data-ng-hide="{{PasswordFlag}}">
+                <label class="control-label"><span class="red">*</span>Enter Password</label>
+                <input placeholder="Enter Password" ng-required="{{!PasswordFlag}}" ng-hide="{{PasswordFlag}}" name="psswd" ng-model="formInfo.psswd" type="password" ng-minlength="8" ng-maxlength="20" ng-pattern="/(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z])/" class="input-filter form-control shadow-z1">
+                <span class="error red" ng-show="form.myForm.psswd.$dirty && form.myForm.psswd.$error.minlength">Too short</span>
+                <span class="red" ng-show="!form.myForm.psswd.$error.required && (form.myForm.psswd.$error.minlength ||form.myForm.psswd.$error.maxlength) && form.myForm.psswd.$dirty">Passwords must be between 8 and 20 characters.</span>
+                <span class="red" ng-show="!form.myForm.psswd.$error.required && !form.myForm.psswd.$error.minlength && !form.myForm.psswd.$error.maxlength && form.myForm.psswd.$error.pattern && form.myForm.psswd.$dirty">Must contain one lower &amp; uppercase letter, and one non-alpha character (a number or a symbol.)</span>
+                <br />
+            </div>
+            <div class=" col-lg-4 col-sm-4">
+                <label data-ng-hide="{{PasswordFlag}}" class="control-label">Confirm Password</label>
+                <input name="ucPassword" ng-model="formInfo1.c_psswd" placeholder="Confirm Password" ng-required="{{!PasswordFlag}}" data-ng-hide="{{PasswordFlag}}" type="password" class="input-filter form-control shadow-z1">
+                <div ng-show="(form.myForm.psswd.$dirty && form.myForm.ucPassword.$dirty) && (formInfo.psswd != formInfo1.c_psswd)">
+                    <span class="red">Password mismatched</span>
+                </div>
+            </div>
+            <div class=" col-lg-offset-4 col-sm-offset-4 col-lg-4 col-sm-4">
+
+            </div>
+        </div>
+
+    </div>
+<div class=" panel-info marbottom">
+    <div class="panel-heading">Access Module </div>
+    <div class=" panel-body row form-group" style="padding-top: 0px;">
+        <div class=" panel panel-body col-lg-12 col-sm-12">
+            <div class=" col-lg-1" ><label  class=" control-label"> Admin</label></div>
+            <div class="col-lg-3 col-sm-3 radio-inline c-radio">
+                <label class="fontstyle col-lg-6 col-sm-6 control-label">
+                    <input  type="radio" name="admradio" value="Yes" ng-click="check()" ng-required="true" ng-model="formInfo.radio.Admin">
+                    <span class="fa fa-check "></span>Yes</label>
+                <label class="fontstyle col-lg-3 col-sm-3 control-label">
+                    <input  type="radio" name="admradio" value="No" ng-click="uncheck()" ng-model="formInfo.radio.Admin">
+                    <span class="fa fa-times"></span>No</label>
+            </div>
+        </div>
+        <hr>
+        <div class="panel panel-body marbottom">
+        <div class="col-lg-6  col-sm-12">
+            <div class=" row col-lg-3" ><label  class="control-label">Appointments</label></div>
+            <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input type="radio" name="Appointments" ng-model="formInfo.radio.Appointments" value="Full">
+                    <span class="fa fa-check "></span>Full Access<p></p></label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="Appointments" ng-model="formInfo.radio.Appointments" value="ReadOnly">
+                    <span class="fa fa-eye"></span>Read Only</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="Appointments" ng-model="formInfo.radio.Appointments" value="NoAccess">
+                    <span class="fa fa-times"></span>No Access</label>
+            </div>
+        </div>
+        <div class="col-lg-6  col-sm-12">
+            <div class=" row col-lg-3" ><label  class=" control-label"> Treatment</label></div>
+            <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                <label class="fontstyle col-lg-4 col-sm-4 control-label" >
+                    <input  type="radio" name="formInfo.radio.Treatment" ng-model="formInfo.radio.Treatment" value="Full">
+                    <span class="fa fa-check "></span>Full Access</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.radio.Treatment" ng-model="formInfo.radio.Treatment" value="ReadOnly">
+                    <span class="fa fa-eye"></span>Read Only</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.radio.Treatment" ng-model="formInfo.radio.Treatment" value="NoAccess">
+                    <span class="fa fa-times"></span>No Access</label>
+            </div>
+        </div>
+            </div>
+        <div class="panel panel-body marbottom">
+        <div class="col-lg-6  col-sm-12">
+            <div class=" row col-lg-3" ><label  class=" control-label" popover="Vessel Medical Calls" popover-trigger="mouseenter"> VMC</label></div>
+            <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.VMC" ng-model="formInfo.radio.VMC" value="Full">
+                    <span class="fa fa-check "></span>Full Access</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.VMC" ng-model="formInfo.radio.VMC" value="ReadOnly">
+                    <span class="fa fa-eye"></span>Read Only</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.VMC" ng-model="formInfo.radio.VMC" value="NoAccess">
+                    <span class="fa fa-times"></span>No Access</label>
+            </div>
+        </div>
+        <div class="col-lg-6  col-sm-12">
+            <div class=" row col-lg-3" ><label  class=" control-label"> Sick Bay</label></div>
+            <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.Sickbay" value="Full" ng-model="formInfo.radio.Sickbay">
+                    <span class="fa fa-check "></span>Full Access</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.Sickbay" value="ReadOnly" ng-model="formInfo.radio.Sickbay" >
+                    <span class="fa fa-eye"></span>Read Only</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.Sickbay" value="NoAccess" ng-model="formInfo.radio.Sickbay">
+                    <span class="fa fa-times"></span>No Access</label>
+            </div>
+        </div>
+        </div>
+        <div class="panel panel-body marbottom">
+        <div class="col-lg-6  col-sm-12">
+            <div class=" row col-lg-3" ><label  class=" control-label"> Seafarers</label></div>
+            <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.Seafarer" value="Full" ng-model="formInfo.radio.Seafarer">
+                    <span class="fa fa-check "></span>Full Access</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.Seafarer" value="ReadOnly" ng-model="formInfo.radio.Seafarer">
+                    <span class="fa fa-eye"></span>Read Only</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.Seafarer" value="NoAccess" ng-model="formInfo.radio.Seafarer">
+                    <span class="fa fa-times"></span>No Access</label>
+            </div>
+        </div>
+        <div class="col-lg-6  col-sm-12">
+            <div class=" row col-lg-3" ><label  class=" control-label"> Vessels</label></div>
+            <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.Vessel" value="Full" ng-model="formInfo.radio.Vessel">
+                    <span class="fa fa-check "></span>Full Access</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.Vessel" value="ReadOnly" ng-model="formInfo.radio.Vessel">
+                    <span class="fa fa-eye"></span>Read Only</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.Vessel" value="NoAccess" ng-model="formInfo.radio.Vessel">
+                    <span class="fa fa-times"></span>No Access</label>
+            </div>
+        </div>
+        </div>
+    <div class="panel panel-body marbottom">
+        <div class="col-lg-6  col-sm-12">
+            <div class=" row col-lg-3" ><label  class=" control-label"> Doctor List</label></div>
+            <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.doctor" value="Full" ng-model="formInfo.radio.doctor">
+                    <span class="fa fa-check "></span>Full Access</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.doctor" value="ReadOnly" ng-model="formInfo.radio.doctor">
+                    <span class="fa fa-eye"></span>Read Only</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.doctor" value="NoAccess" ng-model="formInfo.radio.doctor">
+                    <span class="fa fa-times"></span>No Access</label>
+            </div>
+        </div>
+        <div class="col-lg-6  col-sm-12">
+            <div class=" row col-lg-3" ><label  class=" control-label"> Medical Profiles</label></div>
+            <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.medprofile" value="Full" ng-model="formInfo.radio.medprofile">
+                    <span class="fa fa-check "></span>Full Access</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.medprofile" value="ReadOnly" ng-model="formInfo.radio.medprofile">
+                    <span class="fa fa-eye"></span>Read Only</label>
+                <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                    <input  type="radio" name="formInfo.medprofile" value="NoAccess" ng-model="formInfo.radio.medprofile">
+                    <span class="fa fa-times"></span>No Access</label>
+            </div>
+        </div>
+</div>
+        <div class="panel panel-body marbottom">
+            <div class="col-lg-6  col-sm-12">
+                <div class=" row col-lg-3" ><label  class=" control-label"> Billing</label></div>
+                <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                    <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                        <input  type="radio" name="formInfo.Billing" value="Full" ng-model="formInfo.radio.Billing">
+                        <span class="fa fa-check "></span>Full Access</label>
+                    <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                        <input  type="radio" name="formInfo.Billing" value="ReadOnly" ng-model="formInfo.radio.Billing">
+                        <span class="fa fa-eye"></span>Read Only</label>
+                    <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                        <input  type="radio" name="formInfo.Billing" value="NoAccess" ng-model="formInfo.radio.Billing">
+                        <span class="fa fa-times"></span>No Access</label>
+                </div>
+            </div>
+            <div class="col-lg-6  col-sm-12">
+                <div class=" row col-lg-3" ><label  class=" control-label"> Groups|Fleets</label></div>
+                <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                    <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                        <input  type="radio" name="formInfo.Group" value="Full" ng-model="formInfo.radio.Group">
+                        <span class="fa fa-check "></span>Full Access</label>
+                    <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                        <input  type="radio" name="formInfo.Group" value="ReadOnly" ng-model="formInfo.radio.Group">
+                        <span class="fa fa-eye"></span>Read Only</label>
+                    <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                        <input  type="radio" name="formInfo.Group" value="NoAccess" ng-model="formInfo.radio.Group">
+                        <span class="fa fa-times"></span>No Access</label>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-body marbottom">
+            <div class="col-lg-6  col-sm-12">
+                <div class=" row col-lg-3" ><label  class=" control-label"> Notification</label></div>
+                <div class="col-lg-9 col-sm-11 row radio-inline c-radio">
+                    <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                        <input  type="radio" name="formInfo.Notification" value="Full" ng-model="formInfo.radio.Notification">
+                        <span class="fa fa-check "></span>Full Access</label>
+                    <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                        <input  type="radio" name="formInfo.Notification" value="ReadOnly" ng-model="formInfo.radio.Notification">
+                        <span class="fa fa-eye"></span>Read Only</label>
+                    <label class="fontstyle col-lg-4 col-sm-4 control-label">
+                        <input  type="radio" name="formInfo.Notification" value="NoAccess" ng-model="formInfo.radio.Notification">
+                        <span class="fa fa-times"></span>No Access</label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="pull-right">
+        <button type="submit" ripple="" class="mr mb-sm btn btn-primary">Save<span class="ripple"></span></button>
+        <button type="button" ripple="" class="mr mb-sm btn btn-info pull-right" ui-sref="app.users">Cancel<span class="ripple"></span></button>
+    </div>
+
+</div>
+    </form>
+</div>

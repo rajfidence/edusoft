@@ -1,0 +1,100 @@
+<div ng-app="MyApp" ng-controller="addProfile as form">
+    <form name="myForm" ng-submit="submit(myForm)" novalidate>
+        <div class="panel panel-body">
+            <div class="app-view-header headerstyle">Setup: Medical Profile Details
+            </div><hr>
+            <div class="panel-body">
+                <div class=" panel-body row form-group">
+                    <div class=" col-lg-4 col-sm-4">
+                        <label class="control-label"><span class="red">*</span> Profile Name</label>
+                        <input placeholder="Profile Name" name="profileName" ng-model="profileDetails.Profile_name"
+                               type="text"
+                               class="input-filter form-control shadow-z1 " ng-required="true" ng-blur="profileChange()" required focus="true">
+                        <div ng-messages="myForm.profileName.$error" style="color:maroon" role="alert"
+                             ng-show="myForm.profileName.$touched || myForm.$submitted">
+                            <div ng-messages-include="app/views/validation.message.html"></div>
+                        </div>
+                    </div>
+                    <div class=" col-lg-4 col-sm-4">
+                        <label class="control-label">Profile Description</label>
+                    <textarea class="input-filter form-control shadow-z1 "
+                              ng-model="profileDetails.Profile_desc"></textarea>
+
+                    </div>
+                    <div class="col-lg-12 col-sm-12" style="padding-left: 0px;">
+                        <div class="col-lg-12 col-sm-12 col-md-12">
+                            <label class="control-label">Age Group</label>
+                        </div>
+
+                        <div class="col-lg-2 col-sm-4 col-md-4">
+                            <input placeholder="From" name="AgeFrom" type="number"
+                                   class=" input-filter form-control shadow-z1"
+                                   string-to-number ng-model="profileDetails.Age_from" ng-required="true">
+                            <div ng-messages="myForm.AgeFrom.$error"
+                                 ng-show="myForm.AgeFrom.$touched || myForm.$submitted" style="color:maroon"
+                                 role="alert">
+                                <div ng-messages-include="app/views/validation.message.html"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-4 col-md-4">
+                            <input placeholder="To" name="AgeTo" type="number"
+                                   class=" input-filter form-control shadow-z1"
+                                   string-to-number ng-model="profileDetails.Age_to" ng-required="true">
+                            <div ng-messages="myForm.AgeTo.$error" ng-show="myForm.AgeTo.$touched || myForm.$submitted"
+                                 style="color:maroon" role="alert">
+                                <div ng-messages-include="app/views/validation.message.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class=" panel-body row form-group">
+                    <div class="col-lg-12 form-group"><label class="control-label"><strong>Select Tests from the
+                        Following
+                        List
+                        :-</strong></label>
+                        <button type="submit" ripple="" class="mr mb-sm btn btn-info pull-right">Submit</button>
+                    </div>
+                    <hr style="border: 1px ridge #8c8b8b;">
+
+                    <div class="col-lg-12 form-group" ng-repeat="(key, value) in profile">
+                        <div class="col-lg-3">
+                            <div class="checkbox-inline c-checkbox">
+                                <label><input type="checkbox" ng-model="categoryName[key]"
+                                              ng-click="form.selectAll(key)"><span class="fa fa-check"></span></label>
+                            </div>
+                            <label class="control-label">{{key}}</label>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="col-lg-4" ng-repeat="(keys,test) in value">
+                                <div class="checkbox-inline c-checkbox">
+                                    <label><input type="checkbox" name="tests" ng-model="profile[key][keys].Selected"
+                                                  ng-value="test.test_id" ng-required="tests.length==0"><span
+                                            class="fa fa-check"></span></label>
+                                </div>
+                                <label class="control-label" style="font-weight: 300">{{test.test_name}}</label>
+                            </div>
+                        </div>
+                        <hr style="border: 1px dashed #8c8b8b;">
+
+                    </div>
+                    <div class="col-lg-12 form-group">
+                        <div ng-messages="myForm.tests.$error" style="color:maroon" role="alert"
+                             ng-if="myForm.tests.$dirty || myForm.$submitted">
+                            <div ng-message="required">Please select atleast one test.</div>
+                            <div ng-messages-include="app/views/validation.message.html"></div>
+                        </div>
+                        <div class="col-lg-3">
+                            <button type="submit" ripple="" class="mr mb-sm btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+

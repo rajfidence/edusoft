@@ -1,0 +1,67 @@
+<div class="panel panel-body" ng-controller="BillingController as billCtrl">
+
+    <div><h3>Candidate</h3></div>
+    <hr class="col-sm-12">
+
+    <label class="col-sm-6">Bill No. : <span class="font500">{{candidate.invoiceno}}</span></label>
+    <label class="col-sm-6">Date : <span class="font500"> {{candidate.billdate}} </span></label>
+    <label class="col-sm-6">To : <span class="font500"> {{candidate.report}} </span></label>
+    <hr class="col-sm-12">
+
+    <label class="col-sm-6">Name: <span class="font500">{{candidate.candname}}</span></label>
+    <label class="col-sm-6">Rank:<span class="font500"> {{candidate.rank}}</span></label>
+    <label class="col-sm-6">Vessel:<span class="font500"> {{candidate.vessel}}</span></label>
+    <label class="col-sm-6">Passport No:<span class="font500"> {{candidate.pass_no}}</span></label>
+    <label class="col-sm-6">Profile Name: <span class="font500">{{candidate.profile}}</span></label>
+    <label class="col-sm-6">Date Of Birth: <span class="font500">{{candidate.dob}}</span></label>
+    <label class="col-sm-6">Test Date: <span class="font500">{{candidate.ApptDate}}</span></label>
+    <hr class="col-sm-12">
+    <div class="panel-body row">
+        <!-- START table-responsive-->
+        <div class="table-responsive col-sm-6">
+            <table class="table" ng-show="costtest">
+                <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Type Of Medical</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="obj in costtest">
+                    <td>{{$index +1}}</td>
+                    <td>{{obj.test}}</td>
+                    <td>{{obj.cost}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-responsive col-sm-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th colspan="2" class="text-center">Amount</th>
+                </tr>
+                </thead>
+                <tr>
+                    <td>Total Amount</td>
+                    <td ng-show="candidate.totalamt !=null">{{candidate.totalamt}}</td>
+                    <td ng-show="candidate.totalamt ==null">{{totalamt}}</td>
+                </tr>
+                <tr>
+                    <td>Amount Paid</td>
+                    <td>{{candidate.paidamt}}</td>
+                </tr>
+                <tr>
+                    <td>Net Amount</td>
+                    <td>{{netamt}}</td>
+                </tr>
+            </table>
+        </div>
+        <!-- END table-responsive-->
+    </div>
+
+</div>
+
+
+

@@ -1,0 +1,56 @@
+<div class="panel panel-body">
+    <div class="app-view-header headerstyle">Treatment</div><hr>
+<div  ng-app="MyApp" ng-controller="TRMTController as form">
+    <div>
+        <button  type="button" class="mr mb-sm btn btn-info pull-right" value="Show Hide DIV" data-ng-click="ShowHide()">Search</button>
+    </div>
+    <div data-ng-hide="IsHidden"  align="center">
+        <div class="row panel-body">
+            <div class="form-group">
+                <div class=" col-lg-3 col-sm-6">
+                    <p class="input-group">
+                        <input type="text" placeholder="Date From" datepicker-popup="{{format}}" ng-model="form.dt" is-open="form.opened" min-date="false" max-date="false"
+                               datepicker-options="form.dateOptions" date-disabled="form.disabled(form.date, form.mode)" close-text="Close"
+                               class="form-control" />
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="form.open($event)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span>
+                    </p>
+                </div>
+                <div class=" col-lg-3 col-sm-6">
+                    <p class="input-group">
+                        <input type="text" placeholder="Date To" datepicker-popup="{{format}}" ng-model="form.dt1" is-open="form.opened1" min-date="false" max-date="false"
+                               datepicker-options="form.dateOptions1" date-disabled="form.disabled(form.date, form.mode)" close-text="Close"
+                               class="form-control" />
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="form.open1($event)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class=" panel-body row">
+            <div class="col-sm-6"><i style="color:#FA5858;padding-left:10px; font-size:14px;" class="fa    fa-hospital-o"></i> Hospitalised
+                <i style="color:#4D90FD;padding-left:10px; font-size:14px;" class="fa  fa-stethoscope"></i> Open
+                <i style="color:#60C060;padding-left:10px; font-size:14px;" class="fa  fa-check-circle"></i> Closed
+                <i style="color:#4D90FD;padding-left:10px; font-size:14px;" class="fa  fa-minus-circle"></i> Undefined
+            </div>
+        </div>
+
+    <div class="panel-body table-responsive">
+        <div ng-controller="ServerSideProcessingCtrl12 as showCase">
+
+            <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns"></table>
+        </div>
+
+    </div>
+</div>
+
+</div>
+</div>
+

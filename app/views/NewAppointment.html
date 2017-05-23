@@ -1,0 +1,501 @@
+<div ng-controller="ApptController as form">
+    <form name="form.apptform" class="form-validate form-horizontal" ng-submit="saveAppt()">
+
+        <div class="app-view-header">Book Appointment
+            <div class="pull-right">
+                <button type="submit" ripple="" class="mr mb-sm btn btn-primary">Submit</button>
+                <button type="reset" ripple="" class="mr mb-sm btn btn-info pull-right">Reset</button>
+            </div>
+        </div>
+        <div class="row ng-scope">
+            <div class="col-lg-6 padding0">
+                <div class="col-lg-12">
+
+                    <!-- START panel-->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>Candidate Information
+                            </h4>
+                        </div>
+                        <hr>
+                        <div class="panel-body">
+
+                            <div class="row form-group">
+
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label><span class="red">*</span>Passport No.</label>
+
+                                        <input placeholder="&#xf072; Passport No." type="text" name="passno"
+                                               class="form-control" ng-model="apptDetails.pass_no" ng-keyup="fetchdata()" ng-disabled="disablefield" required>
+
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label"><span class="red">*</span> First Name</label>
+                                    <input placeholder="First Name" ng-disabled="disablefield"
+                                           ng-model="apptDetails.f_name" type="text" name="name"
+                                           class="input-filter form-control " required>
+                                </div>
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label"><span class="red">*</span> Last Name</label>
+                                    <input placeholder="Last Name" ng-disabled="disablefield"
+                                           ng-model="apptDetails.l_name" type="text" name="name"
+                                           class="input-filter form-control " required>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="col-lg-12 col-sm-12 " for="male"><span class="red">*</span>
+                                        Gender</label>
+                                    <div class="col-lg-12 col-sm-12 radio-inline c-radio" required>
+                                        <label class="col-lg-6 col-sm-6 control-label">
+                                            <input id="male" ng-model="apptDetails.sex"
+                                                   ng-disabled="disablefield"
+                                                   type="radio" name="gender" value="Male">
+                                            <span class="fa fa-male"></span>Male</label>
+                                        <label class="col-lg-6 col-sm-6 control-label">
+                                            <input id="female" ng-model="apptDetails.sex"
+                                                   ng-disabled="disablefield" type="radio" name="gender"
+                                                   value="Female">
+                                            <span class="fa fa-female"></span>Female</label>
+                                    </div>
+                                </div>
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label"><span class="red">*</span> Date of Birth</label>
+                                    <p class="input-group">
+                                        <input type="text" id="dob" ng-disabled="disablefield" placeholder=""
+                                               datepicker-popup="{{form.format}}"
+                                               ng-model="apptDetails.dob"
+                                               is-open="form.opened3" min-date="false" max-date="false"
+                                               datepicker-options="form.dateOptions3" date-disabled="false"
+                                               close-text="Close"
+                                               class="form-control" required/>
+                        <span class="input-group-btn">
+                           <button type="button" ng-disabled="disablefield" ng-click="form.open3($event)"
+                                   class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class=" col-lg-12 col-sm-12">
+                                    <label class="control-label">Permanent Address</label>
+
+                                <textarea ng-model="apptDetails.h_add"
+                                          typeahead="address.formatted_address for address in form.refreshAddresses($viewValue) | filter:$viewValue | limitTo:8"
+                                          placeholder="Permanent Address" type="text" name="name"
+                                          class="input-filter form-control "></textarea>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class=" col-lg-12 col-sm-12">
+                                    <label class="control-label">Current Address</label>
+                                    <a ng-class="'btn btn-' + app.theme.name +' btn-xs'" ng-click="copyAddress()"><i
+                                        class="fa fa-arrows-v"></i> same as above</a>
+                                <textarea ng-model="apptDetails.c_add"
+                                          typeahead="address.formatted_address for address in form.refreshAddresses($viewValue) | filter:$viewValue | limitTo:8"
+                                          placeholder="Current Address" type="text" name="name"
+                                          class="input-filter form-control "></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END panel-->
+                </div>
+                <div class="col-lg-12">
+
+                    <!-- START panel-->
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h4>Additional Information</h4></div>
+
+                        <div class="panel-body">
+                            <div class="row form-group">
+
+                                <div class=" col-lg-6 col-sm-6" ng-show="view">
+                                    <label class="control-label">Uploeded Files</label>
+                                    <div class="panel-body">
+                                        <table datatable="ng" dt-instance="form.dtInstance" dt-options="form.dtOptions" dt-column-defs="form.dtColumnDefs" class="row-border hover">
+                                            <thead>
+                                            <tr>
+                                                <th>File Name</th>
+                                                <th>View</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="file in clientname">
+                                                <td>{{ file }}</td>
+                                                <td>
+                                                    <button type="button" ng-click="viewfile($index)" class="btn btn-warning"><i class="fa fa-edit"></i></button>
+                                                </td>
+                                                <td>
+                                                    <button type="button" ng-click="deletefile($index)" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        </div>
+
+                                </div>
+                            </div>
+                            <!-- Modal-->
+
+                            <script type="text/ng-template" id="/myModalContent.html">
+                                <div class="modal-header">
+                                    <button type="button" ng-click="ok()" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+                                    <h4 id="myModalLabel" class="modal-title">{{ModalName}}</h4>
+                                </div>
+                                <div dw-loading="ModalLoad"
+                                      dw-loading-options="{active: true, text: 'Please Wait while we load data'}">
+                                    <div class="panel printfile" id="printable" >
+
+                                        <em>
+                                            <ng-pdf template-url="app/views/fileviewer.html" canvasid="pdf" class="pdff" scale="page-fit" page=1></ng-pdf>
+                                        </em>
+                                        <!--<em>-->
+                                            <!--<img src="{{pdfUrl}}"\>-->
+                                        <!--</em>-->
+                                    </div>
+                                </div>
+                                </script>
+                            <div class="row form-group">
+
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label">Notes</label>
+                                <textarea ng-model="apptDetails.note" placeholder="Notes " name="name"
+                                          class="input-filter form-control "></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-6 padding0">
+                <div class="col-lg-12">
+                    <!-- START panel-->
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h4>Appointment Information</h4></div>
+                        <hr>
+                        <div class="panel-body">
+                            <div class="row form-group">
+                                <div class=" col-lg-6 col-sm-6" >
+                                    <label class="control-label"><span class="red">*</span>Purpose</label>
+                                    <ui-select ng-model="apptDetails.PurposeModel" theme="bootstrap" required>
+                                        <ui-select-match placeholder="Select Purpose">{{$select.selected.Purpose}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                                repeat="Purpose.Id as Purpose in purposeList | filter: $select.search">
+                                            <span ng-bind-html="Purpose.Purpose | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span ng-if="selpupose" style="color:red" ng-hide="apptDetails.PurposeModel">
+                                     Please Select Pupose
+                                    </span>
+                                </div>
+                                <div class=" col-lg-6 col-sm-6" >
+                                    <label class="control-label" ><span class="red">*</span> Profile</label>
+                                    <ui-select ng-model="apptDetails.profileModel" name="profile" theme="bootstrap" required>
+                                        <ui-select-match placeholder="Select Profile">{{$select.selected.Profile_name}}
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="profile.Profile_id as profile in profileList | filter: $select.search">
+                                            <span ng-bind-html="profile.Profile_name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span ng-if="selprofile" style="color:red" ng-hide="apptDetails.profileModel">
+                                     Please Select Profile
+                                    </span>
+                                </div>
+
+                            </div>
+                            <div class="row form-group">
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label"><span class="red">*</span> Doctor</label>
+                                    <ui-select ng-model="apptDetails.doctorModel" theme="bootstrap"
+                                               on-select="getClinicList($item, $model)" required>
+                                        <ui-select-match placeholder="Select Doctor">{{$select.selected.drName}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                                repeat="doctor.Id as doctor in doctorList | filter: $select.search  track by doctor.Id">
+                                            <span ng-bind-html="doctor.drName | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                     <span ng-if="seldoctor" style="color:red" ng-hide="apptDetails.doctorModel">
+                                     Please Select Doctor
+                                    </span>
+                                </div>
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label"><span class="red">*</span> Center</label>
+                                    <ui-select ng-model="apptDetails.ClinicModel" theme="bootstrap" required>
+                                        <ui-select-match placeholder="Select Center">{{$select.selected.Clinic_name}}
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="clinic.Id as clinic in clinicList | filter: $select.search">
+                                            <span ng-bind-html="clinic.Clinic_name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                     <span ng-if="selclinic" style="color:red" ng-hide="apptDetails.ClinicModel">
+                                     Please Select Clinic
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label"><span class="red">*</span> Appointment Date</label>
+                                    <p class="input-group">
+                                        <input type="text" id="" placeholder=""
+                                               ng-model="apptDetails.ApptDate"
+                                               datepicker-popup="{{form.format}}"
+                                               is-open="form.opened" min-date="form.minApptDate" max-date="false"
+                                               datepicker-options="form.dateOptions"
+                                               date-disabled="form.disabled(date, mode)"
+                                               close-text="Close"
+                                               class="form-control" ng-change="reload()" required/>
+
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="form.open($event)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span></p>
+                                     <span ng-if="seldate" style="color:red" ng-hide="apptDetails.ApptDate">
+                                     Please Select Date
+                                    </span>
+                                </div>
+                                <div class=" col-lg-6 col-sm-6" required>
+                                    <label class="control-label"><span class="red">*</span>Appointment Time</label>
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <timepicker ng-model="apptDetails.ApptTime" ng-change="form.changed()"
+                                                        show-meridian="form.ismeridian"></timepicker>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row form-group">
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label">Mark as Urgent</label>
+                                    <div class="checkbox-inline c-checkbox" style="padding-left:20px;margin-top: 5px;">
+                                        <label>
+                                            <input ng-model="apptDetails.urgent" id="inlineCheckbox20" type="checkbox"
+                                                   value="option2" >
+                                            <span class="fa fa-check"></span></label>
+                                    </div>
+                                </div>
+                                <!--<div class=" col-lg-6 col-sm-6">-->
+                                    <!--<label class="control-label">Status</label>-->
+                                    <!--<ui-select ng-model="apptDetails.StatusModel" theme="bootstrap"-->
+                                               <!--ui-validate="{required: 'apptDetails.status'}" required>-->
+                                        <!--<ui-select-match placeholder="Select Status">{{$select.selected.status}}-->
+                                        <!--</ui-select-match>-->
+                                        <!--<ui-select-choices-->
+                                                <!--repeat="status.id as status in statusList | filter: $select.search">-->
+                                            <!--<span ng-bind-html="status.status | highlight: $select.search"></span>-->
+                                        <!--</ui-select-choices>-->
+                                    <!--</ui-select>-->
+                                    <!--<span ng-if="selstatus" style="color:red" ng-hide="apptDetails.StatusModel">-->
+                                     <!--Please Select Status-->
+                                    <!--</span>-->
+                                <!--</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h4>Joining Information</h4></div>
+                        <hr>
+                        <div class="panel-body">
+                            <div class="row form-group">
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label"><span class="red">*</span> Department</label>
+                                    <ui-select ng-model="apptDetails.department" theme="bootstrap" required>
+                                        <ui-select-match placeholder="Select Department">{{$select.selected.dept}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                                repeat="department.dept_id as department in departmentList | filter: $select.search">
+                                            <span ng-bind-html="department.dept | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                     <span ng-if="seldepartment" style="color:red" ng-hide="apptDetails.department">
+                                     Please Select Status
+                                    </span>
+                                </div>
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label"><span class="red">*</span>Sub-Department</label>
+                                    <ui-select ng-model="apptDetails.subdept" theme="bootstrap" required>
+                                        <ui-select-match placeholder="Select Sub-Department">
+                                            {{$select.selected.subdept}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                                repeat="subdept.subdept_id as subdept in subdepartmentList | filter: $select.search">
+                                            <span ng-bind-html="subdept.subdept | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                     <span ng-if="selsubdept" style="color:red" ng-hide="apptDetails.subdept">
+                                     Please Select Status
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label"><span class="red">*</span> Rank</label>
+                                    <input ng-model="apptDetails.rank" ng-value="apptDetails.rank.rank"
+                                           placeholder="Rank"
+                                           typeahead="rank as rank.rank for rank in rankList | filter:$viewValue | limitTo:8"
+                                           type="text" name="name" class="input-filter form-control " required>
+                                </div>
+                                <span ng-if="selrank" style="color:red" ng-hide="apptDetails.rank">
+                                     Please Select Rank
+                                    </span>
+                                <div class=" col-lg-6 col-sm-6">
+                                    <label class="control-label"><span class="red">*</span> Vessel</label>
+                                    <ui-select ng-model="apptDetails.vessel" theme="bootstrap">
+                                        <ui-select-match placeholder="Select Vessel">{{$select.selected.vessel_name}}
+                                        </ui-select-match>
+                                        <ui-select-choices
+                                                repeat="vessel.id as vessel in vesselList | filter: $select.search">
+                                            <span ng-bind-html="vessel.vessel_name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                    <span ng-if="selvessel" style="color:red" ng-hide="apptDetails.vessel">
+                                     Please Select Vessel
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-danger" ng-show="apptDetails.error">
+           {{apptDetails.error}}
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <h4 class="page-header mt0">Select files</h4>
+                            <div ng-show="uploader.isHTML5">
+                                <!-- 3. nv-file-over uploader="link" over-class="className"-->
+                                <div nv-file-over="" uploader="form.uploader" over-class="bg-info"
+                                     class="box-placeholder my-drop-zone">Base drop zone
+                                </div>
+                                <!-- Example: nv-file-drop="" uploader="{Object}" options="{Object}" filters="{String}"-->
+                                <div nv-file-drop="" uploader="form.uploader" options="{ url: '/foo' }">
+                                    <div nv-file-over="" uploader="form.uploader" over-class="bg-purple"
+                                         class="box-placeholder my-drop-zone">Another drop zone with its own settings
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Example: nv-file-select="" uploader="{Object}" options="{Object}" filters="{String}"-->
+                            <hr/>
+                            <input filestyle="" type="file" data-button-text="Select File"
+                                   data-class-button="btn btn-default" data-class-input="form-control inline"
+                                   nv-file-select="" uploader="form.uploader" multiple="" class="form-control"/>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 40px" class="col-md-9">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <p ng-if="form.uploader.queue.length" class="pull-right label label-info">Queue length: {{
+                                uploader.queue.length }}</p>
+                            <h4 class="page-header mt0">Upload queue</h4>
+                            <p ng-if="!form.uploader.queue.length" class="lead text-center">No files in queue. Start
+                                adding some..</p>
+                            <div ng-if="form.uploader.queue.length">
+                                <table ng-if="form.uploader.queue.length" class="table">
+                                    <thead>
+                                    <tr>
+                                        <th width="50%">Name</th>
+                                        <th ng-show="form.uploader.isHTML5">Size</th>
+                                        <th ng-show="form.uploader.isHTML5">Progress</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="item in form.uploader.queue">
+                                        <td>
+                                            <strong>{{ item.file.name }}</strong>
+                                        </td>
+                                        <td ng-show="form.uploader.isHTML5" nowrap="">{{
+                                            item.file.size/1024/1024|number:2 }} MB
+                                        </td>
+                                        <td ng-show="form.uploader.isHTML5">
+                                            <div style="margin-bottom: 0;" class="progress progress-xs">
+                                                <div role="progressbar" ng-style="{ 'width': item.progress + '%' }"
+                                                     class="progress-bar"></div>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                 <span ng-show="item.isSuccess">
+                                    <em class="fa fa-check fa-fw"></em>
+                                 </span>
+                                 <span ng-show="item.isCancel">
+                                    <em class="fa fa-ban-circle fa-fw"></em>
+                                 </span>
+                                 <span ng-show="item.isError">
+                                    <em class="fa fa-times fa-fw"></em>
+                                 </span>
+                                        </td>
+                                        <td nowrap="">
+                                            <button type="button" ng-click="item.upload()"
+                                                    ng-disabled="item.isReady || item.isUploading || item.isSuccess"
+                                                    class="btn btn-info btn-xs">
+                                                <span class="icon-cloud-upload mr"></span>Upload
+                                            </button>
+                                            <button type="button" ng-click="item.cancel()"
+                                                    ng-disabled="!item.isUploading" class="btn btn-warning btn-xs">
+                                                <span class="icon-cross mr"></span>Cancel
+                                            </button>
+                                            <button type="button" ng-click="item.remove()"
+                                                    class="btn btn-danger btn-xs">
+                                                <span class="icon-trash mr"></span>Remove
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div>
+                                <p>Queue progress:</p>
+                                <div style="" class="progress progress-xs">
+                                    <div role="progressbar" ng-style="{ 'width': form.uploader.progress + '%' }"
+                                         class="progress-bar"></div>
+                                </div>
+                            </div>
+                            <button type="button" ng-click="form.uploader.uploadAll()"
+                                    ng-disabled="!form.uploader.getNotUploadedItems().length"
+                                    class="btn btn-info btn-s">
+                                <span class="icon-cloud-upload mr"></span>Upload all
+                            </button>
+                            <button type="button" ng-click="form.uploader.cancelAll()"
+                                    ng-disabled="!form.uploader.isUploading" class="btn btn-warning btn-s">
+                                <span class="icon-cross mr"></span>Cancel all
+                            </button>
+                            <button type="button" ng-click="form.uploader.clearQueue()"
+                                    ng-disabled="!form.uploader.queue.length" class="btn btn-danger btn-s">
+                                <span class="icon-trash mr"></span>Remove all
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+</div>

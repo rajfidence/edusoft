@@ -1,0 +1,689 @@
+
+<div ng-controller="EventController as event" class="row">
+    <toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+    <h1> {{ myData.id }}</h1>
+    <div class="form-group mb25">
+        <label class="col-sm-2 control-label">Case Status</label>
+        <div class="col-sm-10">
+            <label class="switch switch-lg">
+                <input type="checkbox" ng-model="medicalInfo.status" ng-click="event_case_change($event,medicalInfo.status)" ng-true-value="true"  ng-false-value="0"  ng-checked="medicalInfo.status == 1">
+                <span></span>
+            </label>
+            <button type="button" ng-click="create_new_event()" class="mr mb-sm btn btn-amber pull-right">Create New Record</button>
+        </div>
+    </div>
+
+
+        <div class="panel-heading recorddiv"></div>
+        <div class="panel-body" style="border-radius: 25px !important;">
+
+
+            <accordion>
+                <accordion-group>
+                    <accordion-heading><span style="font-size: 13px;!important;"><strong>Recent Records</strong></span> <i class="fa fa-plus" aria-hidden="true"></i></accordion-heading>
+                <ul c="list-block">
+                        <li class="media"  ng-hide="!EventList.length">
+
+                                <!-- Contact avatar-->
+                                <div>
+                                    <div class="smoothy" style="box-shadow: none !important;">
+                                        <scrollable class="pt" style="box-shadow: none !important;">
+                                    <div class="ng-scope col-sm-3 col-md-3 col-lg-3"
+                                         ng-repeat="Event in EventList">
+                                        <div class="media-heading">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                            <a class="ng-binding" ng-click = "">
+                                                {{Event.created_date}}</a>
+                                            <br>
+                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>  <small class="text-muted ng-binding">{{Event.name}}</small>
+                                            <hr>
+                                        </div>
+                                    </div>
+
+
+                                            </scrollable>
+                                        </div>
+                                </div>
+
+                        </li>
+                    <li class="media"> <div ng-show="!EventList.length">Record Not Found.</div></li>
+                    </ul>
+                </accordion-group>
+
+            </accordion>
+
+
+        </div>
+
+
+
+
+    <!-- START dashboard content-->
+
+    <div class="col-md-12 ">
+        <div class=" panel panel-default ">
+            <div class="row row-flush text-center text-muted m0">
+                <div popover="Information" popover-placement="top" popover-trigger="mouseenter" ripple="" ng-click="hpanel = [true, false, false, false]" ng-class="{'bg-primary': hpanel[0]}" class="col-xs-3 col-md-3 bb br pv-xxl clickable">
+                    <em class="icon-pie-graph fa-2x mv"></em> <span class="tab_header">Information</span>
+                </div>
+                <div popover="Medical Report" popover-placement="top" popover-trigger="mouseenter"  ripple="" ng-click="hpanel = [false, true, false, false]" ng-class="{'bg-purple': hpanel[1]}" class="col-xs-3 col-md-3 bb br pv-xxl clickable">
+                    <em class="icon-head fa-2x mv"></em> <span class="tab_header"> Medical Report</span>
+                </div>
+                <div  popover="Cost Log" popover-placement="top" popover-trigger="mouseenter"  ripple="" ng-click="hpanel = [false, false, true, false]" ng-class="{'bg-success': hpanel[2]}" class="col-xs-3 col-md-3 bb-lg br pv-xxl clickable">
+                    <em class="icon-share fa-2x mv"></em><span class="tab_header">Cost Log</span>
+                </div>
+                <div popover="Review" popover-placement="top" popover-trigger="mouseenter" ripple="" ng-click="hpanel = [false, false, false, true]" ng-class="{'bg-amber': hpanel[3]}" class="col-xs-3 col-md-3 bb-lg br pv-xxl clickable">
+                    <em class="icon-briefcase fa-2x mv"></em><span class="tab_header"> Review</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 fw-boxed">
+<div ng-init="hpanel = [true, false, false, false]" class=" panel-default">
+    <div>
+        <div ng-if="hpanel[2]" class="">
+
+                <div class="panel">
+                    <div class="p">
+                        <div class="row row-flush text-center">
+                            <div class="col-xs-12">
+                                <div class="smoothy" style="box-shadow: none !important;">
+                                    <scrollable class="pt" style="box-shadow: none !important;">
+
+                                <table class="table table-bordered table-hover">
+                                    <tbody><tr class="bg-success" style="font-weight: bold">
+                                        <td>Name</td>
+                                        <td>Cost</td>
+                                        <td>Notes</td>
+                                        <td>Date</td>
+                                        <td>Action</td>
+                                    </tr>
+
+                                    <!-- ngRepeat: user in event.users --><tr ng-repeat="log in event.logs" class="ng-scope">
+                                        <td>
+                                            <!-- editable username (text with validation)-->
+                                            <span editable-text="log.log_type" e-name="log_type" e-form="rowform" onbeforesave="event.checkName($data, log.id)" e-required="true" class="ng-scope ng-binding editable">{{log.log_type}}</span>
+                                        </td>
+                                        <td>
+                                            <!-- editable username (text with validation)-->
+                                            <span editable-text="log.cost" e-name="cost" e-form="rowform" onbeforesave="event.checkCost($data, log.id)" e-required="true" class="ng-scope ng-binding editable">{{log.cost}}</span>
+                                        </td>
+                                        <td>
+                                            <!-- editable username (text with validation)-->
+                                            <span editable-text="log.internal_notes" e-name="internal_notes" e-form="rowform"  e-required="" class="ng-scope ng-binding editable">{{log.internal_notes}}</span>
+                                        </td>
+
+                                        <td>
+                                            <!-- editable username (text with validation)-->
+                                            <span e-name="log_date" e-form="rowform" class="ng-scope ng-binding editable">{{log.log_date}}</span>
+                                        </td>
+                                        <td style="word-wrap: break-word">
+                                            <!-- form-->
+                                            <form editable-form="" name="rowform" onbeforesave="event.saveLog($data, log.id)" ng-show="rowform.$visible" shown="event.inserted == log" class="form-buttons form-inline ng-pristine ng-valid ng-hide">
+                                                <button type="submit" ng-disabled="rowform.$waiting" title="Save" class="btn btn-sm btn-info">
+                                                    <em class="fa fa-save"></em>
+                                                </button>
+                                                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" title="Cancel" class="btn btn-sm btn-default">
+                                                    <em class="fa fa-times"></em>
+                                                </button>
+                                            </form>
+                                            <div ng-show="!rowform.$visible" class="buttons">
+                                                <button ng-click="rowform.$show()" title="Edit" class="btn btn-sm btn-info">
+                                                    <em class="fa fa-pencil"></em>
+                                                </button>
+                                                <button ng-click="event.removeUser($index)" title="Delete" class="btn btn-sm btn-danger">
+                                                    <em class="fa fa-trash"></em>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr ng-show="!event.logs.length">
+                                        <td colspan="5">Data Not Found.</td>
+                                    </tr>
+                                    <!-- end ngRepeat: user in event.users -->
+                                    </tbody></table><br>
+
+
+                                <a ng-click="event.addUser()"><button  class="btn btn-info">Add row</button></a>
+                                    </scrollable>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div ng-if="hpanel[1]" class="">
+            <div class="">
+                <div class="panel">
+                    <form name="form.myForm" ng-submit="saveData(form.myForm)" class="form-validate">
+                    <div class="table-responsive">
+                        <div class="col-sm-12 panel-heading" style="background-color: #6639b6;color: white;">Medical Complaint Report</div>
+
+                        <div class="col-sm-12 headerstyle1">
+                          <div class="col-sm-6">
+                        <label>Type of complaint</label>
+                          </div>
+                            <div class="col-sm-6">
+                                    <div class="checkbox-inline c-checkbox col-sm-3">
+                                        <label>
+                                            <input id="inlineCheckbox10" ng-model="medicalInfo.typeofcomplaint.injury" ng-checked="medicalInfo.tbl_typeofcomplaint[0].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                            <span class="fa fa-check"></span>Injury</label>
+                                    </div>
+                                    <div class="checkbox-inline c-checkbox col-sm-3">
+                                        <label>
+
+                                            <input id="inlineCheckbox20" ng-model="medicalInfo.typeofcomplaint.illness" ng-checked="medicalInfo.tbl_typeofcomplaint[1].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                            <span class="fa fa-check"></span>Illness</label>
+                                    </div>
+                            </div>
+                            </div>
+
+                        <div class="col-sm-12 headerstyle1">
+                        <div class="col-sm-6">
+                            <label> Reported on</label>
+                        </div>
+
+                                <div class="col-sm-6">
+                                    <p class="input-group">
+                                        <input type="text" id="reportedOn" placeholder="" datepicker-popup="{{event.format}}"
+                                               ng-model="medicalInfo.medical_reportedOn" ng-readonly="true" datepicker-popup="{{event.format}}"
+                                               is-open="event.reportedOn" min-date="false" max-date="false"
+                                               datepicker-options="event.dateOptions"
+                                               date-disabled="event.disabled(date, mode)"
+                                               close-text="Close"
+                                               class="form-control" ng-change="reload()" required/>
+
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="event.open($event,'reportedOn',true)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span></p>
+                                </div>
+                                </div>
+                        <div class="col-sm-12 headerstyle1">
+                        <div class="col-sm-6">
+                            <label> First Examination</label>
+                        </div>
+
+                                <div class="col-sm-6">
+                                    <p class="input-group">
+                                        <input type="text" id="firstExam" placeholder="" datepicker-popup="{{event.format}}"
+                                               ng-model="medicalInfo.medical_firstExam" ng-readonly="true" datepicker-popup="{{event.format}}"
+                                               is-open="event.firstExam" min-date="false" max-date="false"
+                                               datepicker-options="event.dateOptions"
+                                               date-disabled="event.disabled(date, mode)"
+                                               close-text="Close"
+                                               class="form-control" ng-change="reload()" required/>
+
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="event.open($event,'firstExam',true)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span></p>
+
+                                </div>
+                                </div>
+                        <div class="col-sm-12 headerstyle1">
+                        <div class="col-sm-6">
+                            <label> Location of vessel</label>
+                        </div>
+
+                                <div class="col-sm-6">
+                                    <div class="col-sm-4">
+                                    <input id="latitude" placeholder="Latitude" ng-model="medicalInfo.vessel_latitude" class="form-control col-sm-4" type="text">
+                                        </div>
+                                    <div class="col-sm-4">
+                                        <input id="longitude" placeholder="Longitude" ng-model="medicalInfo.vessel_longitude" class="form-control col-sm-4" type="text">
+                                    </div>
+                                </div>
+                                </div>
+
+
+                        <div class="col-sm-12 headerstyle1">
+                        <div class="col-sm-6">
+                            <label> Closest Port</label>
+                        </div>
+
+                        <div class="col-sm-6"><input placeholder="Closest Port" ng-model="medicalInfo.closest_port" class="form-control col-sm-4" type="text"></div>
+                        </div>
+                        <div class="col-sm-12 headerstyle1">
+                        <div class="col-sm-6">
+                            <label>Days to port</label>
+                        </div>
+
+
+                                <div class="col-sm-6"><input placeholder="Days to Port" ng-model="medicalInfo.Days_to_port" class="form-control col-sm-4" type="text"></div>
+                       </div>
+                        <div class="col-sm-12 headerstyle1">
+                        <div class="col-sm-6">
+                            <label>Medical problem</label>
+                        </div>
+                        <div class="col-sm-6"><textarea placeholder="Medical Condition" ng-model="medicalInfo.medical_condition" class="form-control col-sm-4" type="text"></textarea>
+                        </div>
+                        </div>
+                        <div class="col-sm-12 headerstyle1">
+                        <div class="col-sm-6">
+                            <label>Risk category of case</label>
+                        </div>
+
+                                <div class="col-sm-6">
+                                    <select name="riskCat" ng-model="medicalInfo.medical_riskCat" class="form-control m-b">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                    </select>
+                                </div>
+                                </div>
+                        <div class="col-sm-12 headerstyle1">
+
+                        <div class="col-sm-6">
+                            <label>Type of injury</label>
+                        </div>
+
+                                <div class="col-sm-6">
+
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input id="inlineradio1" ng-model="medicalInfo.medical_TypeOfRisk" name="i-radio-vessel" value="1" type="radio">
+                                            <span class="fa fa-circle"></span>Avoidable</label>
+                                    </div>
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input id="inlineradio2" name="i-radio-vessel" ng-model="medicalInfo.medical_TypeOfRisk" value="2" type="radio">
+                                            <span class="fa fa-circle"></span>Un-Avoidable</label>
+                                    </div>
+
+                                </div>
+                                </div>
+
+                        <div class="col-sm-12 panel-heading" style="background-color: #6639b6;color: white;">Action Taken</div>
+                        <div class="col-sm-12 headerstyle1">
+                        <div class="col-sm-6">
+                            <label> Onboard Examination</label>
+                        </div>
+
+                                <div class="col-sm-6">
+                                    <p class="input-group">
+                                        <input type="text" id="OnboardExam" placeholder="" datepicker-popup="{{event.format}}"
+                                               ng-model="medicalInfo.medical_OnboardExam" datepicker-popup="{{event.format}}"
+                                               is-open="event.OnboardExam" ng-readonly="true" min-date="false" max-date="false"
+                                               datepicker-options="event.dateOptions"
+                                               date-disabled="event.disabled(date, mode)"
+                                               close-text="Close"
+                                               class="form-control" ng-change="reload()" required/>
+
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="event.open($event,'OnboardExam',true)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span></p>
+                                </div>
+                                </div>
+                        <div class="col-sm-12 headerstyle1">
+                        <div class="col-sm-6">
+                            <label>  Onboard Examination Notes</label>
+                        </div>
+
+
+                                <div class="col-sm-6">
+                                    <textarea placeholder="Notes" ng-model="medicalInfo.medical_OnboardNotes" class="form-control col-sm-4" type="text"></textarea>
+                                </div>
+                                </div>
+                        <div class="col-sm-12 headerstyle1">
+                        <div class="col-sm-6">
+                            <label>  Action Taken</label>
+                        </div>
+
+
+                                <div class="col-sm-6">
+                                    <div class="checkbox-inline c-checkbox">
+                                        <label>
+                                            <input id="Econsult" ng-model="medicalInfo.actionTaken.Econsult" ng-checked="medicalInfo.tbl_actiontaken[0].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                            <span class="fa fa-check"></span>E-Consult</label>
+                                    </div>
+                                    <div class="checkbox-inline c-checkbox">
+                                        <label>
+                                            <input id="telemed" ng-model="medicalInfo.actionTaken.telemed" ng-checked="medicalInfo.tbl_actiontaken[1].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                            <span class="fa fa-check"></span>Tele-Medicine</label>
+                                    </div>
+                                    <div class="checkbox-inline c-checkbox">
+                                        <label>
+                                            <input id="onboardTreatment" ng-model="medicalInfo.actionTaken.onboardTreatment" ng-checked="medicalInfo.tbl_actiontaken[2].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                            <span class="fa fa-check"></span>Onboard Treatment</label>
+                                    </div>
+                                </div>
+                                </div>
+                        <div class="col-sm-12 headerstyle1">
+
+                        <div class="col-sm-6">
+                            <label>  Vessel Diverted</label>
+                        </div>
+
+                                <div class="col-sm-6">
+
+                                        <div class="radio-inline c-radio">
+                                            <label>
+                                                <input id="vessel_diverted1" ng-model="medicalInfo.vessel_diverted" name="i-radio" value="1" type="radio">
+                                                <span class="fa fa-circle"></span>Yes</label>
+                                        </div>
+                                        <div class="radio-inline c-radio">
+                                            <label>
+                                                <input id="vessel_diverted2" name="i-radio" ng-model="medicalInfo.vessel_diverted" value="2" type="radio">
+                                                <span class="fa fa-circle"></span>No</label>
+                                        </div>
+
+                                </div>
+                                </div>
+
+                            <div>
+                            <div class="col-sm-12 headerstyle1" ng-show="medicalInfo.vessel_diverted == '1'">
+                                <div class="col-sm-6">
+                                    <label>Diverted to</label></div>
+                                <div class="col-sm-6"><input placeholder="Diverted to" ng-model="medicalInfo.diverted_port" class="form-control col-sm-4" type="text"></div>
+                            </div>
+                            <div class="col-sm-12 headerstyle1" ng-show="medicalInfo.vessel_diverted == '1'">
+                                <div class="col-sm-6"> <label>Miles off course </label></div>
+                                <div class="col-sm-6"><input placeholder="Miles off course" ng-model="medicalInfo.diverted_miles" class="form-control col-sm-4" type="text"></div>
+                            </div>
+                            <div class="col-sm-12 headerstyle1" ng-show="medicalInfo.vessel_diverted == '1'">
+                                <div class="col-sm-6"> <label>Total days lost </label></div>
+                                <div class="col-sm-6"><input placeholder="Total days lost" ng-model="medicalInfo.diverted_daysLost" class="form-control col-sm-4" type="text"></div>
+                            </div>
+                            <div class="col-sm-12 headerstyle1" ng-show="medicalInfo.vessel_diverted == '1'">
+                                <div class="col-sm-6"> <label>Estimated cost due to divert </label></div>
+                                <div class="col-sm-6">
+                                    <input placeholder="Estimated cost due to divert" ng-model="medicalInfo.diverted_cost" class="form-control col-sm-4"></div>
+                            </div>
+                                </div>
+
+                    </div>
+                        <button type="submit" ripple="" class="mr mb-sm btn btn-primary col-sm-offset-1">Save<span class="ripple"></span>
+                        </button>
+                        </form>
+                </div>
+            </div>
+        </div>
+        <div ng-if="hpanel[0]" ng-init="dashboard.loadProgressValues()">
+                    <div class="panel panel-primary">
+                            <div class="panel-heading">Personal Information</div>
+                            <div class="panel-body">
+                                <div class="col-sm-6">
+                                    <label> Name:</label>  <span>{{formInfo.CandName}}</span> <br>
+                                    <label> Rank:</label>  <span> {{formInfo.Rank_name}} </span><br>
+                                    <label> Nationality:</label>  <span> {{formInfo.nationality_name}} </span><br>
+                                    <label> Date of birth:</label>  <span> {{formInfo.dob}} </span><br>
+                                    <label> Gender:</label>  <span> {{formInfo.gender}} </span><br>
+                                    <label> Family Contact No:</label>  <span> - </span><br>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label> Last Medical On:</label>  <span> {{formInfo.ApptDateTime}} </span><br>
+                                    <label> Examined By:</label>  <span> - </span><br>
+                                    <label> Certificate Validity:</label>  <span> {{formInfo.validityDate}} </span><br>
+                                    <label> Port of Joining:</label>  <span> - </span><br>
+                                    <label> Date of Joining:</label>  <span> {{formInfo.JoiningDate}} </span><br>
+                                    <label> Sail Days:</label>  <span> - </span><br>
+                                </div>
+                            </div>
+                            </div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Vessel Information</div>
+                        <div class="panel-body">
+                            <div class="col-sm-6">
+                                <label> Name of Vessel:</label>  <span>{{formInfo.vessel_name}}</span> <br>
+                                <label> Flag State:</label>  <span>{{formInfo.Flagship}}</span> <br>
+                                <label> Owner Name:</label>  <span>{{formInfo.CandName}}</span> <br>
+                            </div>
+                            <div class="col-sm-6">
+                                <label> Position at onset of Report:</label>  <span>{{formInfo.CandName}}</span> <br>
+                                <label> Scheduled Port:</label>  <span>{{formInfo.CandName}}</span> <br>
+                                <label> Estimated Time of Arrival:</label>  <span>{{formInfo.CandName}}</span> <br>
+                            </div>
+                        </div>
+                    </div>
+
+
+        </div>
+        <div ng-if="hpanel[3]" class=" panel">
+            <div class=" pv-xxl">
+                <div class="row  row-table text-center">
+                    <div class="col-sm-4 p-t-15 col-xs-12">
+                        <p class="text-muted">Total Cost</p>
+                        <h1 class="text-resp m0 mb-lg"><i class="fa fa-rupee"></i>{{medicalInfo.total_cost}}</h1>
+                        <!--<p class="text-muted m0">TIME</p>
+                        <p class="m0">5 months</p>-->
+                    </div>
+                    <div class="col-sm-4 p-t-15 col-xs-12">
+                        <p class="text-muted">Deductible</p>
+                        <h1 class="text-resp m0 mb-lg"><i class="fa fa-rupee"></i>{{medicalInfo.deductible_cost}}</h1>
+                        <!--<p class="text-muted m0">LAST INCOME</p>
+                        <p class="m0">Yesterday</p>-->
+                    </div>
+                    <div class="col-sm-4 p-t-15 col-xs-12">
+                        <p class="text-muted">Claim Amount</p>
+                        <h1 class="text-resp m0 mb-lg"><i class="fa fa-rupee"></i>{{medicalInfo.claim_amount}}</h1>
+                       <!-- <p class="text-muted m0">LAST SALE</p>
+                        <p class="m0">10 minutes ago</p>-->
+                    </div>
+                </div>
+                <div class="">
+                    <form name="form.myForm" ng-submit="saveData(form.myForm)" class="form-validate">
+                        <div class="table-responsive">
+                            <div class="col-sm-12 panel-heading" style="background-color: #ffc107;color: black;">Case Review</div>
+                             <div class="col-sm-12 headerstyle1">
+                                <div class="col-lg-3 col-sm-12">
+                                    <label>Case Eventuality</label>
+                                </div>
+                                <div class="col-lg-4 headerstyle1 p-l-0">
+
+                                            <select name="riskCat" ng-change="event.open($event,'case_eventuality_date',false)" ng-model="medicalInfo.case_eventuality" class="form-control m-b">
+                                                <option value="">Select case eventuality</option>
+                                                <option value="1">Hospitalized</option>
+                                                <option value="2">Repatriation</option>
+                                                <option value="3">Sign-Off</option>
+                                                <option value="4">Cared-Onboard</option>
+                                                <option value="5">Closed</option>
+                                            </select>
+                                        </div>
+                                <div class="col-lg-4 headerstyle1 p-l-0">
+
+                                            <p class="input-group">
+                                                <input type="text" id="case_eventuality" placeholder="" datepicker-popup="{{event.format}}"
+                                                       ng-model="medicalInfo.case_eventuality_date" datepicker-popup="{{event.format}}"
+                                                       is-open="event.case_eventuality_date" ng-readonly="true" min-date="false" max-date="false"
+                                                       datepicker-options="event.dateOptions"
+                                                       date-disabled="event.disabled(date, mode)"
+                                                       close-text="Close"
+                                                       class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="event.open($event,'case_eventuality_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+
+                                        </div>
+                             </div>
+                            <div class="col-sm-12 headerstyle1">
+                                <div class="col-lg-3 col-sm-12">
+                                    <label>Case Summary Notes </label>
+                                </div>
+                                <div class="col-lg-4 headerstyle1  p-l-0 ab">
+                                       <textarea placeholder="Case Summary" ng-blur="event.open($event,'case_notes_date',false)" ng-model="medicalInfo.case_notes" class="form-control col-sm-4" type="text">
+
+                                       </textarea>
+                                </div>
+                                <div class="col-lg-4 headerstyle1  p-l-0 ab">
+
+                                                <p class="input-group">
+                                                    <input type="text" id="case_notes_date" placeholder="" datepicker-popup="{{event.format}}"
+                                                           ng-model="medicalInfo.case_notes_date" datepicker-popup="{{event.format}}"
+                                                           is-open="event.case_notes_date" ng-readonly="true" min-date="false" max-date="false"
+                                                           datepicker-options="event.dateOptions"
+                                                           date-disabled="event.disabled(date, mode)"
+                                                           close-text="Close"
+                                                           class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="event.open($event,'case_notes_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+
+                                        </div>
+                            </div>
+                                <div class="col-sm-12 panel-heading" style="background-color: #ffc107;color: black;">P&I Claims</div>
+
+                                <div class="col-sm-12 headerstyle1">
+                                    <div class="col-lg-3 col-sm-12">
+                                        <label>Total Cost </label>
+                                    </div>
+                                    <div class="col-lg-4 headerstyle1 p-l-0">
+                                        <input type="number" name="total_cost" ng-model="medicalInfo.total_cost" ng-blur="event.open($event,'total_cost_date',false)" class="form-control ng-dirty ng-valid-number ng-valid ng-valid-required ng-touched">
+                                    </div>
+                                    <div class="col-lg-4 headerstyle1 p-l-0">
+                                        <p class="input-group">
+                                            <input type="text" id="total_cost_date" placeholder="" datepicker-popup="{{event.format}}"
+                                                   ng-model="medicalInfo.total_cost_date" datepicker-popup="{{event.format}}"
+                                                   is-open="event.total_cost_date" ng-readonly="true" min-date="false" max-date="false"
+                                                   datepicker-options="event.dateOptions"
+                                                   date-disabled="event.disabled(date, mode)"
+                                                   close-text="Close"
+                                                   class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="event.open($event,'total_cost_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 headerstyle1">
+                                    <div class="col-lg-3 col-sm-12">
+                                        <label>Deductible</label>
+                                    </div>
+                                    <div class="col-lg-4 headerstyle1 p-l-0">
+
+                                            <input type="number" ng-model="medicalInfo.deductible_cost"  ng-blur="event.open($event,'deductible_cost_date',false)" name="medicalInfo.deductible_cost" class="form-control ng-dirty ng-valid-number ng-valid ng-valid-required ng-touched">
+                                    </div>
+                                    <div class="col-lg-4 headerstyle1 p-l-0">
+                                                <p class="input-group">
+                                                    <input type="text" id="deductible_cost_date" placeholder="" datepicker-popup="{{event.format}}"
+                                                           ng-model="medicalInfo.deductible_cost_date" datepicker-popup="{{event.format}}"
+                                                           is-open="event.deductible_cost_date" ng-readonly="true" min-date="false" max-date="false"
+                                                           datepicker-options="event.dateOptions"
+                                                           date-disabled="event.disabled(date, mode)"
+                                                           close-text="Close"
+                                                           class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="event.open($event,'deductible_cost_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+                                            </div>
+                                    </div>
+                                <div class="col-sm-12 headerstyle1">
+                                    <div class="col-lg-3 col-sm-12">
+                                        <label>Claim Amount</label>
+                                    </div>
+                                    <div class="col-lg-4 headerstyle1 p-l-0">
+                                    <input type="number" ng-model="medicalInfo.claim_amount" ng-blur="event.open($event,'claim_amount_date',false)"  name="claim_amount" placeholder="{{medicalInfo.total_cost - medicalInfo.deductible_cost}}" class="form-control ng-dirty ng-valid-number ng-valid ng-valid-required ng-touched">
+                                    </div>
+                                         <div class="col-lg-4 headerstyle1 p-l-0">
+
+                                                <p class="input-group">
+                                                    <input type="text" id="claim_amount_date" placeholder="" datepicker-popup="{{event.format}}"
+                                                           ng-model="medicalInfo.claim_amount_date" datepicker-popup="{{event.format}}"
+                                                           is-open="event.claim_amount_date" ng-readonly="true" min-date="false" max-date="false"
+                                                           datepicker-options="event.dateOptions"
+                                                           date-disabled="event.disabled(date, mode)"
+                                                           close-text="Close"
+                                                           class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="event.open($event,'claim_amount_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+                                            </div>
+                                            </div>
+
+                                <div class="col-sm-12 headerstyle1">
+                                    <div class="col-lg-3 col-sm-12">
+                                        <label>Register Claim</label>
+                                    </div>
+                                    <div class="col-lg-4 headerstyle1 p-l-0">
+
+                                                <div class="radio-inline c-radio">
+                                                    <label>
+                                                        <input id="claimradio1" ng-change="event.open($event,'register_claim_date',false)" ng-model="medicalInfo.register_claim" name="i-radio" value="1" type="radio">
+                                                        <span class="fa fa-circle"></span>Yes</label>
+                                                </div>
+                                                <div class="radio-inline c-radio">
+                                                    <label>
+                                                        <input id="claimradio2" ng-change="event.open($event,'register_claim_date',false)" name="i-radio" ng-model="medicalInfo.register_claim" value="2" type="radio">
+                                                        <span class="fa fa-circle"></span>No</label>
+                                                </div>
+                                            </div>
+                                    <div class="col-lg-4 headerstyle1 p-l-0">
+                                                <p class="input-group">
+                                                    <input type="text" id="register_claim_date" placeholder="" datepicker-popup="{{event.format}}"
+                                                           ng-model="medicalInfo.register_claim_date" datepicker-popup="{{event.format}}"
+                                                           is-open="event.register_claim_date" ng-readonly="true" min-date="false" max-date="false"
+                                                           datepicker-options="event.dateOptions"
+                                                           date-disabled="event.disabled(date, mode)"
+                                                           close-text="Close"
+                                                           class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="event.open($event,'register_claim_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+                                            </div>
+                                            </div>
+
+                                <div class="col-sm-12 panel-heading" style="background-color: #ffc107;color: black;">Reports</div>
+                                <div class="col-sm-12 headerstyle1">
+                                <div class="col-lg-4 headerstyle1">
+                                    <div class="checkbox-inline c-checkbox">
+                                        <label>
+                                            <input id="basic_format" ng-model="medicalInfo.reviewreport.basic_format" ng-checked="medicalInfo.reviewreport[0].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                            <span class="fa fa-check"></span>Claim Basic Format</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 headerstyle1">
+
+
+
+
+                                            <div class="checkbox-inline c-checkbox">
+                                                <label>
+                                                    <input id="ship_masters" ng-model="medicalInfo.reviewreport.ship_masters" ng-checked="medicalInfo.reviewreport[1].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                                    <span class="fa fa-check"></span>Ship Masters Report</label>
+                                            </div>
+                                            </div>
+                                    <div class="col-lg-4 headerstyle1">
+                                            <div class="checkbox-inline c-checkbox">
+                                                <label>
+                                                    <input id="health_status" ng-model="medicalInfo.reviewreport.health_status" ng-checked="medicalInfo.reviewreport[2].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                                    <span class="fa fa-check"></span>Health Status Report</label>
+                                            </div>
+                                            </div>
+                                            </div>
+
+
+
+                        </div>
+                        <button type="submit" ripple="" class="mr mb-sm btn btn-primary col-lg-offset-5 col-xs-offset-2">Save<span class="ripple"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+</div>

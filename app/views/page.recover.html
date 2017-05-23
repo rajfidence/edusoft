@@ -1,0 +1,34 @@
+<!--<div class="centerdiv mt-xl">-->
+   <!--<img src="app/img/logo-gray1.png" alt="Image" class="centerdiv img-rounded exlscreen lscreen sscreen " />-->
+   <!--<img src="app/img/logo1.png" alt="Image" class="sscreen img-rounded" />-->
+<!--</div>-->
+<div class="container container-sm animated fadeInDown">
+   <div class="center-block ">
+      <!-- START panel-->
+
+      <div class="panel">
+         <div class="panel-body">
+            <p class="pv text-center">
+               <strong>RESET PASSWORD</strong>
+               <br/>We will send you instructions to reset your password.</p>
+            <form name="recoveryCtrl.recoveryForm" role="form" ng-controller="passwordrecoverController as recoveryCtrl">
+               <div class="row" shake-me shake-this="shake" shake-error="false">
+                  <div class="col-md-8">
+                     <div class="form-group has-feedback">
+                        <input id="resetInputEmail1" type="email" placeholder="Your email" autocomplete="off" ng-model="username" class="form-control" required/>
+                        <span class="fa fa-envelope form-control-feedback text-muted"></span>
+                     </div>
+                  </div>
+                  <div class="col-md-4">
+                     <button type="submit" class="btn btn-danger btn-block" ng-click="sendmail()">Send</button>
+                  </div>
+
+                  <div class="alert alert-danger text-center col-sm-12" ng-if="message != null">{{message}}</div>
+               </div>
+            </form>
+         </div>
+      </div>
+      <!-- END panel-->
+      <div ng-include="'app/views/page.footer.html'" class="p-lg text-center"></div>
+   </div>
+</div>

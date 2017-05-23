@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="col-lg-6 col-md-12">
+<div class=" panel panel-default" id="step1">
+    <div class="panel-body">
+        <div ng-show="noAccess" style="color:red">{{noAccessMessage}}</div>
+        <div class="app-view-header headerstyle"> Groups
+            <a href="#/app/CreateGroup">
+                <button type="button" ng-disabled="noAccess" class="mr btn  btn-primary pull-right" id="step4">Add Group</button>
+            </a>
+        </div>
+        <hr>
+        <!-- START table-responsive-->
+
+        <div class="table-responsive">
+            <toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+            <div  ng-app="MyApp" ng-controller="groupController as groupcase">
+                <table datatable="" dt-options="groupcase.dtOptions" dt-columns="groupcase.dtColumns"></table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- FLEET HTML -->
+
+    <div class="col-lg-6 col-md-12">
+<div class=" panel-body panel" >
+    <div class="app-view-header headerstyle"> Fleets
+        <a href="#/app/CreateFleet">
+            <button type="button" ng-disabled="noAccess" class="mr btn  btn-primary pull-right" id="">Add Fleet</button>
+        </a>
+
+    </div>
+    <hr>
+    <!-- START table-responsive-->
+
+    <div class="table-responsive">
+        <toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+        <div ng-controller="fleetController as fleetCase">
+            <table datatable="" dt-options="fleetCase.dtOptions" dt-columns="fleetCase.dtColumns"></table>
+        </div>
+    </div>
+</div>
+</div>
+</div>

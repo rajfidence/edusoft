@@ -1,0 +1,24 @@
+<div  ng-app="MyApp" id="step1">
+    <div class="panel-body panel">
+        <div class="app-view-header headerstyle">Administrator: Users
+            <a href="#/app/user_details">
+                <button type="button" class="mr btn  btn-primary pull-right" id="step4">Add User</button>
+
+            </a>
+        </div><hr>
+
+            <!-- START table-responsive-->
+            <div class="table-responsive">
+                <toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+                <div ng-controller="ServerSideProcessingCtrl as showCase">
+                    <table datatable="" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns"></table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+

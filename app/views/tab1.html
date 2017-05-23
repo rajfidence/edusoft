@@ -1,0 +1,66 @@
+<div>
+    <!-- START timeline-->
+    <div align="center" ng-show="ActivityDetails == false"> No Data to Display </div>
+    <ul class="timeline-alt" ng-repeat="ApptDetails in ActivityDetails">
+        <li style="width: 200px;" data-datetime="{{ ApptDetails.ApptDateTime }}"
+            class="timeline-separator"></li>
+        <!-- END timeline item-->
+        <!-- START timeline item-->
+        <li>
+            <div class="timeline-badge timeline-badge-sm bg-amber">
+                <em class="fa fa-stethoscope"></em>
+            </div>
+            <div class="timeline-date">
+                <br>
+                <br>
+                <!--  <time datetime="Status : {{ ApptDetails.status }}"></time>-->
+                <time></time>
+            </div>
+            <div class="timeline-panel">
+                <strong>{{ ApptDetails.DoctorName }}</strong>
+                <div class="text-muted">
+                    Purpose : <em>{{ ApptDetails.Purpose }}</em>
+                    <!-- Show Certificate for each Appointment -->
+                    <br> Certificate :
+                    <em ng-if="ApptDetails.report_url == null">
+                        <em ng-repeat="ReportUrl in ApptDetails.report_url">
+                            <!--<i class="fa fa-file-pdf-o fa-2x"></i> -->
+                            <em>
+                                <button title="{{ReportUrl.file_name}}"
+                                        class="button-transparent"
+                                        ng-click="CandProfile.openmodel(ReportUrl.is_image,ReportUrl.file_name,'lg','app/img/uploads/20160422180835.pdf'+ReportUrl.file_name)">
+                                    <i class="fa fa-file-pdf-o fa-2x"
+                                       style="color: royalblue;"></i></button>
+                            </em>
+                        </em>
+                    </em>
+                    <!-- <button title="{{ReportUrl.file_name}}" class="button-transparent" ng-click="CandProfile.open(ReportUrl.is_image,ReportUrl.file_name,'lg','app/img/uploads/a9908ec30e04bcc5c7e98f38f2371607.png')"><i class="fa fa-file-pdf-o fa-2x" style="color: royalblue;"></i></button>-->
+                    <em ng-if="ApptDetails.report_url == null">
+                        No Certificate Found.
+                    </em>
+                    <!-- Show Reports for each Appointment -->
+                    <br> Reports :
+                    <em ng-if="ApptDetails.CanUplo != null">
+                        <em ng-repeat="(key, value) in ApptDetails.CanUplo">
+
+                            <em ng-repeat="file in value">
+                                <em ng-if="file.file_name != null">
+                                    <!--<i class="fa fa-file-pdf-o fa-2x" title="{{key}}"></i>-->
+                                    <em ng-if="file.file_ext != null">
+                                        <button title="{{key}}" class="button-transparent"
+                                                ng-click="CandProfile.openmodel(file.is_image,key,'lg','app/img/clip_upload/'+file.file_name)">
+                                            <i class="fa fa-file-pdf-o fa-2x"
+                                               style="color: royalblue;"></i></button>
+                                    </em>
+                                </em>
+                            </em>
+                        </em>
+                    </em>
+                    <em ng-if="ApptDetails.CanUplo == null">
+                        No Reports Found.
+                    </em>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

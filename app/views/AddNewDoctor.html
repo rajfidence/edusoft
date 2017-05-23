@@ -1,0 +1,75 @@
+<div  ng-app="MyApp" ng-controller="AddNewDoctorController as form">
+    <form action="#">
+    <div class="panel">
+        <div class="panel panel-body">
+            <div class="app-view-header headerstyle">Enter Doctor Details</div><hr>
+            <div class="row form-group">
+                <div class=" col-lg-4 col-sm-4">
+                    <label  class="control-label"><span class="red">*</span> First Name</label>
+                    <input placeholder="&#61447;  First Name" type="text" name="name" class="input-filter form-control ">
+                </div>
+                <div class=" col-lg-4 col-sm-4">
+                    <label  class="control-label">Middle Name</label>
+                    <input placeholder="&#61447;  Middle Name" type="text" name="name" class="input-filter form-control ">
+                </div>
+                <div class=" col-lg-4 col-sm-4">
+                    <label  class="control-label"><span class="red">*</span>Last Name</label>
+                    <input placeholder="&#61447;  Last Name" type="text" name="name" class="input-filter form-control ">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class=" col-lg-4 col-sm-4">
+            <label class="control-label"><span class="red">*</span>Countries</label>
+                <ui-select ng-model="form.country.selected" theme="bootstrap" class="text-left">
+                    <ui-select-match placeholder="Select country">{{$select.selected.name}}</ui-select-match>
+                    <ui-select-choices repeat="country in form.countries | filter: $select.search">
+                        <span ng-bind-html="country.name | highlight: $select.search"></span>
+                        <small ng-bind-html="country.code | highlight: $select.search"></small>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+                <div class=" col-lg-4 col-sm-4">
+                    <label class="control-label"><span class="red">*</span>State</label>
+                    <ui-select ng-model="uiselect.country.selected" theme="bootstrap" ng-disabled="uiselect.disabled" class="text-left">
+                        <ui-select-match placeholder="Select state">{{$select.selected.name}}</ui-select-match>
+                        <ui-select-choices repeat="country in uiselect.countries | filter: $select.search">
+                            <span ng-bind-html="country.name | highlight: $select.search"></span>
+                            <small ng-bind-html="country.code | highlight: $select.search"></small>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div class=" col-lg-4 col-sm-4">
+                    <label class="control-label"><span class="red">*</span>City</label>
+                    <ui-select ng-model="uiselect.country.selected" theme="bootstrap" ng-disabled="uiselect.disabled" class="text-left">
+                        <ui-select-match placeholder="Select city">{{$select.selected.name}}</ui-select-match>
+                        <ui-select-choices repeat="country in uiselect.countries | filter: $select.search">
+                            <span ng-bind-html="country.name | highlight: $select.search"></span>
+                            <small ng-bind-html="country.code | highlight: $select.search"></small>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+                <div class="row form-group">
+                    <div class=" col-lg-4 col-sm-4">
+                        <label  class="control-label"><span class="red">*</span>Email</label>
+                        <input placeholder="&#xf003;  Email" type="text" name="name" class="input-filter form-control ">
+                    </div>
+                    <div class=" col-lg-4 col-sm-4">
+                        <label  class="control-label">Contact No.</label>
+                        <input placeholder="&#xf10b;  Contact No." type="text" name="name" class="input-filter form-control ">
+                    </div>
+                    <div class=" col-lg-4 col-sm-4">
+                        <label  class="control-label">Address</label>
+                        <textarea placeholder="This is my address" type="text" name="name" class="input-filter form-control "></textarea>
+                    </div>
+                </div>
+                <div align="center">
+                    <button type="button" ripple="" class="mr mb-sm btn btn-primary">Save</button>
+                    <button type="button" ripple="" class="mr mb-sm btn btn-info ">Reset</button>
+                </div>
+
+        </div>
+    </div>
+        </form>
+    </div>
+

@@ -1,0 +1,152 @@
+
+<!-- START panel-->
+<div ng-controller="BillwizardController as form" class="panel panel-default">
+
+    <div class="panel-body">
+        <div class="app-view-header headerstyle">Biling Form</div><hr>
+        <div ng-init="activeStep=1" class="wizard">
+            <ul class="steps-bar">
+                <li ng-class="{'active':activeStep&gt;=1}">
+                    <span>Step 1</span>
+                </li>
+                <li ng-class="{'active':activeStep&gt;=2}">
+                    <span>Step 2</span>
+                </li>
+                <li ng-class="{'active':activeStep&gt;=3}">
+                    <span>Step 3</span>
+                </li>
+            </ul>
+            <div ng-show="activeStep==1" class="wizard-step">
+                <h4>Report Type
+                    <small>&mdash; Step 1</small>
+                </h4>
+                <form name="form.form_step1" class="form-validate">
+
+                    <div>
+                        <div class=" col-lg-6 col-sm-6">
+                            <label class="control-label">Type:</label>
+                            <ui-select ng-model="billwizard.reporttype" theme="bootstrap" required>
+                                <ui-select-match placeholder="Select report">{{$select.selected.Invoice_type}}
+                                </ui-select-match>
+                                <ui-select-choices repeat="list.Id as list in reportlist | filter: $select.search">
+                                    <span ng-bind-html="list.Invoice_type | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+
+                    </div><br>
+                    <div class="mt">
+                        <button type="submit" ng-click="activeStep=2; poststage1()" class="btn btn-primary"
+                                ng-disabled="!billwizard.reporttype">Next
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div ng-show="activeStep==2" class="wizard-step">
+                <h4>Profile Details
+                    <small>&mdash; Step 2</small>
+                </h4>
+                <form name="form_step2" class="form-validate">
+                    <div class="col-sm-6">
+                    <p class="mt"><span class="red">*</span>Report Type :</p>
+                    <input type="text" ng-model="billwizard.reporttype" ng-disabled="disablefiled"
+                           class="form-control"/>
+                    </div>
+                    <div class="col-sm-6">
+                    <p class="mt"><span class="red">*</span>Report Name :</p>
+                    <input type="text" ng-model="billwizard.reportname" class="form-control" required/>
+                        <span class="red" ng-if="alreadyexist">Report with this name already exist.</span>
+                    </div>
+                    <div class="col-sm-6">
+                    <p class="mt"><span class="red">*</span>Reference No :</p>
+                    <input type="text" ng-model="billwizard.referenceno" ng-disabled="disablefiled"
+                           class="form-control"/>
+                    </div>
+                    <div class="col-sm-6">
+                    <p class="mt"><span class="red">*</span>Created By :</p>
+                    <input type="text" ng-model="billwizard.createby" ng-disabled="disablefiled" class="form-control"
+                           required/>
+                    </div>
+                    <div class="col-sm-6">
+                    <p class="mt">Date Of Report :</p>
+                    <div class=" mt">
+                        <p class="input-group">
+                            <input type="text" id="" ng-disabled="disablefiled" placeholder=""
+                                   datepicker-popup="{{form.format}}"
+                                   ng-model="billwizard.today"
+                                   is-open="form.opened" min-date="form.minApptDate" max-date="false"
+                                   datepicker-options="form.dateOptions"
+                                   date-disabled="form.disabled(date, mode)"
+                                   close-text="Close"
+                                   class="form-control" ng-change="reload()" required=""/>
+
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="form.open($event)"
+                                   class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span>
+
+                    </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <p class="mt">Tax :</p>
+                        <div class="input-group m-b">
+                        <input type="text" ng-model="billwizard.tax" ng-pattern="/^\d{0,9}(\.\d{1,9})?$/" class="form-control"/>
+                        <span class="input-group-addon">%</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <p class="mt">FootNotes :</p>
+                        <textarea type="text" ng-model="billwizard.footnote" class="form-control"></textarea>
+                    </div>
+                    <div class="col-sm-12">
+                        <p class="mt">Comments :</p>
+                        <textarea type="text" ng-model="billwizard.comments" class="form-control"></textarea>
+                    </div><br><br>
+                    <div class="col-sm-12 mt">
+                        <button type="button" ng-click="activeStep=1" class="btn btn-default">Prev</button>
+                        <button type="submit" ng-click="activeStep=3;" class="btn btn-primary"
+                                ng-disabled="alreadyexist || !billwizard.reportname">Next
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div ng-show="activeStep==3" class="wizard-step">
+                <h4>Select Candidates
+                    <small>&mdash; Step 3</small>
+                </h4>
+                <form name="form_step3" class="form-validate">
+
+                    <div class="row">
+
+                        <table datatable="" dt-options="form.dtOptions" dt-columns="form.dtColumns">
+                            <tfoot>
+                            <tr>
+                                <th></th>
+                                <th>Test Id</th>
+                                <th>Purpose</th>
+                                <th>Vessel</th>
+                                <th>Name</th>
+                                <th>Rank</th>
+                                <th>Test Date</th>
+                                <th>Final Status</th>
+                                <th>Final Remarks</th>
+                                <th>Doctor</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </form>
+                <div class="alert alert-danger" ng-show="errormsg">
+                    Please Select At lest one Candidate
+                </div>
+                <div class="mt">
+                    <button type="button" ng-click="activeStep=2" class="btn btn-default">Prev</button>
+                    <button type="button" ng-click="postfinal();" class="btn btn-primary">Finish</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

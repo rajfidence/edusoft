@@ -1,0 +1,19 @@
+<div class="panel-body panel" id="step1">
+    <div class="app-view-header headerstyle">Administrator: Fleets
+        <a href="#/app/CreateFleet">
+            <button type="button" class="mr btn  btn-primary pull-right" id="step4">Add Fleet</button>
+        </a>
+
+    </div>
+    <hr>
+    <!-- START table-responsive-->
+
+            <div class="table-responsive">
+                <toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+                <div ng-controller="fleetController as fleetCase">
+                    <table datatable="" dt-options="fleetCase.dtOptions" dt-columns="fleetCase.dtColumns"></table>
+                </div>
+            </div>
+</div>
+
+

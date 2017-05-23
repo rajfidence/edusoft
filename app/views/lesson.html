@@ -1,0 +1,77 @@
+<div ng-app="MyApp" ng-controller="lesson as form">
+    <form name="myForm" ng-submit="submit(myForm)" novalidate>
+        <div class="panel panel-body">
+            <div class="app-view-header headerstyle">Setup: {{packageStatus}}
+            </div>
+            <hr>
+            <div class="panel-body">
+                <treasure-overlay-spinner active='loading'>
+                <div class="row form-group">
+                    <div class=" col-lg-4 col-sm-4">
+                        <label class="control-label">Course Name</label>
+                        <ui-select ng-model="lesson.CourseId" theme="bootstrap" ng-required="true" on-select="chapters($model)">
+                            <ui-select-match placeholder="Select Chapter">{{$select.selected.Course}}</ui-select-match>
+                            <ui-select-choices repeat="course.Id as course in courseList | filter: $select.search">
+                                <span ng-bind-html="course.Course | highlight: $select.search"></span>
+                            </ui-select-choices>
+                            <ui-select-no-choice>
+                                Dang!  We couldn't find any course
+                            </ui-select-no-choice>
+                        </ui-select>
+                        <div ng-messages="myForm.packageName.$error" style="color:maroon" role="alert"
+                             ng-show="myForm.packageName.$touched || myForm.$submitted">
+                            <div ng-messages-include="app/views/validation.message.html"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class=" col-lg-4 col-sm-4">
+                        <label class="control-label">Chapter Name</label>
+                        <ui-select ng-model="lesson.ChapterId" theme="bootstrap" ng-required="true" ng-disabled="chapterDisable">
+                            <ui-select-match placeholder="Select Chapter">{{$select.selected.ChapterName}}</ui-select-match>
+                            <ui-select-choices repeat="chapter.Id as chapter in chapterList | filter: $select.search">
+                                <span ng-bind-html="chapter.ChapterName | highlight: $select.search"></span>
+                            </ui-select-choices>
+                            <ui-select-no-choice>
+                                Dang!  We couldn't find any course
+                            </ui-select-no-choice>
+                        </ui-select>
+                        <div ng-messages="myForm.packageName.$error" style="color:maroon" role="alert"
+                             ng-show="myForm.packageName.$touched || myForm.$submitted">
+                            <div ng-messages-include="app/views/validation.message.html"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class=" col-lg-4 col-sm-4">
+                        <label class="control-label"><span class="red">*</span> Lesson Name</label>
+                        <input placeholder="Lesson Name" name="lessonName" ng-model="lesson.LessonName"
+                               type="text"
+                               class="input-filter form-control shadow-z1 " ng-required="true" ng-blur="lessonChange()"
+                               required focus="true">
+                        <div ng-messages="myForm.lessonName.$error" style="color:maroon" role="alert"
+                             ng-show="myForm.lessonName.$touched || myForm.$submitted">
+                            <div ng-messages-include="app/views/validation.message.html"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class=" col-lg-4 col-sm-4">
+                        <label class="control-label">Description</label>
+                        <input placeholder="Description" name="lessonDescription" ng-model="lesson.Description"
+                               type="text"
+                               class="input-filter form-control shadow-z1 "
+                                focus="true">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-3  col-md-offset-1">
+                        <button type="submit" ripple="" class="mr mb-sm btn btn-info">Submit</button>
+                    </div>
+                </div>
+                </treasure-overlay-spinner>
+            </div>
+        </div>
+    </form>
+</div>
+

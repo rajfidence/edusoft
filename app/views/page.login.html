@@ -1,0 +1,60 @@
+<div class="container  animated fadeInDown bockimage"
+     style="height: 670px;margin-left: 0px;margin-right: 0px;width: auto !important;">
+    <div class="center-block mt-xl">
+        <!-- START panel-->
+        <div class="centerdiv">
+            <!--<img src="app/img/logo-gray1.png" alt="Image" class="centerdiv img-rounded exlscreen lscreen sscreen " />-->
+            <!--<img src="app/img/logo1.png" alt="Image" class="sscreen img-rounded" />-->
+        </div>
+
+        <div class="container container-sm">
+
+            <div class="panel panel-body">
+                <p class="pv text-bold">LOGIN CREDENTIALS</p>
+                <form role="form" class="mb-lg" ng-controller="LoginController" ng-submit="login(credentials)">
+                    <treasure-overlay-spinner active='loading'>
+                        <div class="row" shake-me shake-this="shake" shake-error="false">
+                            <div class="col-md-6">
+                                <div class="form-group has-feedback mb">
+                                    <input id="username" type="email" placeholder="Your email" autocomplete="off"
+                                           class="form-control" ng-model="credentials.username"/>
+                                    <span class="fa fa-envelope form-control-feedback text-muted"></span>
+                                </div>
+
+                                <br/>
+                                <div class="form-group has-feedback">
+                                    <input id="password" type="password" placeholder="Your password"
+                                           class="form-control" ng-model="credentials.password"/>
+                                    <span class="fa fa-lock form-control-feedback text-muted"></span>
+                                </div>
+                                <!--<div class="checkbox c-checkbox pull-left mt0">
+                                   <label>
+                                      <input type="checkbox" value="" />
+                                      <span class="fa fa-check"></span>Remember me</label>
+                                </div>-->
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-block btn-info mb">Login</button>
+                                <br>
+                                <!--<p class="text-muted mb0">Don't have an account yet?</p>-->
+                                <a ui-sref="page.recover" class="btn btn-block btn-default">
+                                    <strong>Forgot your password?</strong>
+                                </a>
+
+                            </div>
+                            <div class="alert alert-danger text-center col-sm-12" ng-show="errorMsg">{{errorMsg}}</div>
+
+                            <!--<div class="col-md-12 text-muted mb0" ng-show="errorMsg">{{errorMsg}}</div>-->
+                        </div>
+                    </treasure-overlay-spinner>
+                </form>
+            </div>
+
+        </div>
+        <!--  <div class="text-center mt"><a ui-sref="page.recover" class="text-muted">Forgot your password?</a>-->
+    </div>
+    <div class="p-lg text-center col-sm-12"><strong>© 2016 - EduSoft</strong></div>
+    <!-- END panel-->
+    <!-- <div ng-include="'app/views/page.footer.html'" class="p-lg text-center col-sm-12"></div>-->
+</div>
+</div>

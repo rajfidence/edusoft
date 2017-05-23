@@ -1,0 +1,206 @@
+<form name="form.myform" ng-controller="AddNewUserController as form">
+
+    <div class=" panel panel-body">
+        <div class="app-view-header headerstyle">Enter Seafarer Details
+        </div>
+        <hr>
+        <div class="col-md-3">
+            <div class="">
+                <div class="panel-body">
+                    <div class="imgcrop-area">
+                        <img-crop image="myImage" result-image="myCroppedImage" change-on-fly="true" ng-model="FormData.image_url" area-type="{{imgcropType}}"></img-crop>
+                    </div><br/>
+                    <div class="form-group">
+                        <div class="bootstrap-filestyle input-group">
+                            <input id="fileInput" filestyle="" type="file" data-class-button="btn btn-default" data-class-input="form-control" data-button-text="" data-icon-name="fa fa-upload" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="">
+                <div class="panel-body">
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label"><span class="red">*</span>Passport No.</label>
+                        <div class="col-sm-3 col-md-3">
+                            <input placeholder="&#xf072; Passport No." type="text" name="passno" ng-keyup="fetchdata()"
+                                   class="form-control" ng-model="FormData.passno" required>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label"><span class="red">*</span>Name</label>
+                        <div class="col-sm-3 col-md-3">
+                            <input placeholder="&#61447; First Name" name="firstname" type="text" class="form-control"
+                                   ng-model="FormData.fname" ng-disabled="isDisabled" required>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <input placeholder="&#61447; Middle Name" name="middlename" type="text" class="form-control"
+                                   ng-model="FormData.mname" ng-disabled="isDisabled">
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <input placeholder="&#61447; Last Name" name="lastname" type="text" class="form-control"
+                                   ng-model="FormData.lname" ng-disabled="isDisabled" required>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label"><span class="red">*</span>DOB</label>
+                        <div class=" col-lg-4 col-sm-4 col-md-5">
+                            <p class="input-group">
+                                <input type="text" id="" placeholder="" datepicker-popup="{{form.format}}"
+                                       ng-model="FormData.dob"
+                                       is-open="form.opened"
+                                       datepicker-options="form.dateOptions"
+                                       date-disabled="form.disabled(date, mode)"
+                                       max-date="form.dtmax"
+                                       close-text="Close"
+                                       class="form-control" ng-change="reload()" required/>
+
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="form.open($event)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span>
+                            </p>
+                       <span ng-if="seldob" style="color:red" ng-hide="FormData.dob">
+                            Please Select Date of Birth
+                       </span>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label"><span class="red">*</span>Gender</label>
+                        <div class="col-sm-9" required>
+                            <div class="col-lg-9 col-md-12 col-sm-9 row radio-inline c-radio">
+                                <label class="fontstyle col-lg-3 col-sm-3 control-label">
+                                    <input type="radio" name="gender" value="Male" ng-checked="confirmed"
+                                           ng-model="FormData.gender" ng-disabled="isDisabled">
+                                    <span class="fa fa-male "></span>Male<p></p></label>
+                                <label class="fontstyle col-lg-3 col-sm-3 control-label">
+                                    <input type="radio" name="gender" value="Female" ng-model="FormData.gender"
+                                           ng-disabled="isDisabled">
+                                    <span class="fa fa-female"></span>Female</label>
+                            </div>
+                            <span ng-if="selgender" style="color:red" ng-hide="FormData.gender">
+                            Please Select Gender
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label">Vessel</label>
+                        <div class="col-sm-4">
+                            <ui-select ng-model="FormData.vessel" theme="bootstrap">
+                                <ui-select-match placeholder="Select Vessel">{{$select.selected.vessel_name}}
+                                </ui-select-match>
+                                <ui-select-choices repeat="vessel.id as vessel in vessel_name | filter: $select.search">
+                                    <span ng-bind-html="vessel.vessel_name | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label">Rank</label>
+                        <div class="col-sm-5">
+                            <ui-select ng-model="FormData.rank" name="rankId" theme="bootstrap" class="text-left">
+                                <ui-select-match placeholder="Select rank">{{$select.selected.rank}}</ui-select-match>
+                                <ui-select-choices repeat="rank.rank_id as rank in rank_list | filter: $select.search">
+
+                                    <span ng-bind-html="rank.rank | highlight: $select.search"></span>
+
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+
+                    </div>
+                    <div class=" row form-group">
+                        <div class="col-lg-2 col-sm-2 "><label class="control-label">Mobile No.</label></div>
+                        <div class="col-lg-2 col-sm-2 col-md-2">
+                            <input placeholder="+91" name="cno" class="form-control " ng-model="FormData.cno"
+                                   ng-disabled="isDisabled">
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <input name="mobileno" ng-model="FormData.mobileno" placeholder="&#xf10b; 9999999999"
+                                   class="form-control " ng-disabled="isDisabled">
+                        </div>
+
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label"><span class="red">*</span>Email-Id</label>
+                        <div class="col-sm-5">
+                            <input placeholder="&#xf003; Email-Id" name="emailid" class="form-control"
+                                   ng-model="FormData.email" ng-disabled="isDisabled" required>
+
+                        </div>
+                           <span ng-if="selemail" style="color:red" ng-hide="FormData.email">
+                            Please Enter an Email Address
+                            </span>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label"><span class="red">*</span>Nationality</label>
+                        <div class="col-sm-5">
+
+                            <ui-select ng-model="FormData.nationality" theme="bootstrap" class="text-left" required>
+                                <ui-select-match placeholder="Select Nationality">
+                                    {{$select.selected.nationality_name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="nationality.id as nationality in nationalityId | filter: $select.search">
+
+                                    <span ng-bind-html="nationality.nationality_name | highlight: $select.search"></span>
+
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                            <span ng-if="selnationality" style="color:red" ng-hide="FormData.nationality">
+                            Please Select Nationality
+                            </span>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label"><span class="red">*</span>Country</label>
+                        <div class="col-sm-5">
+                            <ui-select ng-model="FormData.countryId" name="countryId" theme="bootstrap"
+                                       class="text-left" required>
+                                <ui-select-match placeholder="Select country">{{$select.selected.name}}
+                                </ui-select-match>
+                                <ui-select-choices
+                                        repeat="country.countryId as country in countryId | filter: $select.search">
+                                    <span ng-bind-html="country.name | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                            <span ng-if="selcountry" style="color:red" ng-hide="FormData.countryId">
+                            Please Select Country
+                            </span>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label">Current Address</label>
+                        <div class="col-sm-5">
+                            <textarea placeholder="Address" name="c_address" type="text" class="form-control"
+                                      ng-model="FormData.c_address" ng-disabled="isDisabled"></textarea>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-2 control-label">Permanent Address</label>
+                        <div class="col-sm-5">
+                            <textarea placeholder="Address" name="p_address" type="text" class="form-control"
+                                      ng-model="FormData.p_address" ng-disabled="isDisabled"></textarea>
+                        </div>
+                    </div>
+                    <div class="pull-left">
+                        <button type="submit" ng-click="savedata()" ripple="" class="mr mb-sm btn btn-primary">Save
+                        </button>
+                        <button type="reset" ripple="" class="mr mb-sm btn btn-info pull-right">Reset</button>
+                    </div>
+
+                </div>
+
+                <div class="alert alert-danger" ng-show="FormData.error">
+                    Error ({{FormData.error.status}}) In Inserting record.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+</div>

@@ -1,0 +1,33 @@
+<div ng-controller="GenerateEventController as Event" id="top">
+    <div class="panel-body panel" ng-show="create_event" >
+        <form class="form-horizontal" role="form" name="form.myForm" ng-submit="saveData(form.myForm)" novalidate>
+            <div class=" col-lg-4 col-sm-6">
+                <label class="control-label">Candidate Name</label>
+                <input required="" placeholder="Name" ng-disabled="true" type="text" ng-model="formInfo.Cand_name"
+                       class="input-filter form-control ">
+            </div>
+            <div class=" col-lg-4 col-sm-6">
+                <label class="control-label">Event Name</label>
+                <input required="" placeholder="Event Name" type="text" ng-model="formInfo.Event_name"
+                       class="input-filter form-control" autofocus>
+                <span class="red" ng-show="(form.myForm.$invalid)">Enter name of event.</span>
+            </div>
+            <br>
+            <button type="submit" ripple="" ng-disabled="(form.myForm.$invalid)" class="mr mb-sm btn btn-primary">Create<span class="ripple"><span
+                    style="width: 93px; height: 93px; left: -24.3333px; top: -37.65px;"
+                    class="angular-ripple"></span></span></button>
+        </form>
+    </div>
+
+    <div class="panel-body panel">
+        <div class="app-view-header headerstyle">Generate Event</div>
+        <hr>
+        <div class="table-responsive">
+            <toaster-container
+                    toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+            <div ng-app="MyApp">
+                <table datatable="" dt-options="Event.dtOptions" dt-columns="Event.dtColumns"></table>
+            </div>
+        </div>
+    </div>
+</div>

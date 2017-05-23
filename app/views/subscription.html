@@ -1,0 +1,162 @@
+<!--<div class="app-view-header">Dashboard
+   <small ng-bind="app.name + ' - ' + app.description" ng-if="currentUser">Welcome, {{ currentUser.user }}</small>
+   <div ng-if="currentUser">Welcome, {{ currentUser.user }}</div>
+</div>-->
+
+<div ng-controller="subscriptionController as sub" class="row" id="step1">
+    <!--<h1> {{ myData.id }}</h1>-->
+    <!-- Modal-->
+    <toaster-container
+            toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+    <script type="text/ng-template" id="warning-dialog.html">
+        <div class="modal-header">
+            <h3>Session Expire!</h3>
+        </div>
+        <div idle-countdown="countdown" class="modal-body">
+            <progressbar max="5" value="5" animate="true" class="progress-striped active">Your Session Going to Expire
+                in {{countdown}} second(s).
+            </progressbar>
+        </div>
+    </script>
+    <div style="background:url(app/img/profile.jpg) center center; background-size:cover;" class="unwrap"
+         ui-sref="app.profile">
+        <div class="container container-lg p-lg">
+            <!--<div class="pull-right">-->
+            <!--<button type="button" class="btn btn-amber">Follow</button>-->
+            <!--</div>-->
+            <div class="media mt-lg">
+                <div class="media-left media-middle">
+                    <a ui-sref="app.profile">
+                        <img src="app/img/user/02.jpg" class="media-object thumb96 img-circle"/>
+                    </a>
+                </div>
+                <div class="media-body text-white">
+                    <h2 class="mv-lg media-heading">{{currentUser.user }}</h2>
+                    <!--<button type="button" class="btn btn-info btn-xs mr-sm">-->
+                    <!--<em class="fa fa-twitter fa-fw"></em>-->
+                    <!--</button>-->
+                    <!--<button type="button" class="btn btn-primary btn-xs mr-sm">-->
+                    <!--<em class="fa fa-facebook fa-fw"></em>-->
+                    <!--</button>-->
+                    <!--<button type="button" class="btn btn-danger btn-xs">-->
+                    <!--<em class="fa fa-google-plus fa-fw"></em>-->
+                    <!--</button>-->
+                </div>
+            </div>
+            <div class="text-right text-white pb-lg">
+                <p class="m0">
+                    <strong>Reg No: 32840</strong>
+                </p>
+                <p class="m0">
+                    <strong>Joined On: 31/08/2015</strong>
+                </p>
+                <!--<div class="row pull-right">-->
+                <!--<div class="col-sm-3">-->
+                <!--<strong>Reg No:</strong>-->
+                <!--</div>-->
+                <!--<div class="col-sm-3">-->
+                <!--<strong>32840</strong>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<div class="row pull-right">-->
+                <!--<div class="col-sm-3">-->
+                <!--<strong>Joined On:</strong>-->
+                <!--</div>-->
+                <!--<div class="col-sm-3">-->
+                <!--<strong>31/08/2015</strong>-->
+                <!--</div>-->
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 fw-boxed">
+        <!-- START Panel-->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- START Panel-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <em class="icon-signal fa-lg text-muted pull-right"></em>My Subscription
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <ul ng-if="presentationList" ng-repeat="(CourseId,courseList) in presentationList">
+                            <li><h4>{{courseList.course}} <a class="btn btn-primary pull-right btn-xs" ng-show="courseList.coursePresentation"
+                                                             ui-sref="app.files({page: courseList.page, id: CourseId})"><i class="fa fa-chevron-right"></i> LEARN MORE</a>
+                                <a class="btn btn-primary pull-right btn-xs" ng-show="courseList.courseVideo"
+                                                             ui-sref="app.video({page: courseList.page, id: CourseId})"><i class="fa fa-play-circle-o"></i> VIDEO</a>
+                                </h4></li>
+                            <ul ng-if="courseList.chapter" ng-repeat="(ChapterId,chapterList) in courseList.chapter">
+                                <li><h4>{{chapterList.chapter}} <a class="btn btn-info pull-right btn-xs" ng-show="chapterList.chapterPresentation"
+                                                                   ui-sref="app.files({page: chapterList.page, id: ChapterId})"><i class="fa fa-chevron-right"></i> LEARN MORE</a>
+                                    <a class="btn btn-info pull-right btn-xs" ng-show="chapterList.chapterVideo"
+                                                                   ui-sref="app.video({page: chapterList.page, id: ChapterId})"><i class="fa fa-play-circle-o"></i> VIDEO</a>
+                                </h4></li>
+                                <ul ng-if="chapterList.Lessons" ng-repeat="(id,lessonsList) in chapterList.Lessons">
+                                    <li><h4>{{lessonsList.Lesson}} <a class="btn btn-success pull-right btn-xs" ng-show="lessonsList.LessonPresentation"
+                                                                      ui-sref="app.files({page: lessonsList.page, id: id})"><i class="fa fa-chevron-right"></i> LEARN MORE</a>
+                                        <a class="btn btn-success pull-right btn-xs" ng-show="lessonsList.LessonVideo"
+                                                                    ui-sref="app.video({page: lessonsList.page, id: id})"><i class="fa fa-play-circle-o"></i> VIDEO</a>
+                                        </h4>
+                                    </li>
+                                </ul>
+                            </ul>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END dashboard content-->
+    <!-- START dashboard sidebar-->
+    <!--<aside class="col-lg-3 fw-boxed">-->
+
+        <!--<div class="row">-->
+            <!--<div class="col-lg-12 col-md-6">-->
+                <!--<div ng-class="'panel-' + app.theme.name" class="panel">-->
+                    <!--<div class="panel-heading">-->
+                        <!--<div ng-class="'bg-' + app.theme.name" class="panel-title">-->
+                            <!--<em class="icon-speech-bubble fa-lg pull-right text-muted"></em>Ask An Expert-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="panel-body pt0">-->
+
+                    <!--</div>-->
+                    <!--<div class="panel-footer">-->
+                        <!--<div class="input-group input-group-sm">-->
+                            <!--<textarea placeholder="Type a message ..." rows="5" class="form-control"-->
+                                      <!--ng-model="SendMail.request"></textarea>-->
+                            <!--<span class="input-group-btn">-->
+                        <!--<button type="button" class="btn btn-info" ng-click="askAnExpert()">-->
+                           <!--<small>Post</small>-->
+                        <!--</button>-->
+                     <!--</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;<div class="col-lg-12 col-md-6">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div ng-class="'panel-' + app.theme.name" class="panel">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="panel-heading">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div ng-class="'bg-' + app.theme.name" class="panel-title">&ndash;&gt;-->
+            <!--&lt;!&ndash;<em class="icon-speech-bubble fa-lg pull-right text-muted"></em>Course completion&ndash;&gt;-->
+            <!--&lt;!&ndash;certificate&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="panel-body pt0">&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--</div>-->
+    <!--</aside>-->
+</div>
+<!-- END dashboard sidebar-->
+
+
+
+
+
+
+
+

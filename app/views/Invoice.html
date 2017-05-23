@@ -1,0 +1,65 @@
+<style type="text/css" media="print">
+    .dontprint
+    { visibility: hidden; }
+</style>
+<div class="panel panel-body">
+    <div id="printablediv">
+
+        <div class="app-view-header headerstyle">Candidates In Invoice
+            <button type="button" class="mr btn btn-oval btn-primary pull-right" ng-click="printinvoice('printablediv');">Print
+                Invoice
+            </button>
+        </div>
+        <hr>
+        <label>Reference No: {{referenceno}}</label>
+
+        <div ng-controller="BillingController as form">
+            <scrollable class="pt" style="height: 320px;">
+            <table ng-table="table.tableParams" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th>Test ID</th>
+                    <th>Purpose</th>
+                    <th>Name</th>
+                    <th>Rank</th>
+                    <th>Test Date</th>
+                    <th>Final Status</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr ng-repeat="person in listcandidates">
+                    <td>{{ person.TestID }}</td>
+                    <td>{{ person.Purpose }}</td>
+                    <td ng-click="viewcandidate(person.apptid)"><a href="">{{person.CandName}}</a></td>
+                    <td>{{ person.Rank }}</td>
+                    <td>{{ person.TestDate }}</td>
+                    <td>{{ person.FinalStatus }}</td>
+
+                    <td>
+                        <button ng-click="removecandidate(person.apptid,$index)" title="Remove Candidate"
+                                class="btn btn-sm btn-danger">
+                            <em class="fa fa-trash"></em>
+                        </button>
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+            </scrollable>
+            <hr>
+            <div class="col-xs-2 col-xs-offset-8" ng-show="disptotal">
+                <label class="col-sm-12">Sub Total : {{subtotal}}</label>
+                <label class="col-sm-12">TAX : {{tax}}</label>
+                <br><br>
+                <label class="col-sm-12">Total : {{total}}</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,17 @@
+<div id="step1">
+    <div class="panel-body panel">
+        <toaster-container toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+        <div ng-show="noAccess" style="color:red">{{noAccessMessage}}</div>
+        <div class="app-view-header headerstyle">Setup: Medical Profiles
+            <button ripple="" class="mr mb-sm btn btn-primary pull-right" ng-disabled="noAccess" ui-sref="app.addprofile" id="step4">Add</button></div><hr>
+        <!-- START table-responsive-->
+        <div class="table-responsive">
+            <div ng-controller="ServerSideProcessingCtrl1 as showCase">
+
+                <table datatable="" show-filter="true" dt-options="showCase.dtOptions" dt-columns="showCase.dtColumns" class="row-border hover" width="100%"></table>
+            </div>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,316 @@
+<!--<div class="app-view-header">Dashboard
+   <small ng-bind="app.name + ' - ' + app.description" ng-if="currentUser">Welcome, {{ currentUser.user }}</small>
+   <div ng-if="currentUser">Welcome, {{ currentUser.user }}</div>
+</div>-->
+
+<div ng-controller="videocontroller as CandProfile" class="row" id="step1">
+    <!--<h1> {{ myData.id }}</h1>-->
+    <!-- Modal-->
+    <toaster-container
+            toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+    <script type="text/ng-template" id="warning-dialog.html">
+        <div class="modal-header">
+            <h3>Session Expire!</h3>
+        </div>
+        <div idle-countdown="countdown" class="modal-body">
+            <progressbar max="5" value="5" animate="true" class="progress-striped active">Your Session Going to Expire
+                in {{countdown}} second(s).
+            </progressbar>
+        </div>
+    </script>
+    <!--<div style="background:url(app/img/profile.jpg) center center; background-size:cover;" class="unwrap"  ui-sref="app.profile">-->
+    <!--<div class="container container-lg p-lg">-->
+    <!--&lt;!&ndash;<div class="pull-right">&ndash;&gt;-->
+    <!--&lt;!&ndash;<button type="button" class="btn btn-amber">Follow</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--<div class="media mt-lg">-->
+    <!--<div class="media-left media-middle">-->
+    <!--<a  ui-sref="app.profile">-->
+    <!--<img src="app/img/user/02.jpg" class="media-object thumb96 img-circle" />-->
+    <!--</a>-->
+    <!--</div>-->
+    <!--<div class="media-body text-white">-->
+    <!--<h2 class="mv-lg media-heading">{{currentUser.user }}</h2>-->
+    <!--&lt;!&ndash;<button type="button" class="btn btn-info btn-xs mr-sm">&ndash;&gt;-->
+    <!--&lt;!&ndash;<em class="fa fa-twitter fa-fw"></em>&ndash;&gt;-->
+    <!--&lt;!&ndash;</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;<button type="button" class="btn btn-primary btn-xs mr-sm">&ndash;&gt;-->
+    <!--&lt;!&ndash;<em class="fa fa-facebook fa-fw"></em>&ndash;&gt;-->
+    <!--&lt;!&ndash;</button>&ndash;&gt;-->
+    <!--&lt;!&ndash;<button type="button" class="btn btn-danger btn-xs">&ndash;&gt;-->
+    <!--&lt;!&ndash;<em class="fa fa-google-plus fa-fw"></em>&ndash;&gt;-->
+    <!--&lt;!&ndash;</button>&ndash;&gt;-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="text-right text-white pb-lg">-->
+    <!--<p class="m0">-->
+    <!--<strong>Reg No: 32840</strong>-->
+    <!--</p>-->
+    <!--<p class="m0">-->
+    <!--<strong>Joined On: 31/08/2015</strong>-->
+    <!--</p>-->
+    <!--&lt;!&ndash;<div class="row pull-right">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-sm-3">&ndash;&gt;-->
+    <!--&lt;!&ndash;<strong>Reg No:</strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-sm-3">&ndash;&gt;-->
+    <!--&lt;!&ndash;<strong>32840</strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="row pull-right">&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-sm-3">&ndash;&gt;-->
+    <!--&lt;!&ndash;<strong>Joined On:</strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="col-sm-3">&ndash;&gt;-->
+    <!--&lt;!&ndash;<strong>31/08/2015</strong>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="col-lg-9 fw-boxed">
+        <!-- START Panel-->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- START Panel-->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h3>{{file.name}}
+                            <div class="pull-right">
+                                <a class="btn btn-primary" ui-sref="app.subscription"><em
+                                        class="fa fa-chevron-left "></em> Back to course
+                                </a>
+                            </div>
+                        </h3>
+                        </div>
+                        </div>
+                    <div class="panel-body">
+                        <!--<h3></h3>-->
+
+                        <!--<div class="panel printfile" id="printable"  ng-keydown="key($event)">-->
+                        <section class="ng-video-container">
+
+                            <!--<ul>-->
+                            <!--<li ng-click="playVideo('http://www.w3schools.com/html/mov_bbb.mp4')">-->
+                            <!--Play http://www.w3schools.com/html/mov_bbb.mp4-->
+                            <!--</li>-->
+                            <!--<li ng-click="playVideo('http://www.w3schools.com/html/movie.mp4')">-->
+                            <!--Play http://www.w3schools.com/html/movie.mp4-->
+                            <!--</li>-->
+                            <!--</ul>-->
+
+                            <!-- Base Directive -->
+                            <section class="video" ng-video>
+
+                                <!-- Screen Directive -->
+                                <video vi-screen></video>
+                                <section vi-controls class="controls">
+                                    <span vi-controls-play title="Play" class="fa fa-play"></span>
+                                    <span vi-controls-pause title="Pause" class="fa fa-pause"></span>
+                                </section>
+
+                                <!-- Full Screen Directive -->
+                                <section class="full-screen">
+                                    <span title="Full Screen" vi-full-screen-toggle class="fa fa-arrows-alt"></span>
+                                </section>
+
+
+                                <!-- Feedback Directive -->
+                                <section vi-feedback class="feedback">
+
+                                    <span class="buffering" ng-show="buffering">Buffering...</span>
+
+                                    <section class="loading" ng-show="loading">
+                                        Loading...
+                                    </section>
+
+                                    <!-- Volume Directive -->
+                                    <section vi-volume class="volume">
+
+                                        <div class="scale">
+                                            <div class="bar" style="width: {{volume * 100}}%"></div>
+                                        </div>
+
+                                        <span vi-volume-decrease title="Decrease Volume"
+                                              class="decrease fa fa-minus"></span>
+                                        <span vi-volume-increase title="Increase Volume"
+                                              class="increase fa fa-plus"></span>
+
+                                    </section>
+
+                                    <!-- Duration Directive -->
+                                    <!--<section class="duration">-->
+                                    <!--{{currentTime | number: 2}}s of {{duration | number: 2}}s-->
+                                    <!--[{{percentagePlayed | number: 0}}%]-->
+                                    <!--</section>-->
+
+                                    <!--<section class="title">ngVideo</section>-->
+
+                                    <!-- Timeline Directive -->
+                                    <section class="timeline">
+                                        <input vi-timeline/>
+                                    </section>
+
+                                    <!-- Buffer Directive -->
+                                    <!--<section vi-buffer class="buffer"></section>-->
+
+                                    <!--<section class="generic">-->
+                                    <!--V{{volume}}-->
+                                    <!--<span vi-messages>M{{messages.length}}</span>-->
+                                    <!--R{{playbackRate}}-->
+                                    <!--P{{playing ? 1 : 0}}-->
+                                    <!--L{{loading ? 1 : 0}}-->
+                                    <!--B{{buffered}}%-->
+                                    <!--<a href="https://github.com/Wildhoney/ngVideo" target="_blank">-->
+                                    <!--GitHub.com/Wildhoney/ngVideo-->
+                                    <!--</a>-->
+                                    <!--</section>-->
+
+                                </section>
+
+                                <!-- Playlist Directive -->
+                                <section vi-playlist class="playlist" ng-show="$parent.playlistOpen">
+
+                                    <ul>
+                                        <li class="title">
+                                            <span class="fa fa-video-camera"></span> &nbsp;
+                                            Playlist
+                                            <div class="close-playlist"
+                                                 title="Close Playlist"
+                                                 ng-click="$parent.playlistOpen = !$parent.playlistOpen">
+                                                &times;
+                                            </div>
+                                        </li>
+                                        <li vi-playlist-video ng-repeat="video in videos" ng-model="video">
+
+                        <span vi-meta ng-model="video" class="meta">
+                            {{duration | number: 2}}s
+                        </span>
+
+                                            {{getVideoName(video)}}
+
+                                        </li>
+                                    </ul>
+
+                                </section>
+
+                                <span title="Open Playlist"
+                                      ng-show="!playlistOpen"
+                                      ng-click="playlistOpen = !playlistOpen"
+                                      class="open-playlist fa fa-video-camera">
+            </span>
+
+                            </section>
+
+                        </section>
+                        <!--<object data="http://edusmart.edudoc.in/server/themes/cleanzone1_3/images/Profile/a64ed91c95d716025222a64b98ad42ed.docx" type="application/msword"></object>-->
+
+                            <!--<div class="l-table-fixed">-->
+                                <!--<div class="l-cell">-->
+                                    <div class="l-table">
+                                        <div class="p bt">
+                                            <form>
+                                                <div class="input-group">
+                                                    <input type="text" placeholder="Type your message..."
+                                                           ng-model="currMessage" class="form-control"/>
+                                                    <span class="input-group-btn">
+                        <button type="submit" ng-click="addMessage()" class="btn btn-default">Send</button>
+                     </span>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="l-row">
+                                            <div class="l-cell-wrapper">
+                                                <div class="l-cell-inner">
+                                                    <div class="p">
+                                                        <ul class="chat">
+                                                            <li ng-repeat="msg in messages" ng-class="msg.position"
+                                                                class="clearfix animated fadeIn">
+                              <span ng-class="msg.position === 'right' ? 'pull-right' : 'pull-left'" class="chat-img">
+                                 <img ng-src="{{msg.avatar}}" alt="Image" class="img-circle thumb48"/>
+                              </span>
+                                                                <div class="chat-body clearfix">
+                                                                    <div class="chat-header">
+                                                                        <a href="" class="text-inverse">
+                                                                            <strong ng-class="{'pull-right': (msg.position === 'right')}">{{msg.FirstName}} {{msg.LastName}}</strong>
+                                                                        </a>
+                                                                        <small ng-class="{'pull-right': (msg.position !== 'right')}"
+                                                                               class="text-muted">
+                                                                            <span class="fa fa-time" am-time-ago="msg.CommentDateTime | amFromUnix"></span>
+                                                                        </small>
+                                                                    </div>
+                                                                    <div class="chat-msg">{{msg.Comment}} </div>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                <!--</div>-->
+                            <!--</div>-->
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!-- END dashboard content-->
+    <!-- START dashboard sidebar-->
+    <aside class="col-lg-3 fw-boxed">
+
+        <div class="row">
+
+            <div class="col-lg-12 col-md-6">
+                <div ng-class="'panel-' + app.theme.name" class="panel">
+                    <div class="panel-heading">
+                        <div ng-class="'bg-' + app.theme.name" class="panel-title">
+                            <em class="icon-speech-bubble fa-lg pull-right text-muted"></em>Ask An Expert
+                        </div>
+                    </div>
+                    <div class="panel-body pt0">
+
+                    </div>
+                    <div class="panel-footer">
+                        <div class="input-group input-group-sm">
+                            <textarea placeholder="Type a message ..." rows="5" class="form-control"
+                                      ng-model="request"></textarea>
+                            <span class="input-group-btn">
+                        <button type="button" class="btn btn-info" ng-click="askAnExpert()">
+                           <small>Post</small>
+                        </button>
+                     </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="col-lg-12 col-md-6">-->
+            <!--<div ng-class="'panel-' + app.theme.name" class="panel">-->
+            <!--<div class="panel-heading">-->
+            <!--<div ng-class="'bg-' + app.theme.name" class="panel-title">-->
+            <!--<em class="icon-speech-bubble fa-lg pull-right text-muted"></em>Course completion-->
+            <!--certificate-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="panel-body pt0">-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+    </aside>
+</div>
+<!-- END dashboard sidebar-->
+
+
+
+
+
+
+
+

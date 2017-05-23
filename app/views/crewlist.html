@@ -1,0 +1,23 @@
+<div ng-controller="CrewController as crewcase" id="step1">
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div ng-show="noAccess" style="color:red">{{noAccessMessage}}</div>
+            <div class="app-view-header headerstyle">Seafarers
+              <button type="button" class="mr mb-sm btn btn-primary pull-right" ng-disabled="noAccess" ui-sref="app.AddNewUser" id="step5">Add Seafarer</button>
+              <button type="button" class="mr mb-sm btn btn-success pull-right" ng-disabled="noAccess" ui-sref="app.candidateexcel" id="step4">Excel Upload </button>
+            </div>
+            <hr>
+
+            <toaster-container
+                    toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+
+            <!-- START table-responsive-->
+            <div class="table-responsive">
+                <table datatable="" dt-options="crewcase.dtOptions" dt-columns="crewcase.dtColumns" dt-column-defs="crewcase.dtColumnDefs" class="row-border hover" width="100%"></table>
+            </div>
+
+        </div>
+
+    </div>
+</div>

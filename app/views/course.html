@@ -1,0 +1,45 @@
+<div ng-app="MyApp" ng-controller="course as form">
+    <form name="myForm" ng-submit="submit(myForm)" novalidate>
+        <div class="panel panel-body">
+            <div class="app-view-header headerstyle">Setup: {{packageStatus}}
+            </div>
+            <hr>
+            <div class="panel-body">
+                <treasure-overlay-spinner active='loading'>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> Course Name</label>
+
+                            <input placeholder="Course Name" name="courseName" ng-model="courseDetails.Course"
+                                   type="text"
+                                   class="input-filter form-control shadow-z1 " ng-required="true"
+                                   ng-blur="courseChange()"
+                                   required focus="true">
+                            <div ng-messages="myForm.courseName.$error" style="color:maroon" role="alert"
+                                 ng-show="myForm.courseName.$touched || myForm.$submitted">
+                                <div ng-messages-include="app/views/validation.message.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label">Description</label>
+                            <input placeholder="Description" name="courseDescription"
+                                   ng-model="courseDetails.Description"
+                                   type="text"
+                                   class="input-filter form-control shadow-z1 "
+                                   focus="true">
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-lg-3  col-md-offset-1">
+                            <button type="submit" ripple="" class="mr mb-sm btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </treasure-overlay-spinner>
+            </div>
+        </div>
+    </form>
+</div>
+

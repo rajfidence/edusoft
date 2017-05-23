@@ -1,0 +1,32 @@
+<div class="abs-center wd-xl animated fadeInDown">
+   <img src="app/img/user/02.jpg" alt="User Picture" class="img-circle center-block thumb80"/>
+   <!--<img src="app/img/user/logo-gray.png" alt="User Picture" class="img-circle center-block thumb80" />-->
+   <br/>
+
+   <form role="form" ng-controller="LockController" ng-submit="unlock(credentials)" class="p">
+      <div class="text-center"><strong>{{userinfo.u_name}}</strong></div>
+      <div class="form-group has-feedback"></div>
+      <div class="input-group" shake-me shake-this="shake" shake-error="true">
+         <input id="password" type="password" placeholder="Password" ng-model="credentials.password" class="form-control" />
+         <span class="input-group-btn">
+            <button type="submit" class="btn btn-info">
+               <em class="fa fa-lock fa-fw"></em>
+            </button>
+         </span>
+      </div>
+      <div class="text-center mt-sm" ng-show="errorMsg">{{errorMsg}}</div>
+   </form>
+
+   <div class="text-center mt-sm">
+      <a ui-sref="page.recover">
+         <small>Forgot your password?</small>
+      </a> OR <br>
+      <a ui-sref="page.login">
+         <small>Login</small>
+      </a>
+   </div>
+   <!--<div class="p-lg text-center col-sm-12"> <strong>© 2016 - 3 Cube Services</strong></div>-->
+   <div ng-include="'app/views/page.footer.html'" class="p-lg text-center"></div>
+</div>
+
+

@@ -1,0 +1,1693 @@
+<div ng-controller="CandProfileController as CandProfile">
+    <toaster-container
+            toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+    <div style="background:url(app/img/profile.jpg) center center; background-size:cover;" class="unwrap">
+        <div class="container container-lg p-lg">
+
+            <!-- Modal-->
+
+            <script type="text/ng-template" id="/myModalContent.html">
+                <div class="modal-header">
+                    <button type="button" ng-click="ok()" data-dismiss="modal" aria-hidden="true" class="close">×
+                    </button>
+                    <h4 id="myModalLabel" class="modal-title">{{ModalName}}</h4>
+                </div>
+                <div dw-loading="ModalLoad"
+                     dw-loading-options="{active: true, text: 'Please Wait while we load data'}">
+                    <div class="panel printfile" id="printable">
+
+                        <em ng-if="is_image == false">
+                            <ng-pdf template-url="vendor/angularjs-pdf/example/partials/viewer.html" canvasid="pdf"
+                                    class="pdff" scale="page-fit" page=1></ng-pdf>
+                        </em>
+                        <em ng-if="is_image == true">
+                            <img src="{{pdfUrl}}" \>
+                        </em>
+                    </div>
+                </div>
+
+
+            </script>
+
+            <script  type="text/ng-template" id="/myModalContent1.html" >
+                <div class="modal-header">
+                    <button type="button"  ng-click="ok()" data-dismiss="modal" aria-hidden="true" class="close">×
+                    </button>
+                    <h4 id="myModalLabel1" class="modal-title">
+                        <i class="fa fa-exclamation-triangle" style="color: #fe9700;" aria-hidden="true"></i>
+                       <span style="font-size: 18px !important;margin-left: 10px;">{{ event_change }} {{ModalName}} </span> </h4>
+                </div>
+                <div dw-loading="ModalLoad">
+                    <div class="panel-body">
+
+                       <strong style="margin-left: 30px;">Change the selected option ? </strong>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" ng-click="ok()">Yes,Proceed!</button>
+                    <button class="btn btn-default" ng-click="reload_data()" >Cancel</button>
+                </div>
+
+
+            </script>
+            <!-- image update modal -->
+
+            <script type="text/ng-template" id="/imageupload.html">
+                <div class="modal-header">
+                    <h4 id="imageupload" class="modal-title">Change Seafarer Picture</h4></div>
+                <div class="container">
+                    <div class="row">
+                    <div class="modal-body">
+                        <div class="col-sm-2">
+                            <div class="imgcrop-area ">
+                                <img-crop image="myImage" result-image="myCroppedImage" change-on-fly="true"
+                                          area-type="{{imgcropType}}"></img-crop>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div data-text="Cropped Image" class="imgcrop-preview">
+                                <img ng-src="{{myCroppedImage}}"/>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 mt5">
+                            <div class="form-group">
+                                <div class="bootstrap-filestyle input-group">
+                                    <input id="fileInput" filestyle="" type="file" data-class-button="btn btn-default"
+                                           data-class-input="form-control" data-button-text=""
+                                           data-icon-name="fa fa-upload" class="form-control"/>
+                                </div>
+                            </div>
+                            <span style="color:#f2052a;"> {{errormsg}} </span>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button ng-click="ok()" class="btn btn-primary">OK</button>
+                    <button ng-click="cancel()" class="btn btn-warning">Cancel</button>
+                </div>
+
+            </script>
+
+
+            <div class="media mt-lg">
+                <div class="media-left media-middle">
+
+                    <a href="" ng-click="changePic()">
+                        <img ng-src="{{imagedata}}"
+                             class="media-object thumb96 img-circle" />
+                    </a>
+                    <br>
+                </div>
+
+                <div class="media-body text-white">
+                    <h2 class="mv-lg media-heading"> {{CandData.CandDetails.UserName}}</h2>
+                    <span class="m0"><strong>Rank: {{CandData.CandDetails.Rank}}</strong> </span> <br>
+                    <span class="m0"> <strong>Vessel: {{CandData.CandDetails.vessel}} </strong> </span>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="container container-lg">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="panel">
+                    <div class="panel-body" id="infocand">
+                        <h6><i class="fa fa-book mr" aria-hidden="true"></i> <span class="mr"><strong>Passport No:</strong>  <li style="list-style-type: upper-roman;" ng-repeat="pass in CandPassNo" class="ml mt">{{pass.pass_no}}</li></span>
+                        </h6>
+                        <h6><i class="fa fa-dot-circle-o mr" aria-hidden="true"></i> <span class="mr"><strong>CDC No: </strong>  {{CandData.CandDetails.cdc}}</span>
+                        </h6>
+                        <h6><i class="fa fa-dot-circle-o mr" aria-hidden="true"></i> <span class="mr"><strong>IMO No: </strong>  {{CandData.CandDetailsImoNo}}</span>
+                        </h6>
+                        <h6><i class="fa fa-birthday-cake mr" aria-hidden="true"></i> <span class="mr"><strong>DOB: </strong>  {{CandData.CandDetails.dob}}</span>
+                        </h6>
+
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-heading no-shadow">Recent Appointments</div>
+                    <div class="panel-body">
+                        <div align="center" ng-if="noActivity">No Data to Display</div>
+                        <ul class="list-block">
+                            <li class="media">
+                                <div class="pull-left">
+                                    <!-- Contact avatar-->
+                                    <div>
+                                        <div ng-repeat="ApptDetails in recentappt">
+                                            <div class="media-heading ">
+                                                <i class="fa fa-calendar mr" aria-hidden="true"></i>
+                                                <a href="" ng-click="editappt(ApptDetails.apptid, $index)" >{{ ApptDetails.ActivityDate }}</a>
+                                                <br/>
+                                                <small  ng-class="ApptDetails.purposeicon">&nbsp; &nbsp; {{ ApptDetails.Purpose }}</small>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="mr btn btn-success btn-sm" ng-if="newapptbttn"
+                                                ng-click="appointmentpage($event)">
+                                            Book Appointment
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="panel">
+                    <div class="panel-body">
+                        <ul class="nav nav-tabs">
+                            <li ng-class="{'active' : activeTab == 1}"><a href=""
+                                                                          ng-click="setActiveTab(1)">Activity</a></li>
+                            <li ng-class="{'active' : activeTab == 2}"><a href="" ng-click="setActiveTab(2)">Information</a>
+                            </li>
+                            <li ng-class="{'active' : activeTab == 3}"><a href=""
+                                                                          ng-click="setActiveTab(3)">Book Appointment</a>
+                            </li>
+                            <!--<li ng-class="{'active' : activeTab == 4}"><a href="" ng-click="setActiveTab(4)">Biometrics</a>
+                            </li>-->
+                            <li ng-class="{'active' : activeTab == 5}"><a href="" ng-click="setActiveTab(5)">Medical Event Log</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div ng-class="{'tab-pane active': activeTab === 1, 'tab-pane' : activeTab !== 1}">
+                                <div align="center" ng-if="noActivity"> No Data to Display</div>
+                                <div class="smoothy" style="position: relative; overflow: hidden;">
+                                    <scrollable class="pt" style="overflow: hidden; width: auto;" data-height="600px">
+                                <ul class="timeline-alt" ng-repeat="ApptDetails in ActivityTimeline">
+                                    <li style="width: 200px;" data-datetime="{{ ApptDetails.ActivityDate }}"
+                                        class="timeline-separator mb0"></li>
+                                    <!-- END timeline item-->
+                                    <!-- START timeline item-->
+                                    <li class="mb0 mv">
+                                        <div ng-class="ApptDetails.iconBackground">
+                                            <em ng-class="ApptDetails.activityIcon"></em>
+                                        </div>
+
+                                        <div class="timeline-panel" ng-if="ApptDetails.Event == 'appt'">
+
+                                            <strong style="color: #585f69;">{{ ApptDetails.DoctorName }}</strong>
+                                            <div>
+                                                <strong style="color:#3f51b5;">Purpose</strong> : <em> <strong style="color:#3f51b5;">{{ ApptDetails.Purpose }}</strong></em>
+                                                <!-- Show Certificate for each Appointment -->
+                                                <br><strong style="color: #585f69;"> Clinic </strong> : {{ApptDetails.Clinic}}
+
+                                                <!-- Show Reports for each Appointment -->
+                                                <br> <strong style="color: #585f69;">Reports</strong> :
+                                                <em ng-if="ApptDetails.CanUplo != null">
+                                                    <em ng-repeat="(key, value) in ApptDetails.CanUplo">
+
+                                                        <em ng-repeat="file in value track by $index">
+                                                            <em ng-if="file.file_name != null">
+                                                                <!--<i class="fa fa-file-pdf-o fa-2x" title="{{key}}"></i>-->
+                                                                <em ng-if="file.file_ext != null">
+                                                                    <button title="{{key}}" class="button-transparent"
+                                                                            ng-click="CandProfile.openmodel(file.is_image,key,'lg','app/img/clip_upload/'+file.file_name)" style="background-color: transparent;border: 0px;">
+                                                                        <i class="fa fa-file-pdf-o"
+                                                                           style="color: royalblue;font-size: 20px;"></i></button>
+                                                                </em>
+                                                            </em>
+                                                        </em>
+                                                    </em>
+                                                </em>
+
+                                                <em ng-if="ApptDetails.CanUplo == null">
+                                                    No Reports Found.
+                                                </em>
+                                                <hr class="mb0" style="border-top:1px solid  #dddddd;">
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-panel" ng-if="ApptDetails.Event == 'event'">
+                                            <strong style="color:#3f51b5;">{{ ApptDetails.eventname }}</strong>
+                                            <div>
+                                                <strong style="color: #585f69;">Medical Condition</strong> : <em>{{ ApptDetails.eventcondition }}</em>
+                                                <!-- Show Certificate for each Appointment -->
+                                                <br><strong style="color: #585f69;">Closest Port </strong> : {{ApptDetails.eventportlocation}}
+
+                                                <hr class="mb0" style="border-top:1px solid  #dddddd;">
+                                            </div>
+                                        </div>
+
+                                    </li>
+                                </ul>
+                                        </scrollable>
+                                    </div>
+
+                            </div>
+
+                            <div ng-class="{'tab-pane active': activeTab === 2, 'tab-pane' : activeTab !== 2}">
+                                <h4 class="page-header">Basic information</h4>
+
+                                <div>
+                                    <p class="col-sm-6">
+                                        <span>Name</span>:
+                                        <a href="" editable-text="CandData.CandDetails.UserName">{{CandData.CandDetails.UserName
+                                            || &apos;empty&apos; }}</a>
+                                    </p>
+
+                                    <p class="col-sm-6">
+                                        <span>Date Of Birth</span>:
+                                        <a href="" editable-date="CandData.CandDetails.dob">{{
+                                            CandData.CandDetails.dob | date:"dd-MM-yyyy"|| &apos;empty&apos; }}</a>
+                                    </p>
+                                    <p class="col-sm-6">
+                                        <span>Location</span>:
+                                        <a href="" editable-textarea="CandData.CandDetails.h_add"
+                                        >{{ CandData.CandDetails.h_add || &apos;empty&apos; }}</a>
+                                    </p>
+
+
+                                    <p class="col-sm-6">
+                                        <span>Rank</span>:
+                                        <a href="" editable-text="CandData.CandDetails.Rank"
+                                           e-typeahead="rank.rank for rank in rankList | limitTo:8">{{CandData.CandDetails.Rank||
+                                            &apos;empty&apos; }}</a>
+                                    </p>
+
+                                    <p class="col-sm-6">
+                                        <span>Email</span>:
+                                        <a href="" editable-email="CandData.CandDetails.CandEmail">{{
+                                            CandData.CandDetails.CandEmail || &apos;empty&apos; }}</a>
+                                    </p>
+
+                                    <p class="col-sm-6">
+                                        <span>Mobile Phone</span>:
+                                        <a href="" editable-number="CandData.CandDetails.tel_no">{{
+                                            CandData.CandDetails.tel_no || &apos;empty&apos; }}</a>
+                                    </p>
+
+                                    <p class="col-sm-6">
+                                        <span>Indos No</span>:
+                                        <a href="" editable-text="CandData.CandDetails.IndosNo">{{CandData.CandDetails.IndosNo
+                                            || &apos;empty&apos; }}</a>
+                                    </p>
+                                    <span class="col-sm-12">
+                                        <span>Passport No</span>:  <i title="Add New Passport" style="cursor: pointer;font-size: 20px;margin-left: 10px;" class="fa fa-plus-square-o" aria-hidden="true" ng-click="showpassportbox()" ng-if="showpassbtn"></i>
+                                    <li ng-repeat="editablepass in CandPassNo"> {{editablepass.pass_no }}</li>
+                                    </span>
+                                    <div class="row form-group">
+
+                                        <div class="col-sm-6" ng-if="IsShow">
+                                            <input placeholder=" New Passport No" type="text" name="name"
+                                                   ng-model="CandData.CandDetails.pass_no1" ng-keyup="fetchdata()"
+                                                   class="input-filter form-control ">
+                                        </div>
+                                    </div>
+                                                                      <!-- <div class="row form-group" ng-if="showbutton">
+                                        <div class="col-sm-6">
+                                            <button type="button" class="mr btn btn-oval btn-primary" ng-click="seafarerData()">
+                                                Save
+                                            </button>
+                                            <button type="button" class="mr btn btn-oval btn-default" ng-click="hidebutton()">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>-->
+
+
+                                </div>
+                                <div class="panel-body mt150">
+                                    <div class="row form-group">
+                                        <div class=" col-lg-6 col-sm-6">
+                                            <label class="control-label">
+                                                Department</label>
+                                            <p>
+                                            <!--<a href="#" editable-select="apptDetails.department" e-ng-options="d.id as d.dept for d in departmentList">-->
+                                            <!--{{department.dept }}-->
+                                            <!--</a>-->
+                                            </p>
+                                            <ui-select ng-model="apptDetails.department" theme="bootstrap" ng-change="CandProfile.openmodel1('sm','1')">
+                                                <ui-select-match placeholder="Select Department" ng-click="uiselectchange()" >
+                                                    {{$select.selected.dept}}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="department.dept_id as department in departmentList | filter: $select.search">
+                                                    <span ng-bind-html="department.dept | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                            <!--<a href="#" editable-select="department.dept" e-ng-options="department.dept_id as department.dept for department in departmentList">-->
+                                                <!--{{  showStatus() }}-->
+                                            <!--</a>-->
+
+                                        </div>
+                                        <div class=" col-lg-6 col-sm-6">
+                                            <label class="control-label">Sub-Department</label>
+                                            <ui-select ng-model="apptDetails.subdept" theme="bootstrap" ng-change="CandProfile.openmodel1('sm','2')">
+                                                <ui-select-match placeholder="Select Sub-Department" ng-click="uiselectchange()">
+                                                    {{$select.selected.subdept}}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="subdept.subdept_id as subdept in subdepartmentList | filter: $select.search">
+                                                    <span ng-bind-html="subdept.subdept | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="row form-group">
+                                       <!-- <div class=" col-lg-6 col-sm-6">
+                                            <label class="control-label">Rank</label>
+                                            <input ng-model="apptDetails.selectedrank"
+                                                   placeholder="Rank" ng-click="uiselectchange()"
+                                                   typeahead="rank as rank.rank for rank in rankList | filter:$viewValue | limitTo:8"
+                                                   type="text" name="name" class="input-filter form-control ">
+                                        </div>-->
+                                        <div class=" col-lg-6 col-sm-6">
+                                            <label class="control-label">Vessel</label>
+                                            <ui-select ng-model="apptDetails.vessel" theme="bootstrap" ng-change="CandProfile.openmodel1('sm','3')">
+                                                <ui-select-match placeholder="Select Vessel"
+                                                                 ng-click="uiselectchange()">
+                                                    {{$select.selected.vessel_name}}
+                                                </ui-select-match>
+                                                <ui-select-choices
+                                                        repeat="vessel.id as vessel in vesselList | filter: $select.search">
+                                                    <span ng-bind-html="vessel.vessel_name | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group" ng-if="showbutton">
+                                        <div class="col-sm-6">
+                                            <button type="button" class="mr btn btn-oval btn-primary" ng-click="seafarerData()">
+                                                Save
+                                            </button>
+                                            <button type="button" class="mr btn btn-oval btn-default" ng-click="hidebutton()">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <accordion>
+                                        <accordion-group>
+                                            <accordion-heading>Biometrics  <i class="material-icons">fingerprint</i></accordion-heading>
+                                            {{CandProfilepiePercent1}}
+                                            <div class="col-lg-3">
+                                                <!-- START panel-->
+                                                <div class="panel panel-info">
+                                                    <div class="panel-heading">Finger Print</div>
+                                                    <div class="panel-body">
+                                                        <div easypiechart="" options="CandProfile.pieOptions"
+                                                             percent="CandProfile.piePercent1"
+                                                             class="easypie ng-isolate-scope">
+                                                        <span ng-click="capture()" ripple="" class="ng-binding" style="top: 22% !important;padding-left: 15px;">
+                                                            <i class="material-icons dp" style="border-radius: 50px;font-size: 90px;">fingerprint</i></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="panel-footer">Panel Footer</div>
+                                                </div>
+                                                <!-- END panel-->
+                                            </div>
+
+                                            <!-- <div class="col-lg-3">
+                                                 &lt;!&ndash; START panel&ndash;&gt;
+                                                 <div class="panel panel-success">
+                                                     <div class="panel-heading">Result</div>
+                                                     <div class="panel-body">
+                                                         <div class="circled">
+                                                             <p> <img data-ng-src="data:image/png;base64,{{fingerImage}}" style=" background-color: #2095f2;padding: 10px;border-radius: 200px;height: 110px;"
+                                                                      class="img-responsive"
+                                                                      ng-show="fingerImage!=undefined"/></p>
+                                                         </div>
+                                                     </div>
+                                                     <div class="panel-footer">Panel Footer</div>
+                                                 </div>
+                                                 &lt;!&ndash; END panel&ndash;&gt;
+                                             </div>-->
+                                            <div class="row">
+                                                <div class="col-sm-12">
+
+
+                                                    <div class="p">
+                                                        <div class="row row-flush text-center">
+                                                            <div class="col-xs-6" style="display: none;">
+                                                                <p class="mt-lg">Scan Prints</p>
+                                                                <div easypiechart="" options="CandProfile.pieOptions"
+                                                                     percent="CandProfile.piePercent1"
+                                                                     class="easypie ng-isolate-scope">
+                                                        <span ng-click="capture()" ripple="" class="ng-binding" style="top: 22% !important;">
+                                                            <i class="material-icons dp" style="border-radius: 50px;font-size: 90px;">fingerprint</i></span>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-xs-6" style="display: none;">
+                                                                <div class="col-lg-6 col-sm-3 col-xs-12">
+                                                                    <div>
+                                                                        <p class="mt-lg" style="margin-bottom: 0px;">Scan Results</p>
+                                                                        <div class="">
+                                                                            <div class="circled">
+                                                                                <p> <img data-ng-src="data:image/png;base64,{{fingerImage}}" style=" background-color: #2095f2;padding: 10px;border-radius: 200px;height: 110px;"
+                                                                                         class="img-responsive"
+                                                                                         ng-show="fingerImage!=undefined"/></p>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <span class="ripple"></span></div>
+                                                                </div>
+                                                            </div>
+                                                            <div ng-repeat="(key, value) in fingerPrint track by $index">
+                                                                <div class="col-lg-3">
+                                                                    <!-- START panel-->
+                                                                    <div class="panel panel-success">
+                                                                        <div class="panel-heading">Finger {{key+1}}</div>
+                                                                        <div class="panel-body">
+                                                                            <img data-ng-src="data:image/png;base64,{{value.BitmapData}}" style="height: 110px;"
+                                                                                 class="img-responsive"/>
+
+                                                                        </div>
+                                                                        <div class="panel-footer">
+                                                                            <button popover="DELETE" popover-trigger="mouseenter" type="button" style="opacity: 1 !important;font-size: 14px !important;float: none !important;" class="close">
+                                                                                <span><i class="fa fa-trash-o"> DELETE </i></span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- END panel-->
+                                                                </div>
+                                                            </div>
+                                                            <!--<div class="col-xs-12">
+
+
+
+                                                                <div class="panel panel-primary">
+                                                                    <div class="panel-heading">Finger Prints</div>
+                                                                    <div class="panel-body">
+                                                                <div class="col-lg-3 col-md-6 col-sm-12" ng-repeat="(key, value) in fingerPrint track by $index">
+
+                                                                    <img data-ng-src="data:image/png;base64,{{value.BitmapData}}" style=" background-color: #2095f2;padding: 10px;border-radius: 200px;height: 110px;"
+                                                                         class="img-responsive"/>
+                                                                    <div class="alert alert-success">
+
+                                                                        <p ng-show="value.fingertype!=null">{{value.fingertype}}</p>
+
+                                                                        <span ng-show="value.fingertype==null">
+                                                                            Finger {{key+1}}</span>
+                                                                        <button popover="DELETE" popover-trigger="mouseenter" type="button" style="opacity: 1 !important;" class="close">
+                                                                            <span><i class="fa fa-trash-o" style="color: white;"></i></span>
+                                                                        </button>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+                                                                    </div>
+
+                                                                </div>-->
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </accordion-group>
+                                    </accordion>
+
+                                    </div>
+
+                            </div>
+
+                            <div ng-class="{'tab-pane active': activeTab === 3, 'tab-pane' : activeTab !== 3}">
+                                <form name="CandProfile.apptform" class="form-validate form-horizontal"
+                                      ng-submit="saveAppt()">
+                                    <div class=" panel-default">
+                                        <h4 class="page-header">Candidate  Information</h4>
+                                        <treasure-overlay-spinner active='spinner.active'>
+                                        <div class="row form-group">
+                                            <div class=" col-lg-6 col-sm-6">
+                                                <label class="control-label">Rank</label>
+                                                <ui-select  ng-model="apptDetails.selectedrank" placeholder="Select Rank" theme="bootstrap" ng-keyup="uiselectchange()" required>
+                                                    <ui-select-match placeholder="Select Rank" ng-click="uiselectchange()">
+                                                        {{$select.selected.rank}}
+                                                    </ui-select-match>
+                                                    <ui-select-choices
+                                                            repeat="rank.rank_id as rank in rankList | filter: $select.search">
+                                                        <span ng-bind-html="rank.rank | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                                 <span ng-if="selrank" style="color:red"
+                                                       ng-hide="apptDetails.selectedrank">
+                                                         Please Select Rank
+                                                      </span>
+
+                                            </div>
+                                            <div class=" col-lg-6 col-sm-6">
+                                                <label class="control-label">
+                                                    Department</label>
+                                                <!--<p>-->
+                                                <!--<a href="#" editable-select="apptDetails.department" e-ng-options="d.id as d.dept for d in departmentList">-->
+                                                <!--{{department.dept }}-->
+                                                <!--</a>-->
+                                                <!--</p>-->
+                                                <ui-select ng-model="apptDetails.department" theme="bootstrap" ng-change="CandProfile.openmodel1('sm','1')">
+                                                    <ui-select-match placeholder="Select Department" ng-click="uiselectchange()" >
+                                                        {{$select.selected.dept}}
+                                                    </ui-select-match>
+                                                    <ui-select-choices
+                                                            repeat="department.dept_id as department in departmentList | filter: $select.search">
+                                                        <span ng-bind-html="department.dept | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+
+
+                                            </div>
+                                            <div class=" col-lg-6 col-sm-6">
+                                                <label class="control-label">Sub-Department</label>
+                                                <ui-select ng-model="apptDetails.subdept" theme="bootstrap" ng-change="CandProfile.openmodel1('sm','2')">
+                                                    <ui-select-match placeholder="Select Sub-Department" ng-click="uiselectchange()">
+                                                        {{$select.selected.subdept}}
+                                                    </ui-select-match>
+                                                    <ui-select-choices
+                                                            repeat="subdept.subdept_id as subdept in subdepartmentList | filter: $select.search">
+                                                        <span ng-bind-html="subdept.subdept | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+
+                                            </div>
+                                        </div>
+                                        <h4 class="page-header">Joining  Information</h4>
+
+                                        <div class="row form-group">
+                                            <div class=" col-lg-6 col-sm-6">
+                                            <label class="control-label"><span class="red">*</span> Date Of Joining </label>
+                                                <p class="input-group">
+                                                    <input type="text" placeholder=""
+                                                           ng-model="apptDetails.doj"
+                                                           datepicker-popup="{{CandProfile.format}}"
+                                                           is-open="CandProfile.opened1"
+                                                           min-date="CandProfile.minApptDate"
+                                                           max-date="false"
+                                                           datepicker-options="CandProfile.dateOptions1"
+
+                                                           close-text="Close"
+
+                                                           class="form-control" ng-change="reload()" required/>
+
+                                                        <span class="input-group-btn">
+                                                                 <button type="button"
+                                                                         ng-disabled="disablefield"
+                                                                         ng-click="CandProfile.open1($event)"
+                                                                         class="btn btn-default">
+                                                                     <em class="fa fa-calendar"></em>
+                                                                 </button>
+                                                                </span></p>
+                                                    <span ng-if="seldate" style="color:red"
+                                                          ng-hide="apptDetails.ApptDate">
+                                                                             Please Select Date
+                                                                            </span>
+                                            </div>
+
+                                            <div class=" col-lg-6 col-sm-6">
+                                                <label class="control-label"><span class="red">*</span> Port Of Joining</label>
+                                                <p class="input-group">
+                                                    <input type="text" placeholder=""
+                                                           ng-model="apptDetails.poj"
+                                                           datepicker-popup="{{CandProfile.format}}"
+                                                           is-open="CandProfile.opened2"
+                                                           min-date="CandProfile.minApptDate"
+                                                           max-date="false"
+                                                           datepicker-options="CandProfile.dateOptions2"
+
+                                                           close-text="Close"
+
+                                                           class="form-control" ng-change="reload()" required/>
+
+                                                        <span class="input-group-btn">
+                                                                 <button type="button"
+                                                                         ng-disabled="disablefield"
+                                                                         ng-click="CandProfile.open2($event)"
+                                                                         class="btn btn-default">
+                                                                     <em class="fa fa-calendar"></em>
+                                                                 </button>
+                                                                </span></p>
+                                                    <span ng-if="seldate" style="color:red"
+                                                          ng-hide="apptDetails.ApptDate">
+                                                                             Please Select Date
+                                                                            </span>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row form-group">
+                                            <!-- <div class=" col-lg-6 col-sm-6">
+                                                 <label class="control-label">Rank</label>
+                                                 <input ng-model="apptDetails.selectedrank"
+                                                        placeholder="Rank" ng-click="uiselectchange()"
+                                                        typeahead="rank as rank.rank for rank in rankList | filter:$viewValue | limitTo:8"
+                                                        type="text" name="name" class="input-filter form-control ">
+                                             </div>-->
+                                            <div class=" col-lg-6 col-sm-6">
+                                                <label class="control-label">Vessel</label>
+                                                <ui-select ng-model="apptDetails.vessel" theme="bootstrap" >
+                                                    <ui-select-match placeholder="Select Vessel"
+                                                                     ng-click="uiselectchange()">
+                                                        {{$select.selected.vessel_name}}
+                                                    </ui-select-match>
+                                                    <ui-select-choices
+                                                            repeat="vessel.id as vessel in vesselList | filter: $select.search">
+                                                        <span ng-bind-html="vessel.vessel_name | highlight: $select.search"></span>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                        <h4 class="page-header">Appointment Information</h4>
+
+                                        <div class="panel-body">
+                                            <div class="row form-group" ng-if="showstatus">
+                                                <label class="control-label">Status: {{apptDetails.status}}</label>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class=" col-lg-6 col-sm-6">
+                                                    <label class="control-label"><span
+                                                            class="red">*</span> Purpose</label>
+                                                    <ui-select ng-model="apptDetails.PurposeModel" theme="bootstrap" ng-disabled="disablefield"
+                                                               required>
+                                                        <ui-select-match placeholder="Select Purpose">
+                                                            {{$select.selected.Purpose}}
+                                                        </ui-select-match>
+                                                        <ui-select-choices
+                                                                repeat="Purpose.Id as Purpose in purposeList | filter: $select.search">
+                                                            <span ng-bind-html="Purpose.Purpose | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span ng-if="selpupose" style="color:red"
+                                                          ng-hide="apptDetails.PurposeModel">
+                                                          Please Select Pupose
+                                                         </span>
+                                                </div>
+                                                <div class=" col-lg-6 col-sm-6">
+                                                    <label class="control-label"><span class="red">*</span>
+                                                        Profile</label>
+                                                    <ui-select ng-model="apptDetails.profileModel" name="profile" ng-disabled="disablefield"
+                                                               theme="bootstrap" required>
+                                                        <ui-select-match placeholder="Select Profile">
+                                                            {{$select.selected.Profile_name}}
+                                                        </ui-select-match>
+                                                        <ui-select-choices
+                                                                repeat="profile.Profile_id as profile in profileList | filter: $select.search">
+                                                            <span ng-bind-html="profile.Profile_name | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span ng-if="selprofile" style="color:red"
+                                                          ng-hide="apptDetails.profileModel">
+                                                     Please Select Profile
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class=" col-lg-6 col-sm-6">
+                                                    <label class="control-label"><span class="red">*</span>
+                                                        Doctor</label>
+                                                    <ui-select ng-model="apptDetails.doctorModel" theme="bootstrap" ng-disabled="disablefield"
+                                                               on-select="getClinicList($item, $model)" required>
+                                                        <ui-select-match placeholder="Select Doctor">
+                                                            {{$select.selected.drName}}
+                                                        </ui-select-match>
+                                                        <ui-select-choices
+                                                                repeat="doctor.Id as doctor in doctorList | filter: $select.search  track by doctor.Id">
+                                                            <span ng-bind-html="doctor.drName | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span ng-if="seldoctor" style="color:red"
+                                                          ng-hide="apptDetails.doctorModel">
+                                                     Please Select Doctor
+                                                    </span>
+                                                </div>
+                                                <div class=" col-lg-6 col-sm-6">
+                                                    <label class="control-label"><span class="red">*</span>
+                                                        Center</label>
+                                                    <ui-select ng-model="apptDetails.ClinicModel" theme="bootstrap" ng-disabled="disablefield"
+                                                               required>
+                                                        <ui-select-match placeholder="Select Center">
+                                                            {{$select.selected.Clinic_name}}
+                                                        </ui-select-match>
+                                                        <ui-select-choices
+                                                                repeat="clinic.Id as clinic in clinicList | filter: $select.search">
+                                                            <span ng-bind-html="clinic.Clinic_name | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                    <span ng-if="selclinic" style="color:red"
+                                                          ng-hide="apptDetails.ClinicModel">
+                                                         Please Select Clinic
+                                                      </span>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="row form-group">
+                                                <div class=" col-lg-6 col-sm-6">
+                                                    <label class="control-label"><span class="red">*</span> Appointment
+                                                        Date</label>
+                                                    <p class="input-group">
+                                                        <input type="text" id="" placeholder=""
+                                                               ng-model="apptDetails.ApptDate"
+                                                               datepicker-popup="{{CandProfile.format}}"
+                                                               is-open="CandProfile.opened"
+                                                               min-date="CandProfile.minApptDate"
+                                                               max-date="false"
+                                                               datepicker-options="CandProfile.dateOptions"
+                                                               date-disabled="CandProfile.disabled(date, mode)"
+                                                               close-text="Close"
+
+                                                               class="form-control" ng-change="reload()" required/>
+
+                                                        <span class="input-group-btn">
+                                                                 <button type="button"
+                                                                         ng-disabled="disablefield"
+                                                                         ng-click="CandProfile.open($event)"
+                                                                         class="btn btn-default">
+                                                                 <em class="fa fa-calendar"></em>
+                                                                 </button>
+                                                                </span></p>
+                                                    <span ng-if="seldate" style="color:red"
+                                                          ng-hide="apptDetails.ApptDate">
+                                                                             Please Select Date
+                                                                            </span>
+                                                </div>
+
+                                                <div class=" col-lg-6 col-sm-6" required>
+                                                    <label class="control-label"><span class="red">*</span> Appointment
+                                                        Time</label>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <timepicker ng-model="apptDetails.ApptTime"
+                                                                        ng-disabled="disablefield"
+                                                                        ng-change="CandProfile.changed()"
+                                                                        show-meridian="CandProfile.ismeridian"></timepicker>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-sm-12">
+                                                    <button type="submit" ripple="" class="mr mb-sm btn btn-primary" ng-disabled="disablefield">
+                                                        Submit
+                                                    </button>
+                                                    <button type="reset" ripple="" class="mr mb-sm btn btn-info" ng-disabled="disablefield">Reset
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </treasure-overlay-spinner>
+                                    </div>
+
+                                    <!--<div class=" panel-default">-->
+                                        <!--<h4>Joining Information</h4>-->
+                                        <!--<hr>-->
+                                        <!--<div class="panel-body">-->
+                                            <!--<div class="row form-group">-->
+                                                <!--<div class=" col-lg-6 col-sm-6">-->
+                                                    <!--<label class="control-label">-->
+                                                        <!--Department</label>-->
+                                                    <!--<ui-select ng-model="apptDetails.department" theme="bootstrap">-->
+                                                        <!--<ui-select-match placeholder="Select Department">-->
+                                                            <!--{{$select.selected.dept}}-->
+                                                        <!--</ui-select-match>-->
+                                                        <!--<ui-select-choices-->
+                                                                <!--repeat="department.dept_id as department in departmentList | filter: $select.search">-->
+                                                            <!--<span ng-bind-html="department.dept | highlight: $select.search"></span>-->
+                                                        <!--</ui-select-choices>-->
+                                                    <!--</ui-select>-->
+                                                    <!--<span ng-if="seldepartment" style="color:red"-->
+                                                          <!--ng-hide="apptDetails.department">-->
+                                     <!--Please Select Status-->
+                                    <!--</span>-->
+                                                <!--</div>-->
+                                                <!--<div class=" col-lg-6 col-sm-6">-->
+                                                    <!--<label class="control-label">Sub-Department</label>-->
+                                                    <!--<ui-select ng-model="apptDetails.subdept" theme="bootstrap">-->
+                                                        <!--<ui-select-match placeholder="Select Sub-Department">-->
+                                                            <!--{{$select.selected.subdept}}-->
+                                                        <!--</ui-select-match>-->
+                                                        <!--<ui-select-choices-->
+                                                                <!--repeat="subdept.subdept_id as subdept in subdepartmentList | filter: $select.search">-->
+                                                            <!--<span ng-bind-html="subdept.subdept | highlight: $select.search"></span>-->
+                                                        <!--</ui-select-choices>-->
+                                                    <!--</ui-select>-->
+
+                                                <!--</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="row form-group">-->
+                                                <!--<div class=" col-lg-6 col-sm-6">-->
+                                                    <!--<label class="control-label">Rank</label>-->
+                                                    <!--<input ng-model="apptDetails.rank" ng-value="apptDetails.rank.rank"-->
+                                                           <!--placeholder="Rank"-->
+                                                           <!--typeahead="rank as rank.rank for rank in rankList | filter:$viewValue | limitTo:8"-->
+                                                           <!--type="text" name="name" class="input-filter form-control ">-->
+                                                <!--</div>-->
+
+
+                                                <!--<div class=" col-lg-6 col-sm-6">-->
+                                                    <!--<label class="control-label">Vessel</label>-->
+                                                    <!--<ui-select ng-model="apptDetails.vessel" theme="bootstrap">-->
+                                                        <!--<ui-select-match placeholder="Select Vessel">-->
+                                                            <!--{{$select.selected.vessel_name}}-->
+                                                        <!--</ui-select-match>-->
+                                                        <!--<ui-select-choices-->
+                                                                <!--repeat="vessel.id as vessel in vesselList | filter: $select.search">-->
+                                                            <!--<span ng-bind-html="vessel.vessel_name | highlight: $select.search"></span>-->
+                                                        <!--</ui-select-choices>-->
+                                                    <!--</ui-select>-->
+
+                                                <!--</div>-->
+
+                                            <!--</div>-->
+
+                                            <!--<div class="row form-group">-->
+                                                <!--<div class=" col-lg-6 col-sm-6">-->
+                                                    <!--<label class="switch">Sign-off Status-->
+                                                        <!--<input type="checkbox"-->
+                                                               <!--ng-model="apptDetails.SignOff"-->
+                                                               <!--ng-checked="SignOff" ng-disabled=""/>-->
+                                                        <!--<span></span>-->
+                                                    <!--</label>-->
+                                                <!--</div>-->
+                                                <!--<div class=" col-lg-6 col-sm-6">-->
+                                                    <!--<label class="control-label">Mark as Urgent</label>-->
+                                                    <!--<div class="checkbox-inline c-checkbox"-->
+                                                         <!--style="padding-left:20px;margin-top: 5px;">-->
+                                                        <!--<label>-->
+                                                            <!--<input ng-model="apptDetails.urgent" id="inlineCheckbox20"-->
+                                                                   <!--type="checkbox"-->
+                                                                   <!--value="option2">-->
+                                                            <!--<span class="fa fa-check"></span></label>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+
+                                            <!--</div>-->
+                                            <!--<div class="pull-right">-->
+                                                <!--<button type="submit" ripple="" class="mr mb-sm btn btn-primary">-->
+                                                    <!--Submit-->
+                                                <!--</button>-->
+                                                <!--<button type="reset" ripple="" class="mr mb-sm btn btn-info">Reset-->
+                                                <!--</button>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+
+                                    <!--</div>-->
+                                    <!--</div>-->
+
+
+                                </form>
+                            </div>
+                            <div ng-class="{'tab-pane active': activeTab === 4, 'tab-pane' : activeTab !== 4}">
+                                {{CandProfilepiePercent1}}
+                                <div class="col-lg-3">
+                                    <!-- START panel-->
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">Finger Print</div>
+                                        <div class="panel-body">
+                                            <div easypiechart="" options="CandProfile.pieOptions"
+                                                 percent="CandProfile.piePercent1"
+                                                 class="easypie ng-isolate-scope">
+                                                        <span ng-click="capture()" ripple="" class="ng-binding" style="top: 22% !important;padding-left: 15px;">
+                                                            <i class="material-icons dp" style="border-radius: 50px;font-size: 90px;">fingerprint</i></span>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">Panel Footer</div>
+                                    </div>
+                                    <!-- END panel-->
+                                </div>
+
+                               <!-- <div class="col-lg-3">
+                                    &lt;!&ndash; START panel&ndash;&gt;
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">Result</div>
+                                        <div class="panel-body">
+                                            <div class="circled">
+                                                <p> <img data-ng-src="data:image/png;base64,{{fingerImage}}" style=" background-color: #2095f2;padding: 10px;border-radius: 200px;height: 110px;"
+                                                         class="img-responsive"
+                                                         ng-show="fingerImage!=undefined"/></p>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">Panel Footer</div>
+                                    </div>
+                                    &lt;!&ndash; END panel&ndash;&gt;
+                                </div>-->
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+
+                                        <div class="p">
+                                            <div class="row row-flush text-center">
+                                                <div class="col-xs-6" style="display: none;">
+                                                    <p class="mt-lg">Scan Prints</p>
+                                                    <div easypiechart="" options="CandProfile.pieOptions"
+                                                         percent="CandProfile.piePercent1"
+                                                         class="easypie ng-isolate-scope">
+                                                        <span ng-click="capture()" ripple="" class="ng-binding" style="top: 22% !important;">
+                                                            <i class="material-icons dp" style="border-radius: 50px;font-size: 90px;">fingerprint</i></span>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-xs-6" style="display: none;">
+                                                    <div class="col-lg-6 col-sm-3 col-xs-12">
+                                                        <div>
+                                                            <p class="mt-lg" style="margin-bottom: 0px;">Scan Results</p>
+                                                            <div class="">
+                                                                <div class="circled">
+                                                                    <p> <img data-ng-src="data:image/png;base64,{{fingerImage}}" style=" background-color: #2095f2;padding: 10px;border-radius: 200px;height: 110px;"
+                                                                             class="img-responsive"
+                                                                             ng-show="fingerImage!=undefined"/></p>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <span class="ripple"></span></div>
+                                                    </div>
+                                                </div>
+                                                <div ng-repeat="(key, value) in fingerPrint track by $index">
+                                                    <div class="col-lg-3">
+                                                        <!-- START panel-->
+                                                        <div class="panel panel-success">
+                                                            <div class="panel-heading">Finger {{key+1}}</div>
+                                                            <div class="panel-body">
+                                                                <img data-ng-src="data:image/png;base64,{{value.BitmapData}}" style="height: 110px;"
+                                                                     class="img-responsive"/>
+
+                                                            </div>
+                                                            <div class="panel-footer">
+                                                                <button popover="DELETE" popover-trigger="mouseenter" type="button" style="opacity: 1 !important;font-size: 14px !important;float: none !important;" class="close">
+                                                                    <span><i class="fa fa-trash-o"> DELETE </i></span>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- END panel-->
+                                                    </div>
+                                                </div>
+                                                <!--<div class="col-xs-12">
+
+
+
+                                                    <div class="panel panel-primary">
+                                                        <div class="panel-heading">Finger Prints</div>
+                                                        <div class="panel-body">
+                                                    <div class="col-lg-3 col-md-6 col-sm-12" ng-repeat="(key, value) in fingerPrint track by $index">
+
+                                                        <img data-ng-src="data:image/png;base64,{{value.BitmapData}}" style=" background-color: #2095f2;padding: 10px;border-radius: 200px;height: 110px;"
+                                                             class="img-responsive"/>
+                                                        <div class="alert alert-success">
+
+                                                            <p ng-show="value.fingertype!=null">{{value.fingertype}}</p>
+
+                                                            <span ng-show="value.fingertype==null">
+                                                                Finger {{key+1}}</span>
+                                                            <button popover="DELETE" popover-trigger="mouseenter" type="button" style="opacity: 1 !important;" class="close">
+                                                                <span><i class="fa fa-trash-o" style="color: white;"></i></span>
+                                                            </button>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+
+                                                    </div>-->
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <div ng-class="{'tab-pane active': activeTab === 5, 'tab-pane' : activeTab !== 5}">
+                                <div ng-controller="CandEventController as eventCtrl">
+
+                                    <div class="" ng-if="showback">
+                                        <i title="Back" href="" class="fa fa-arrow-left " ng-click="ShowHide()"> Back </i>
+                                    </div>
+                                    <br>
+
+                                    <div ng-if = "eventlist">
+                                    <button type="button" class="mr btn btn-oval btn-success pull-right" ng-click="showevntbox()">
+                                        Add New Case
+                                    </button>
+
+                                        <div class="panel-body panel" ng-show="create_event" >
+                                            <form class="form-horizontal" role="form" name="eventCtrl.myForm" novalidate>
+
+                                                <div class=" col-lg-4 col-sm-6">
+                                                    <label class="control-label">Event Name</label>
+                                                    <input placeholder="Event Name" type="text" ng-model="eventdata.Eventname"
+                                                           class="input-filter form-control" autofocus required="">
+                                                    <span class="red" ng-show="(eventCtrl.myForm.$invalid)">Enter name of event.</span>
+                                                </div>
+                                                <br>
+                                                <button type="submit" ripple="" ng-click="createEvent()" ng-disabled="(form.myForm.$invalid)" class="mr mb-sm btn btn-primary">Create<span class="ripple"><span
+                                                        style="width: 93px; height: 93px; left: -24.3333px; top: -37.65px;"
+                                                        class="angular-ripple"></span></span></button>
+                                                <button type="button" ripple="" ng-click = "hideEventbox()" class="mr mb-sm btn btn-primary">Cancel<span class="ripple"><span
+                                                        style="width: 93px; height: 93px; left: -24.3333px; top: -37.65px;"
+                                                        class="angular-ripple"></span></span></button>
+                                            </form>
+                                        </div>
+
+                                    <hr class="col-sm-12">
+                                    <div class="table-responsive">
+                                        <table datatable="" dt-options="eventCtrl.dtOptions"
+                                               dt-columns="eventCtrl.dtColumns"
+                                               dt-instance="eventCtrl.dtInstance"
+                                               dt-options="eventCtrl.dtOptions"
+                                               dt-column-defs="eventCtrl.dtColumnDefs" class="row-border hover"
+                                               width="100%"></table>
+                                    </div>
+                                    </div>
+
+                                <div ng-if="showeventprofile">
+                                    <div>
+                                        <div class=" panel panel-default ">
+                                            <div class="row row-flush text-center text-muted m0">
+
+                                                <div popover="Information" popover-placement="top" popover-trigger="mouseenter" ripple="" ng-click="hpanel = [true, false, false, false]" ng-class="{'bg-primary': hpanel[0]}" class="col-xs-3 col-md-3 bb br pv-sm pv-bm clickable">
+                                                    <em class="icon-pie-graph fa-2x mv"></em>
+                                                </div>
+                                                <div popover="Cost Log" popover-placement="top" popover-trigger="mouseenter"  ripple="" ng-click="hpanel = [false, true, false, false]" ng-class="{'bg-success': hpanel[1]}" class="col-xs-3 col-md-3 bb br  pv-sm pv-bm clickable">
+                                                    <i class="fa fa-rupee fa-2x mv"></i>
+                                                </div>
+
+                                                <div  popover="Review" popover-placement="top" popover-trigger="mouseenter"  ripple="" ng-click="hpanel = [false, false, true, false]" ng-class="{'bg-amber': hpanel[2]}" class="col-xs-3 col-md-3 bb-lg br pv-sm pv-bm  clickable">
+                                                    <em class="icon-briefcase fa-2x mv"></em>
+                                                </div>
+                                                <div popover="Medical Report" popover-placement="top" popover-trigger="mouseenter"  ripple="" ng-click="hpanel = [false, false, false, true]" ng-class="{'bg-purple': hpanel[3]}" class="col-xs-3 col-md-3 bb-lg br pv-sm pv-bm clickable">
+                                                    <em class="icon-head fa-2x mv"></em>
+                                                </div>
+                                                <!--<div popover="Summary" popover-placement="top" popover-trigger="mouseenter" ripple="" ng-click="hpanel = [false, false, false, true]" ng-class="{'bg-purple': hpanel[3]}" class="col-xs-3 col-md-3 bb-lg br pv-sm pv-bm  clickable">-->
+                                                    <!--<i class="fa fa-list-alt fa-2x mv" aria-hidden="true"></i>-->
+                                                <!--</div>-->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="fw-boxed">
+                                        <div ng-init="hpanel = [true, false, false, false]" class=" panel-default">
+                                            <div ng-if="hpanel[0]" ng-init="dashboard.loadProgressValues()">
+                                                <span class="mobile_heading bg-primary">Information</span>
+                                                <ul class="list-block">
+                                                    <li class="media"  ng-hide="!EventList.length">
+
+                                                        <!-- Contact avatar-->
+                                                        <div>
+                                                            <div class="smoothy" style="box-shadow: none !important;">
+                                                                <scrollable class="pt" style="box-shadow: none !important;">
+                                                                    <div class="ng-scope col-sm-3 col-md-3 col-lg-3"
+                                                                         ng-repeat="Event in EventList">
+                                                                        <div class="media-heading">
+                                                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                                            <a class="ng-binding" ng-click = "">
+                                                                                {{Event.created_date}}</a>
+                                                                            <br>
+                                                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>  <small class="text-muted ng-binding">{{Event.name}}</small>
+                                                                            <hr>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </scrollable>
+                                                            </div>
+                                                        </div>
+
+                                                    </li>
+
+                                                    <li class="media"> <div ng-show="!EventList.length">Record Not Found.</div></li>
+
+                                                </ul>
+                                            </div>
+                                            <div ng-if="hpanel[1]" class="">
+                                                <span class="mobile_heading bg-success"> Cost Log</span>
+                                                <div class="panel">
+                                                    <div class="p">
+                                                        <div class="row row-flush text-center">
+                                                            <div class="col-xs-12">
+                                                                <div class="smoothy" style="box-shadow: none !important;">
+                                                                    <scrollable class="pt" style="box-shadow: none !important;">
+
+                                                                        <table class="table table-bordered table-hover">
+                                                                            <tbody><tr class="bg-success" style="font-weight: bold">
+                                                                                <td>Name</td>
+                                                                                <td>Cost</td>
+                                                                                <td>Notes</td>
+                                                                                <td>Date</td>
+                                                                                <td>Action</td>
+                                                                            </tr>
+
+                                                                            <!-- ngRepeat: user in event.users --><tr ng-repeat="log in eventCtrl.logs" class="ng-scope">
+                                                                                <td>
+                                                                                    <!-- editable username (text with validation)-->
+                                                                                    <span editable-text="log.log_type" e-name="log_type" e-form="rowform" onbeforesave="eventCtrl.checkName($data, log.id)" e-required="true" class="ng-scope ng-binding editable">{{log.log_type || &apos;empty&apos; }}</span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <!-- editable username (text with validation)-->
+                                                                                    <span editable-text="log.cost" e-name="cost" e-form="rowform" onbeforesave="eventCtrl.checkCost($data, log.id)" e-required="true" class="ng-scope ng-binding editable">{{log.cost || &apos;empty&apos;}}</span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <!-- editable username (text with validation)-->
+                                                                                    <span editable-text="log.internal_notes" e-name="internal_notes" e-form="rowform"  e-required="" class="ng-scope ng-binding editable">{{log.internal_notes || &apos;empty&apos;}}</span>
+                                                                                </td>
+
+                                                                                <td>
+                                                                                    <!-- editable username (text with validation)-->
+                                                                                    <span e-name="log_date" e-form="rowform" class="ng-scope ng-binding editable">{{log.log_date}}</span>
+                                                                                </td>
+                                                                                <td style="word-wrap: break-word">
+                                                                                    <!-- form-->
+                                                                                    <form editable-form="" name="rowform" onbeforesave="eventCtrl.saveLog($data, log.id)" ng-show="rowform.$visible" shown="event.inserted == log" class="form-buttons form-inline ng-pristine ng-valid ng-hide">
+                                                                                        <button type="submit" ng-disabled="rowform.$waiting" title="Save" class="btn btn-sm btn-info">
+                                                                                            <em class="fa fa-save"></em>
+                                                                                        </button>
+                                                                                        <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" title="Cancel" class="btn btn-sm btn-default">
+                                                                                            <em class="fa fa-times"></em>
+                                                                                        </button>
+                                                                                    </form>
+                                                                                    <div ng-show="!rowform.$visible" class="buttons">
+                                                                                        <button ng-click="rowform.$show()" title="Edit" class="btn btn-sm btn-info">
+                                                                                            <em class="fa fa-pencil"></em>
+                                                                                        </button>
+                                                                                        <button ng-click="eventCtrl.removeUser($index)" title="Delete" class="btn btn-sm btn-danger">
+                                                                                            <em class="fa fa-trash"></em>
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr ng-show="!eventCtrl.logs.length">
+                                                                                <td colspan="5">Data Not Found.</td>
+                                                                            </tr>
+                                                                            <!-- end ngRepeat: user in event.users -->
+                                                                            </tbody></table><br>
+
+
+                                                                        <a ng-click="eventCtrl.addUser()"><button  class="btn btn-info">Add row</button></a>
+                                                                    </scrollable>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div ng-if="hpanel[2]" class="">
+                                                <span class="mobile_heading bg-amber"> Review</span>
+                                                <div class=" pv-xxl">
+                                                    <div class="row  row-table text-center">
+                                                        <div class="col-sm-4 p-t-15 col-xs-12">
+                                                            <p class="text-muted">Total Cost</p>
+                                                            <h1 class="text-resp m0 mb-lg"><i class="fa fa-rupee"></i>{{medicalInfo.total_cost}}</h1>
+                                                            <!--<p class="text-muted m0">TIME</p>
+                                                            <p class="m0">5 months</p>-->
+                                                        </div>
+                                                        <div class="col-sm-4 p-t-15 col-xs-12">
+                                                            <p class="text-muted">Deductible</p>
+                                                            <h1 class="text-resp m0 mb-lg"><i class="fa fa-rupee"></i>{{medicalInfo.deductible_cost}}</h1>
+                                                            <!--<p class="text-muted m0">LAST INCOME</p>
+                                                            <p class="m0">Yesterday</p>-->
+                                                        </div>
+                                                        <div class="col-sm-4 p-t-15 col-xs-12">
+                                                            <p class="text-muted">Claim Amount</p>
+                                                            <h1 class="text-resp m0 mb-lg"><i class="fa fa-rupee"></i>{{medicalInfo.claim_amount}}</h1>
+                                                            <!-- <p class="text-muted m0">LAST SALE</p>
+                                                             <p class="m0">10 minutes ago</p>-->
+                                                        </div>
+                                                    </div>
+                                                    <div class="">
+                                                        <form name="form.myForm" ng-submit="saveData(form.myForm)" class="form-validate">
+                                                            <div class="table-responsive">
+                                                                <div class="col-sm-12 panel-heading" style="background-color: #ffc107;color: black;">Case Review</div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-lg-3 col-sm-12">
+                                                                        <label>Case Eventuality</label>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1 p-l-0">
+
+                                                                        <select name="riskCat" ng-change="eventCtrl.open($event,'case_eventuality_date',false)" ng-model="medicalInfo.case_eventuality" class="form-control m-b">
+                                                                            <option value="">Select case eventuality</option>
+                                                                            <option value="1">Hospitalized</option>
+                                                                            <option value="2">Repatriation</option>
+                                                                            <option value="3">Sign-Off</option>
+                                                                            <option value="4">Cared-Onboard</option>
+                                                                            <option value="5">Closed</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1 p-l-0">
+
+                                                                        <p class="input-group">
+                                                                            <input type="text" id="case_eventuality" placeholder="" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   ng-model="medicalInfo.case_eventuality_date" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   is-open="eventCtrl.case_eventuality_date" ng-readonly="true" min-date="false" max-date="false"
+                                                                                   datepicker-options="eventCtrl.dateOptions"
+                                                                                   date-disabled="eventCtrl.disabled(date, mode)"
+                                                                                   close-text="Close"
+                                                                                   class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="eventCtrl.open($event,'case_eventuality_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-lg-3 col-sm-12">
+                                                                        <label>Case Summary Notes </label>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1  p-l-0 ab">
+                                       <textarea placeholder="Case Summary" ng-blur="eventCtrl.open($event,'case_notes_date',false)" ng-model="medicalInfo.case_notes" class="form-control col-sm-4" type="text">
+
+                                       </textarea>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1  p-l-0 ab">
+
+                                                                        <p class="input-group">
+                                                                            <input type="text" id="case_notes_date" placeholder="" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   ng-model="medicalInfo.case_notes_date" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   is-open="eventCtrl.case_notes_date" ng-readonly="true" min-date="false" max-date="false"
+                                                                                   datepicker-options="eventCtrl.dateOptions"
+                                                                                   date-disabled="eventCtrl.disabled(date, mode)"
+                                                                                   close-text="Close"
+                                                                                   class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="eventCtrl.open($event,'case_notes_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 panel-heading" style="background-color: #ffc107;color: black;">P&I Claims</div>
+
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-lg-3 col-sm-12">
+                                                                        <label>Total Cost </label>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1 p-l-0">
+                                                                        <input type="number" name="total_cost" ng-model="medicalInfo.total_cost" ng-blur="event.open($event,'total_cost_date',false)" class="form-control ng-dirty ng-valid-number ng-valid ng-valid-required ng-touched">
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1 p-l-0">
+                                                                        <p class="input-group">
+                                                                            <input type="text" id="total_cost_date" placeholder="" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   ng-model="medicalInfo.total_cost_date" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   is-open="eventCtrl.total_cost_date" ng-readonly="true" min-date="false" max-date="false"
+                                                                                   datepicker-options="eventCtrl.dateOptions"
+                                                                                   date-disabled="eventCtrl.disabled(date, mode)"
+                                                                                   close-text="Close"
+                                                                                   class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="eventCtrl.open($event,'total_cost_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-lg-3 col-sm-12">
+                                                                        <label>Deductible</label>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1 p-l-0">
+
+                                                                        <input type="number" ng-model="medicalInfo.deductible_cost"  ng-blur="event.open($event,'deductible_cost_date',false)" name="medicalInfo.deductible_cost" class="form-control ng-dirty ng-valid-number ng-valid ng-valid-required ng-touched">
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1 p-l-0">
+                                                                        <p class="input-group">
+                                                                            <input type="text" id="deductible_cost_date" placeholder="" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   ng-model="medicalInfo.deductible_cost_date" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   is-open="eventCtrl.deductible_cost_date" ng-readonly="true" min-date="false" max-date="false"
+                                                                                   datepicker-options="eventCtrl.dateOptions"
+                                                                                   date-disabled="eventCtrl.disabled(date, mode)"
+                                                                                   close-text="Close"
+                                                                                   class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="eventCtrl.open($event,'deductible_cost_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-lg-3 col-sm-12">
+                                                                        <label>Claim Amount</label>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1 p-l-0">
+                                                                        <input type="number" ng-model="medicalInfo.claim_amount" ng-blur="eventCtrl.open($event,'claim_amount_date',false)"  name="claim_amount" placeholder="{{medicalInfo.total_cost - medicalInfo.deductible_cost}}" class="form-control ng-dirty ng-valid-number ng-valid ng-valid-required ng-touched">
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1 p-l-0">
+
+                                                                        <p class="input-group">
+                                                                            <input type="text" id="claim_amount_date" placeholder="" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   ng-model="medicalInfo.claim_amount_date" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   is-open="eventCtrlclaim_amount_date" ng-readonly="true" min-date="false" max-date="false"
+                                                                                   datepicker-options="eventCtrl.dateOptions"
+                                                                                   date-disabled="eventCtrl.disabled(date, mode)"
+                                                                                   close-text="Close"
+                                                                                   class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="eventCtrl.open($event,'claim_amount_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-lg-3 col-sm-12">
+                                                                        <label>Register Claim</label>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1 p-l-0">
+
+                                                                        <div class="radio-inline c-radio">
+                                                                            <label>
+                                                                                <input id="claimradio1" ng-change="eventCtrl.open($event,'register_claim_date',false)" ng-model="medicalInfo.register_claim" name="i-radio" value="1" type="radio">
+                                                                                <span class="fa fa-circle"></span>Yes</label>
+                                                                        </div>
+                                                                        <div class="radio-inline c-radio">
+                                                                            <label>
+                                                                                <input id="claimradio2" ng-change="eventCtrl.open($event,'register_claim_date',false)" name="i-radio" ng-model="medicalInfo.register_claim" value="2" type="radio">
+                                                                                <span class="fa fa-circle"></span>No</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1 p-l-0">
+                                                                        <p class="input-group">
+                                                                            <input type="text" id="register_claim_date" placeholder="" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   ng-model="medicalInfo.register_claim_date" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   is-open="eventCtrl.register_claim_date" ng-readonly="true" min-date="false" max-date="false"
+                                                                                   datepicker-options="eventCtrl.dateOptions"
+                                                                                   date-disabled="eventCtrl.disabled(date, mode)"
+                                                                                   close-text="Close"
+                                                                                   class="form-control" ng-change="reload()" required/>
+                                                        <span class="input-group-btn">
+                                                           <button type="button" ng-click="eventCtrl.open($event,'register_claim_date',true)" class="btn btn-default">
+                                                               <em class="fa fa-calendar"></em>
+                                                           </button>
+                                                        </span></p>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12 panel-heading" style="background-color: #ffc107;color: black;">Reports</div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-lg-4 headerstyle1">
+                                                                        <div class="checkbox-inline c-checkbox">
+                                                                            <label>
+                                                                                <input id="basic_format" ng-model="medicalInfo.reviewreport.basic_format" ng-checked="medicalInfo.reviewreport[0].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                                                                <span class="fa fa-check"></span>Claim Basic Format</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1">
+
+
+
+
+                                                                        <div class="checkbox-inline c-checkbox">
+                                                                            <label>
+                                                                                <input id="ship_masters" ng-model="medicalInfo.reviewreport.ship_masters" ng-checked="medicalInfo.reviewreport[1].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                                                                <span class="fa fa-check"></span>Ship Masters Report</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-4 headerstyle1">
+                                                                        <div class="checkbox-inline c-checkbox">
+                                                                            <label>
+                                                                                <input id="health_status" ng-model="medicalInfo.reviewreport.health_status" ng-checked="medicalInfo.reviewreport[2].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                                                                <span class="fa fa-check"></span>Health Status Report</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+
+                                                            </div>
+                                                            <button type="submit" ripple="" class="mr mb-sm btn btn-primary col-lg-offset-5 col-xs-offset-2">Save<span class="ripple"></span>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="hpanel[3]" class="">
+                                                <div class="">
+                                                    <div class="panel">
+                                                        <form name="form.myForm" ng-submit="saveData(form.myForm)" class="form-validate">
+                                                            <div class="table-responsive">
+                                                                <div class="col-sm-12 panel-heading" style="background-color: #6639b6;color: white;">Medical Complaint Report</div>
+
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label>Type of complaint</label>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="checkbox-inline c-checkbox col-sm-3">
+                                                                            <label>
+                                                                                <input id="inlineCheckbox10" ng-model="medicalInfo.typeofcomplaint.injury" ng-checked="medicalInfo.tbl_typeofcomplaint[0].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                                                                <span class="fa fa-check"></span>Injury</label>
+                                                                        </div>
+                                                                        <div class="checkbox-inline c-checkbox col-sm-3">
+                                                                            <label>
+
+                                                                                <input id="inlineCheckbox20" ng-model="medicalInfo.typeofcomplaint.illness" ng-checked="medicalInfo.tbl_typeofcomplaint[1].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                                                                <span class="fa fa-check"></span>Illness</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label> Reported on</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
+                                                                        <p class="input-group">
+                                                                            <input type="text" id="reportedOn" placeholder="" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   ng-model="medicalInfo.medical_reportedOn" ng-readonly="true" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   is-open="eventCtrl.reportedOn" min-date="false" max-date="false"
+                                                                                   datepicker-options="eventCtrl.dateOptions"
+                                                                                   date-disabled="eventCtrl.disabled(date, mode)"
+                                                                                   close-text="Close"
+                                                                                   class="form-control" ng-change="reload()" required/>
+
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="eventCtrl.open($event,'reportedOn',true)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span></p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label> First Examination</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
+                                                                        <p class="input-group">
+                                                                            <input type="text" id="firstExam" placeholder="" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   ng-model="medicalInfo.medical_firstExam" ng-readonly="true" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   is-open="eventCtrl.firstExam" min-date="false" max-date="false"
+                                                                                   datepicker-options="eventCtrl.dateOptions"
+                                                                                   date-disabled="eventCtrl.disabled(date, mode)"
+                                                                                   close-text="Close"
+                                                                                   class="form-control" ng-change="reload()" required/>
+
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="eventCtrl.open($event,'firstExam',true)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span></p>
+
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label> Location of vessel</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
+                                                                        <div class="col-sm-4">
+                                                                            <input id="latitude" placeholder="Latitude" ng-model="medicalInfo.vessel_latitude" class="form-control col-sm-4" type="text">
+                                                                        </div>
+                                                                        <div class="col-sm-4">
+                                                                            <input id="longitude" placeholder="Longitude" ng-model="medicalInfo.vessel_longitude" class="form-control col-sm-4" type="text">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label> Closest Port</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6"><input placeholder="Closest Port" ng-model="medicalInfo.closest_port" class="form-control col-sm-4" type="text"></div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label>Days to port</label>
+                                                                    </div>
+
+
+                                                                    <div class="col-sm-6"><input placeholder="Days to Port" ng-model="medicalInfo.Days_to_port" class="form-control col-sm-4" type="text"></div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label>Medical problem</label>
+                                                                    </div>
+                                                                    <div class="col-sm-6"><textarea placeholder="Medical Condition" ng-model="medicalInfo.medical_condition" class="form-control col-sm-4" type="text"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label>Risk category of case</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
+                                                                        <select name="riskCat" ng-model="medicalInfo.medical_riskCat" class="form-control m-b">
+                                                                            <option value="1">1</option>
+                                                                            <option value="2">2</option>
+                                                                            <option value="3">3</option>
+                                                                            <option value="4">4</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+
+                                                                    <div class="col-sm-6">
+                                                                        <label>Type of injury</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
+
+                                                                        <div class="radio-inline c-radio">
+                                                                            <label>
+                                                                                <input id="inlineradio1" ng-model="medicalInfo.medical_TypeOfRisk" name="i-radio-vessel" value="1" type="radio">
+                                                                                <span class="fa fa-circle"></span>Avoidable</label>
+                                                                        </div>
+                                                                        <div class="radio-inline c-radio">
+                                                                            <label>
+                                                                                <input id="inlineradio2" name="i-radio-vessel" ng-model="medicalInfo.medical_TypeOfRisk" value="2" type="radio">
+                                                                                <span class="fa fa-circle"></span>Un-Avoidable</label>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-sm-12 panel-heading" style="background-color: #6639b6;color: white;">Action Taken</div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label> Onboard Examination</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
+                                                                        <p class="input-group">
+                                                                            <input type="text" id="OnboardExam" placeholder="" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   ng-model="medicalInfo.medical_OnboardExam" datepicker-popup="{{eventCtrl.format}}"
+                                                                                   is-open="eventCtrl.OnboardExam" ng-readonly="true" min-date="false" max-date="false"
+                                                                                   datepicker-options="eventCtrl.dateOptions"
+                                                                                   date-disabled="eventCtrl.disabled(date, mode)"
+                                                                                   close-text="Close"
+                                                                                   class="form-control" ng-change="reload()" required/>
+
+                        <span class="input-group-btn">
+                           <button type="button" ng-click="eventCtrl.open($event,'OnboardExam',true)" class="btn btn-default">
+                               <em class="fa fa-calendar"></em>
+                           </button>
+                        </span></p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label>  Onboard Examination Notes</label>
+                                                                    </div>
+
+
+                                                                    <div class="col-sm-6">
+                                                                        <textarea placeholder="Notes" ng-model="medicalInfo.medical_OnboardNotes" class="form-control col-sm-4" type="text"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+                                                                    <div class="col-sm-6">
+                                                                        <label>  Action Taken</label>
+                                                                    </div>
+
+
+                                                                    <div class="col-sm-6">
+                                                                        <div class="checkbox-inline c-checkbox">
+                                                                            <label>
+                                                                                <input id="Econsult" ng-model="medicalInfo.actionTaken.Econsult" ng-checked="medicalInfo.tbl_actiontaken[0].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                                                                <span class="fa fa-check"></span>E-Consult</label>
+                                                                        </div>
+                                                                        <div class="checkbox-inline c-checkbox">
+                                                                            <label>
+                                                                                <input id="telemed" ng-model="medicalInfo.actionTaken.telemed" ng-checked="medicalInfo.tbl_actiontaken[1].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                                                                <span class="fa fa-check"></span>Tele-Medicine</label>
+                                                                        </div>
+                                                                        <div class="checkbox-inline c-checkbox">
+                                                                            <label>
+                                                                                <input id="onboardTreatment" ng-model="medicalInfo.actionTaken.onboardTreatment" ng-checked="medicalInfo.tbl_actiontaken[2].checked == 1" ng-true-value="1"  ng-false-value="0" type="checkbox">
+                                                                                <span class="fa fa-check"></span>Onboard Treatment</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-12 headerstyle1">
+
+                                                                    <div class="col-sm-6">
+                                                                        <label>  Vessel Diverted</label>
+                                                                    </div>
+
+                                                                    <div class="col-sm-6">
+
+                                                                        <div class="radio-inline c-radio">
+                                                                            <label>
+                                                                                <input id="vessel_diverted1" ng-model="medicalInfo.vessel_diverted" name="i-radio" value="1" type="radio">
+                                                                                <span class="fa fa-circle"></span>Yes</label>
+                                                                        </div>
+                                                                        <div class="radio-inline c-radio">
+                                                                            <label>
+                                                                                <input id="vessel_diverted2" name="i-radio" ng-model="medicalInfo.vessel_diverted" value="2" type="radio">
+                                                                                <span class="fa fa-circle"></span>No</label>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div>
+                                                                    <div class="col-sm-12 headerstyle1" ng-show="medicalInfo.vessel_diverted == '1'">
+                                                                        <div class="col-sm-6">
+                                                                            <label>Diverted to</label></div>
+                                                                        <div class="col-sm-6"><input placeholder="Diverted to" ng-model="medicalInfo.diverted_port" class="form-control col-sm-4" type="text"></div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 headerstyle1" ng-show="medicalInfo.vessel_diverted == '1'">
+                                                                        <div class="col-sm-6"> <label>Miles off course </label></div>
+                                                                        <div class="col-sm-6"><input placeholder="Miles off course" ng-model="medicalInfo.diverted_miles" class="form-control col-sm-4" type="text"></div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 headerstyle1" ng-show="medicalInfo.vessel_diverted == '1'">
+                                                                        <div class="col-sm-6"> <label>Total days lost </label></div>
+                                                                        <div class="col-sm-6"><input placeholder="Total days lost" ng-model="medicalInfo.diverted_daysLost" class="form-control col-sm-4" type="text"></div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 headerstyle1" ng-show="medicalInfo.vessel_diverted == '1'">
+                                                                        <div class="col-sm-6"> <label>Estimated cost due to divert </label></div>
+                                                                        <div class="col-sm-6">
+                                                                            <input placeholder="Estimated cost due to divert" ng-model="medicalInfo.diverted_cost" class="form-control col-sm-4"></div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <button type="submit" ripple="" class="mr mb-sm btn btn-primary col-sm-offset-1">Save<span class="ripple"></span>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                </div>
+
+                                </div>   <!--- Event controller end here-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,87 @@
+
+    <div class="panel">
+        <div class="panel-body">
+            <div ng-controller="DashboardController as dashboardCtrl" class="container-fh">
+                <div class="l-table-fixed">
+                    <div class="l-cell wd-md br">
+                        <div class="l-table bg-white">
+                            <div class="p bt">
+                                <scrollable class="pt mb-folder-box" data-height="500px">
+                                <ul class="mb-folder-list ">
+                                <li ng-repeat="obj in notificationTypebttn">
+                                <a href="" ng-click="listspecific(obj.typeid)" style="color: white !important;">
+                                <span class="label label-primary pull-right" style="background-color: white;color: black;">{{ obj.count }}</span>
+                                <em ng-class="obj.icon" class="fa fa-fw fa-lg"></em>
+                                <span>{{ obj.name | titlecase }}</span>
+                                </a>
+                                </li>
+                                </ul>
+                                </scrollable>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="l-cell">
+                        <div class="l-table">
+                            <div class="l-row">
+                                <div class="l-cell-wrapper" style="overflow-y: hidden">
+                                    <div class="l-cell-inner">
+                                        <div class="p">
+                                            <ul class="chat">
+                                                <treasure-overlay-spinner active='spinner.active'>
+                                                    <div class="smoothy" style="position: relative; overflow: hidden;">
+
+                                                        <scrollable class="pt" style="overflow: hidden; height: 460px; width: auto;" data-height="460px" when-scrolled="loadonscrolling()">
+                                                            <!-- START timeline-->
+                                                            <ul class="timeline-alt" ng-repeat="data in newnotification track by $index">
+                                                                <li data-datetime="{{data.date}}" class="timeline-separator"
+                                                                    ng-hide="newnotification[$index].date == newnotification[$index -1].date"></li>
+                                                                <!-- START timeline item-->
+
+                                                                <li class="mb-sm mt-sm">
+                                                                    <div ng-class="data.iconbg">
+                                                                        <em ng-class="data.icon"></em>
+                                                                    </div>
+                                                                    <div class="timeline-date">
+                                                                        <time datetime={{data.timespend}}></time>
+                                                                    </div>
+                                                                    <div class="timeline-panel">
+                                                                        <strong>{{data.notification_type}}</strong>  <em ng-if="data.marksent" class="fa fa-check"></em>
+
+                                                                        <div class="text-muted"><a href=""
+                                                                                                   ng-click="viewnotification(data.id, data.notification_type)">{{data.desc}}</a>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </li>
+
+                                                            </ul>
+
+                                                            <!-- END timeline-->
+                                                        </scrollable>
+                                                    </div>
+                                                </treasure-overlay-spinner>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p bt">
+                                <form>
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Type your message..." ng-model="message" ng-disabled="noAccess" ng-keydown="$event.which === 13" class="form-control" />
+                     <span class="input-group-btn">
+                        <button type="submit" ng-click="sentmessage()" ng-disabled="noAccess" class="btn btn-info">Send</button>
+                     </span>
+
+                                    </div>
+
+                                </form>
+                                <div ng-show="noAccess">You Have Read Only Access. Please Contact Administrator.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>

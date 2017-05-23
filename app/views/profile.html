@@ -1,0 +1,145 @@
+<div ng-controller="Profile as profile">
+    <div style="background:url(app/img/profile.jpg) center center; background-size:cover;" class="unwrap">
+        <toaster-container
+                toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+        <div class="container container-lg p-lg">
+            <!--<div class="pull-right">-->
+            <!--<button type="button" class="btn btn-amber">Follow</button>-->
+            <!--</div>-->
+            <div class="media mt-lg">
+                <div class="media-left media-middle">
+                    <a href="">
+                        <img src="app/img/user/02.jpg" class="media-object thumb96 img-circle"/>
+                    </a>
+                </div>
+                <div class="media-body text-white">
+                    <h2 class="mv-lg media-heading">{{currentUser.user}}</h2>
+                    <!--<button type="button" class="btn btn-info btn-xs mr-sm">-->
+                    <!--<em class="fa fa-twitter fa-fw"></em>-->
+                    <!--</button>-->
+                    <!--<button type="button" class="btn btn-primary btn-xs mr-sm">-->
+                    <!--<em class="fa fa-facebook fa-fw"></em>-->
+                    <!--</button>-->
+                    <!--<button type="button" class="btn btn-danger btn-xs">-->
+                    <!--<em class="fa fa-google-plus fa-fw"></em>-->
+                    <!--</button>-->
+                </div>
+            </div>
+            <div class="text-right text-white pb-lg">
+                <p class="m0">
+                    <strong>Reg No: 32840</strong>
+                </p>
+                <p class="m0">
+                    <strong>Joined On: 31/08/2015</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="container container-lg">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <form role="form" class="form-horizontal" name="myForm" ng-submit="submit(myForm)" novalidate>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Reg No.</label>
+                                <div class="col-lg-6">
+                                    {{userDetails.RegNo}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">First Name</label>
+                                <div class="col-lg-6">
+                                    <input name="FirstName" type="text" placeholder="First Name"
+                                           ng-model="userDetails.FirstName" class="form-control" ng-required="true"/>
+                                    <div ng-messages="myForm.FirstName.$error" style="color:maroon" role="alert"
+                                         ng-show="myForm.FirstName.$touched || myForm.$submitted">
+                                        <div ng-messages-include="app/views/validation.message.html"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Middle Name</label>
+                                <div class="col-lg-6">
+                                    <input name="m-name" type="text" placeholder="Middle Name"
+                                           ng-model="userDetails.MiddleName"
+                                           class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Last Name</label>
+                                <div class="col-lg-6">
+                                    <input name="LastName" type="text" placeholder="Last Name"
+                                           ng-model="userDetails.LastName"
+                                           class="form-control" ng-required="true"/>
+                                    <div ng-messages="myForm.LastName.$error" style="color:maroon" role="alert"
+                                         ng-show="myForm.LastName.$touched || myForm.$submitted">
+                                        <div ng-messages-include="app/views/validation.message.html"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Reg Email Id</label>
+                                <div class="col-lg-6">
+                                    {{userDetails.EmailId}}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Birthday</label>
+                                <div class="col-lg-6">
+                                    <p class="input-group">
+                                        <input name="dateOfBirth" type="text" datepicker-popup="{{format}}"
+                                               ng-model="userDetails.DateOfBirth"
+                                               is-open="profile.opened" min-date="false" max-date="false"
+                                               datepicker-options="profile.dateOptions"
+                                               date-disabled="profile.disabled(profile.date, profile.mode)"
+                                               close-text="Close"
+                                               class="form-control" ng-required="true"/>
+                                        <span class="input-group-btn">
+                                           <button type="button" ng-click="profile.open($event)"
+                                                   class="btn btn-default">
+                                              <em class="fa fa-calendar"></em>
+                                           </button>
+                                        </span>
+                                    </p>
+                                    <div ng-messages="myForm.dateOfBirth.$error" style="color:maroon" role="alert"
+                                         ng-show="myForm.dateOfBirth.$touched || myForm.$submitted">
+                                        <div ng-messages-include="app/views/validation.message.html"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Contact No.</label>
+                                <div class="col-lg-6">
+                                    <input name="c-no" type="text" placeholder="Contact No."
+                                           ng-model="userDetails.MobileNo"
+                                           class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Address</label>
+                                <div class="col-lg-6">
+                                    <textarea name="add" type="text" placeholder="Address"
+                                              class="form-control" ng-model="userDetails.Address"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-lg-2 control-label">Summary (About)</label>
+                                <div class="col-lg-6">
+                                    <textarea name="summary" type="text" placeholder="Summary (About)"
+                                              class="form-control" ng-model="userDetails.Summary"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-offset-2 col-lg-10">
+                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="button" class="btn btn-purple">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

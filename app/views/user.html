@@ -1,0 +1,141 @@
+<div ng-app="MyApp" ng-controller="UserController as form">
+    <form name="myForm" ng-submit="submit(myForm)" novalidate>
+        <div class="panel panel-body">
+            <div class="app-view-header headerstyle">Setup: {{status}}
+            </div>
+            <hr>
+            <div class="panel-body">
+                <treasure-overlay-spinner active='loading'>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> Email Id</label>
+                            <input placeholder="Email Id" name="EmailId" ng-model="User.EmailId"
+                                   type="email"
+                                   class="input-filter form-control shadow-z1 " ng-required="true"
+                                   ng-blur="packageChange()"
+                                   required focus="true">
+                            <div ng-messages="myForm.EmailId.$error" style="color:maroon" role="alert"
+                                 ng-show="myForm.EmailId.$touched || myForm.$submitted">
+                                <div ng-messages-include="app/views/validation.message.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> Password</label>
+                            <input placeholder="Password" name="Password" ng-model="User.Password"
+                                   type="password"
+                                   class="input-filter form-control shadow-z1 " ng-required="true"
+                                   ng-blur="packageChange()"
+                                   required focus="true">
+                            <div ng-messages="myForm.Password.$error" style="color:maroon" role="alert"
+                                 ng-show="myForm.Password.$touched || myForm.$submitted">
+                                <div ng-messages-include="app/views/validation.message.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> Confirm Password</label>
+                            <input placeholder="Confirm Password" name="lastName" ng-model="User.confirmPassword"
+                                   type="password"
+                                   class="input-filter form-control shadow-z1 " ng-required="true"
+                                   ng-blur="packageChange()" compare-to="User.Password"
+                                   required focus="true">
+                            <div ng-messages="myForm.confirmPassword.$error" style="color:maroon" role="alert"
+                                 ng-show="myForm.confirmPassword.$touched || myForm.$submitted">
+                                <div ng-messages-include="app/views/validation.message.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> First Name</label>
+                            <input placeholder="Package Name" name="FirstName" ng-model="User.FirstName"
+                                   type="text"
+                                   class="input-filter form-control shadow-z1 " ng-required="true"
+                                   ng-blur="packageChange()"
+                                   required focus="true">
+                            <div ng-messages="myForm.packageName.$error" style="color:maroon" role="alert"
+                                 ng-show="myForm.packageName.$touched || myForm.$submitted">
+                                <div ng-messages-include="app/views/validation.message.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> Middle Name</label>
+                            <input placeholder="Package Name" name="MiddleName" ng-model="User.MiddleName"
+                                   type="text"
+                                   class="input-filter form-control shadow-z1 "
+                                   ng-blur="packageChange()"
+                                   required focus="true">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> Last Name</label>
+                            <input placeholder="Package Name" name="LastName" ng-model="User.LastName"
+                                   type="text"
+                                   class="input-filter form-control shadow-z1 " ng-required="true"
+                                   ng-blur="packageChange()"
+                                   required focus="true">
+                            <div ng-messages="myForm.packageName.$error" style="color:maroon" role="alert"
+                                 ng-show="myForm.packageName.$touched || myForm.$submitted">
+                                <div ng-messages-include="app/views/validation.message.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> Date of birth</label>
+                            <p class="input-group">
+                                <input type="text" datepicker-popup="{{form.format}}" ng-model="User.DateOfBirth"
+                                       is-open="form.opened" min-date="false" max-date="false" name="DateOfBirth"
+                                       datepicker-options="form.dateOptions"
+                                       date-disabled="form.disabled(form.date, form.mode)" close-text="Close"
+                                       class="form-control"/>
+                                <span class="input-group-btn">
+                           <button type="button" ng-click="form.open($event)" class="btn btn-default">
+                              <em class="fa fa-calendar"></em>
+                           </button>
+                        </span>
+                            </p>
+                            <div ng-messages="myForm.packageName.$error" style="color:maroon" role="alert"
+                                 ng-show="myForm.packageName.$touched || myForm.$submitted">
+                                <div ng-messages-include="app/views/validation.message.html"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label">Mobile No</label>
+                            <input placeholder="Description" name="MobileNo" ng-model="User.MobileNo"
+                                   type="text" ng-pattern="[789][0-9]{9}"
+                                   class="input-filter form-control shadow-z1 "
+                                   focus="true">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class=" col-lg-4 col-sm-4">
+                            <label class="control-label"><span class="red">*</span> Select Package</label>
+                            <ui-select multiple="" ng-model="userPackage.packages" theme="bootstrap" ng-required="true">
+                                <ui-select-match placeholder="Select Courses">{{$item.Course}}</ui-select-match>
+                                <ui-select-choices repeat="course.Id as course in courseList | filter: $select.search">
+                                    <span ng-bind-html="course.Course | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-3  col-md-offset-1">
+                            <button type="submit" ripple="" class="mr mb-sm btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </treasure-overlay-spinner>
+            </div>
+        </div>
+    </form>
+</div>
+

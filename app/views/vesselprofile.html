@@ -1,0 +1,369 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<div ng-controller="VesselProfileController as VesselProfile">
+    <toaster-container
+            toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+    <div style="background:url(app/img/profile.jpg) center center; background-size:cover;" class="unwrap">
+
+        <div class="container container-lg p-lg">
+            <toaster-container
+                    toaster-options="{'time-out': 3000, 'close-button':true, 'animation-class': 'toast-top-right'}"></toaster-container>
+            <div class="media mt-lg">
+                <div class="media-left media-middle">
+                    <a href="">
+                        <img src="app/img/user/02.jpg" class="media-object thumb96 img-circle"/>
+                    </a>
+                </div>
+                <div class="media-body text-white">
+
+                    <span class="m0"> <strong>Vessel: {{vesseldata.vesselname}} </strong> </span><br>
+                    <span class="m0"> <strong>Imo No: {{vesseldata.ImoNo}} </strong> </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="container container-lg">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="panel">
+                    <div class="panel-body" id="infovessel">
+             <h6>
+                 <i class="fa fa-square mr" aria-hidden="true"></i>
+                 <span class="mr">
+                     <strong>Crew On Board:</strong>
+                     {{vesseldata.crewno}}
+                 </span>
+             </h6>
+             <h6>
+                 <i class="fa fa-square-o mr" aria-hidden="true"></i>
+                 <span class="mr">
+                     <strong style="margin-left: 25px;">Vessel Expiry:</strong>
+                     {{vesseldata.expdate}}
+                 </span>
+             </h6>
+              <h6>
+                  <i class="fa fa-square mr" aria-hidden="true"></i>
+                  <span class="mr">
+                      <strong>Type:</strong>
+                     {{vesseldata.type}}
+                  </span>
+              </h6>
+              <h6>
+                  <i class="fa fa-square-o mr" aria-hidden="true"></i>
+                  <span class="mr">
+                      <strong style="margin-left: 25px;">Flag:</strong>
+                     {{vesseldata.flagship}}
+                  </span>
+              </h6>
+
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-body">
+               <span class="mr"><b>Medical Event:</b></span><br>
+                        <div class="ng-scope"
+                             ng-repeat="event in eventdata">
+                        <a class="ng-binding" ui-sref = "app.events({EventId: event.eventid})">{{event.eventdate}}</a> <br>
+                      <small class="text-muted ng-binding ">{{event.evetname}}</small>
+                            <hr class="mb5 mt5">
+                        </div>
+                        <div ng-if="eventdata==null">No Data Found</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-9">
+                <div class="panel">
+                    <div class="panel-body">
+                        <tabset>
+                            <tab heading="Inventory Analysis">
+                                <div class=" panel-body">
+                                    <label class="control-label">Top Five Medicine Consume</label><br>
+                                        <flot dataset="medconsume" options="VesselProfile.chartPieFlotChart" ng-hide="medconsumeerror != null"></flot>
+                                    {{medconsumeerror}}
+                                </div>
+                                <hr class="mb0 mt0">
+                                <div class="panel-body">
+                                    <label class="control-label">Medicine in Critical zone</label><br>
+                                        <flot dataset="criticalzone" options="VesselProfile.chartDonutFlotChart" ng-hide="criticalmederror != null"></flot>
+                                    {{criticalmederror}}
+                                </div>
+                            </tab>
+                            <tab heading="Inventory List">
+                                <div class="panel panel-body" width="100%">
+                                <form class="form-inline" ng-submit="addMedicine()">
+                                    <table datatable="ng" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="row-border hover" >
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Generic Name</th>
+                                            <th>Base Name</th>
+                                            <th>Available Quantity</th>
+                                            <th>Expiry Date</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="med in medList">
+                                            <td>{{ $index+1 }}</td>
+                                            <td>{{ med.bname }}</td>
+                                            <td>{{ med.gname }}</td>
+                                            <td>{{ med.avlquant }}</td>
+                                            <td>{{ med.medexpiry }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row form-group">
+                                        <div class=" col-lg-4 col-sm-6" ng-if="IsShow" ng-hide="">
+                                            <label class="control-label">Generic Name</label>
+                                            <input placeholder="Generic Name" type="text" ng-model="newmedicine.gname"
+                                                   class="input-filter form-control" required>
+                                        </div>
+
+                                        <div class=" col-lg-4 col-sm-6" ng-if="IsShow">
+                                            <label class="control-label">Expiry Date</label>
+                                            <p class="input-group">
+                                                <input type="text" placeholder="" datepicker-popup="{{VesselProfile.format}}"
+                                                       ng-model="newmedicine.medexpiry"
+                                                       is-open="VesselProfile.opened" min-date="VesselProfile.minMedDate" max-date="false"
+                                                       datepicker-options="VesselProfile.dateOptions"
+                                                       date-disabled="VesselProfile.disabled(date, mode)"
+                                                       close-text="Close"
+                                                       class="form-control" ng-change="reload()" required/>
+                                                <span class="input-group-btn">
+                                                   <button type="button" ng-click="VesselProfile.open($event)" class="btn btn-default">
+                                                       <em class="fa fa-calendar"></em>
+                                                   </button>
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div class=" col-lg-4 col-sm-6" ng-if="IsShow">
+                                            <label class="control-label">Base Name</label>
+                                            <input placeholder="Base Name" type="text" name="name" ng-model="newmedicine.bname"
+                                                   class="input-filter form-control" required>
+                                        </div>
+                                        </div>
+                                    <div class="row form-group">
+                                        <div class=" col-lg-4 col-sm-6" ng-if="IsShow">
+                                            <label class="control-label">Available Quantity</label>
+                                            <input placeholder="Available Quantity" type="text" ng-model="newmedicine.avlquant"
+                                                   class="input-filter form-control ">
+                                        </div>
+                                        <div class=" col-lg-4 col-sm-6" ng-if="IsShow">
+                                            <label class="control-label">Default Quantity</label>
+                                            <input placeholder="Default Quantity" type="text" ng-model="newmedicine.defquant"
+                                                   class="input-filter form-control ">
+                                        </div>
+                                        <div class=" col-lg-4 col-sm-6" ng-if="IsShow">
+                                            <label class="control-label">Minimum Quantity</label>
+                                            <input placeholder="Minimum Quantity" type="text" ng-model="newmedicine.minquant"
+                                                   class="input-filter form-control ">
+                                        </div>
+
+                                    </div>
+                                    <div class="row form-group col-sm-12" style="margin-top: 20px;">
+                                    <button type="button" ripple="" class="mr mb-sm btn btn-success" ng-hide="hidebttn" ng-click="showfields()">Add Medicine
+                                    </button>
+                                    </div>
+                                    <button type="button" ripple="" class="mr mb-sm btn btn-success" ng-if="IsShow"  ng-click="saveMedicine()">Save
+                                    </button>
+                                    <button type="button" ripple="" class="mr mb-sm btn btn-info" ng-if="IsShow" ng-click="cancelMedicine()">Cancel
+                                    </button>
+                                </form>
+                                </div>
+                            </tab>
+                            <tab heading="Seafarer List">
+
+                                <!--<div class="table-responsive table-bordered">-->
+                                    <!--<table ng-table="seafarersTable" class="table table-bordered table-striped">-->
+                                        <!--<thead>-->
+                                        <!--<tr>-->
+                                            <!--<th>No.</th>-->
+                                            <!--<th>Name</th>-->
+                                            <!--<th>Rank</th>-->
+                                            <!--<th>Vessel</th>-->
+                                            <!--<th>Appointment Date</th>-->
+                                            <!--<th>Action</th>-->
+
+                                        <!--</tr>-->
+                                        <!--</thead>-->
+                                        <!--<tbody>-->
+                                        <!--<tr>-->
+                                            <!--<td></td>-->
+                                            <!--<td><input placeholder="Enter Name" type="text" class="form-control"-->
+                                                       <!--ng-model="search.name"></td>-->
+                                            <!--<td><input placeholder="Enter rank" type="text" class="form-control"-->
+                                                       <!--ng-model="search.rank"></td>-->
+                                            <!--<td><input placeholder="Enter Vessel" type="text" class="form-control"-->
+                                                       <!--ng-model="search.vesselname"></td>-->
+                                            <!--<td><input placeholder="Enter Date" type="text" class="form-control"-->
+                                                       <!--ng-model="search.apptdate"></td>-->
+                                        <!--</tr>-->
+                                        <!--<tr ng-repeat="(key, value) in data | filter: search ">-->
+
+                                            <!--<td>{{$index+1}}</td>-->
+                                            <!--<td>{{value.name}}</td>-->
+                                            <!--<td>{{value.rank}}</td>-->
+                                            <!--<td>{{value.vesselname}}</td>-->
+                                            <!--<td>{{value.apptdate}}</td>-->
+                                            <!--<td><label class="switch">-->
+                                                <!--<input type="checkbox"-->
+                                                       <!--ng-model="cand[key]"-->
+                                                       <!--ng-change="setcandidate(value.userid,key)"/>-->
+                                                <!--<span></span>-->
+                                            <!--</label></td>-->
+
+                                        <!--</tr>-->
+                                        <!--</tbody>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                                <accordion>
+                                    <accordion-group heading="Seafarer On-Board">
+
+                                        <div class="table-responsive table-bordered">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>Name</th>
+                                                    <th>Rank</th>
+                                                    <th>Appointment Date</th>
+                                                    <th>Action</th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in onboard">
+                                                    <td>{{$index+1}}</td>
+                                                    <td>{{item.name}}</td>
+                                                    <td>{{item.rank}}</td>
+                                                    <td>{{item.apptdate}}</td>
+                                                    <td><label class="switch">
+                                                        <input type="checkbox" ng-init="cand[item.userid]=true"
+                                                               ng-model="cand[item.userid]"
+                                                               ng-change="setcandidate(item.userid)"/>
+                                                        <span></span>
+                                                    </label></td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        {{msg}}
+                                    </accordion-group>
+                                </accordion>
+
+                                <accordion>
+                                    <accordion-group heading="Seafarer Sign off">
+
+                                        <div class="table-responsive table-bordered">
+                                            <table class="table">
+                                                <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>Name</th>
+                                                    <th>Rank</th>
+                                                    <th>Appointment Date</th>
+                                                    <th>Action</th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="item in offboard">
+                                                    <td>{{$index+1}}</td>
+                                                    <td>{{item.name}}</td>
+                                                    <td>{{item.rank}}</td>
+                                                    <td>{{item.apptdate}}</td>
+                                                    <td><label class="switch">
+                                                        <input type="checkbox" ng-model="cand[item.userid]"
+                                                               ng-change="setcandidate(item.userid)"/>
+                                                        <span></span>
+                                                    </label></td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        {{msg}}
+                                    </accordion-group>
+                                </accordion>
+
+                            </tab>
+                            <!--<tab heading="Settings">-->
+                                <!--<form role="form" class="form-horizontal">-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-lg-2 control-label">First Name</label>-->
+                                        <!--<div class="col-lg-6">-->
+                                            <!--<input id="f-name" type="text" placeholder=" " class="form-control"/>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-lg-2 control-label">Last Name</label>-->
+                                        <!--<div class="col-lg-6">-->
+                                            <!--<input id="l-name" type="text" placeholder=" " class="form-control"/>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-lg-2 control-label">About Me</label>-->
+                                        <!--<div class="col-lg-10">-->
+                                            <!--<textarea name="" id="" cols="30" rows="5" class="form-control"></textarea>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-lg-2 control-label">Country</label>-->
+                                        <!--<div class="col-lg-6">-->
+                                            <!--<input id="c-name" type="text" placeholder=" " class="form-control"/>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-lg-2 control-label">Birthday</label>-->
+                                        <!--<div class="col-lg-6">-->
+                                            <!--<input id="b-day" type="text" placeholder=" " class="form-control"/>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-lg-2 control-label">Occupation</label>-->
+                                        <!--<div class="col-lg-6">-->
+                                            <!--<input id="occupation" type="text" placeholder=" " class="form-control"/>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-lg-2 control-label">Email</label>-->
+                                        <!--<div class="col-lg-6">-->
+                                            <!--<input id="email" type="text" placeholder=" " class="form-control"/>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-lg-2 control-label">Mobile</label>-->
+                                        <!--<div class="col-lg-6">-->
+                                            <!--<input id="mobile" type="text" placeholder=" " class="form-control"/>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<label class="col-lg-2 control-label">Website URL</label>-->
+                                        <!--<div class="col-lg-6">-->
+                                            <!--<input id="url" type="text" placeholder="http://example.com "-->
+                                                   <!--class="form-control"/>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group">-->
+                                        <!--<div class="col-lg-offset-2 col-lg-10">-->
+                                            <!--<button type="submit" class="btn btn-primary">Save</button>-->
+                                            <!--<button type="button" class="btn btn-purple">Cancel</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</form>-->
+                            <!--</tab>-->
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

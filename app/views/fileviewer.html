@@ -1,0 +1,33 @@
+<div ng-controller="ApptController as form">
+    <nav ng-class="getNavStyle(scroll)">
+        <div class="form-group">
+
+            <button ng-click="zoomIn()" type="button"
+                    class="col-md-offset-1 col-xs-offset-1 mr btn btn-circle btn-info">
+                <em class="icon-zoom-in"></em>
+            </button>
+            <button type="button" ng-click="fit()" class="mr btn btn-oval btn-info">100%</button>
+            <button ng-click="zoomOut()" type="button" class="mr btn btn-circle btn-info">
+                <em class="icon-zoom-out"></em>
+            </button>
+
+            <button ng-click="goPrevious()" type="button"
+                    class="col-md-offset-3 col-xs-offset-1 mr btn btn-circle btn-info">
+                <em class="fa fa-chevron-left"></em>
+            </button>
+            <label class="control-label">Page:</label>
+            <label class="control-label">{{pageNum}}</label><span> / {{pageCount}}</span>
+            <button ng-click="goNext()" type="button" class="mr btn btn-circle btn-info">
+                <em class="fa fa-chevron-right"></em>
+            </button>
+            <button ng-click="printDiv()" title="Print" type="button" class=" mr btn btn-circle btn-info">
+                <em class="icon-printer"></em>
+            </button>
+
+        </div>
+    </nav>
+       {{loading}}
+    <div class="panel pdffileprint">
+        <canvas id="pdf" class="rotate0" style="height: 1000px; width: 750px;"></canvas>
+    </div>
+</div>

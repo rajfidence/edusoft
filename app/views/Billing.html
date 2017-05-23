@@ -1,0 +1,15 @@
+<div class="panel panel-body" id="step1">
+    <div ng-show="noAccess" style="color:red">{{noAccessMessage}}</div>
+    <div class="app-view-header headerstyle">Invoice List
+        <button type="button" ng-disabled="noAccess" class="mr mb-sm btn btn-primary pull-right" value="Show Hide DIV" ui-sref="app.billingwizard" id="step3">Add Invoice</button>
+    </div><hr>
+
+    <div  ng-controller="BillingController as form" >
+        <div class="panel-body table-responsive" >
+                <table datatable="" dt-options="form.dtOptions" dt-columns="form.dtColumns" class="row-border hover" width="100%" ></table>
+        </div>
+
+    </div>
+</div>
+
+
